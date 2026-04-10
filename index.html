@@ -104,7 +104,6 @@
             gap: 8px;
         }
 
-        /* زر أنا جاهز بتصميم جديد */
         .ready-btn-new {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             border: none;
@@ -130,7 +129,6 @@
             cursor: not-allowed;
         }
 
-        /* زر سحب التجهيز */
         .cancel-ready-btn {
             background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
             border: none;
@@ -144,7 +142,6 @@
             font-size: 12px;
         }
 
-        /* عدادات المجهزين */
         .ready-count-badge {
             background: #2ecc71;
             color: black;
@@ -321,6 +318,16 @@
             font-weight: bold;
             cursor: pointer;
         }
+        .btn-warning {
+            background: #f39c12;
+            border: none;
+            padding: 10px;
+            border-radius: 40px;
+            font-weight: bold;
+            color: black;
+            cursor: pointer;
+            margin-top: 8px;
+        }
         input, textarea {
             background: #1e1e1e;
             border: 1px solid #333;
@@ -355,6 +362,25 @@
             70% { opacity: 1; }
             100% { opacity: 0; visibility: hidden; }
         }
+        
+        .message-preview {
+            background: #1e3c2c;
+            border-radius: 16px;
+            padding: 12px;
+            margin-top: 12px;
+            border-right: 3px solid #2ecc71;
+        }
+        
+        .send-message-btn {
+            background: #2ecc71;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 25px;
+            color: black;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 8px;
+        }
     </style>
 </head>
 <body>
@@ -382,7 +408,7 @@
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getDatabase, ref, set, get, push, onValue, child, remove, update } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+    import { getDatabase, ref, set, get, push, onValue, child, remove } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyBT-WCUAI7QO2IlcF3eQlJOSrTOQN_52vU",
@@ -476,7 +502,6 @@
             const posts = snapshot.val() || {};
             let postsArray = Object.entries(posts).map(([id, data]) => ({ id, ...data })).reverse();
             
-            // جلب المجهزين لكل منشور
             let html = '';
             if (postsArray.length === 0) {
                 html = `<div class="empty-state">📭 لا توجد منشورات حالياً<br><span style="font-size:12px;">✏️ أضف منشوراً جديداً لتبدأ اللعب!</span></div>`;
@@ -484,7 +509,6 @@
                 postsArray.forEach(post => {
                     const isOwner = post.publisherId === currentUserId;
                     
-                    // الاستماع للمجهزين
                     const readyRef = ref(db, `postReady/${post.id}`);
                     onValue(readyRef, (readySnap) => {
                         const readyUsers = readySnap.val() || {};
@@ -496,7 +520,6 @@
                             const readyDiv = postElement.querySelector('.ready-section');
                             if (readyDiv) {
                                 if (isOwner) {
-                                    // عرض قائمة المجهزين مع أزرار موافقة/رفض
                                     let usersHtml = '';
                                     Object.entries(readyUsers).forEach(([userId, userData]) => {
                                         if (userData.status === 'waiting') {
@@ -504,7 +527,7 @@
                                                 <div class="ready-user-item">
                                                     <span>⚡ ${escapeHtml(userData.name)}</span>
                                                     <div>
-                                                        <button class="approve-btn" data-userid="${userId}" data-postid="${post.id}" data-postclub="${escapeHtml(post.clubName)}" data-posttime="${escapeHtml(post.time)}">✅ أوافق</button>
+                                                        <button class="approve-btn" data-userid="${userId}" data-username="${escapeHtml(userData.name)}" data-postid="${post.id}" data-postclub="${escapeHtml(post.clubName)}" data-posttime="${escapeHtml(post.time)}">✅ أوافق</button>
                                                         <button class="reject-btn" data-userid="${userId}" data-postid="${post.id}">❌ رفض</button>
                                                     </div>
                                                 </div>
@@ -516,15 +539,13 @@
                                         ${usersHtml ? `<div class="ready-users-list">${usersHtml}</div>` : '<div class="ready-users-list" style="color:#777; text-align:center;">لا يوجد طلبات انتظار</div>'}
                                     `;
                                     
-                                    // إضافة أحداث للأزرار
                                     readyDiv.querySelectorAll('.approve-btn').forEach(btn => {
-                                        btn.addEventListener('click', () => approveUser(btn.dataset.userid, btn.dataset.postid, btn.dataset.postclub, btn.dataset.posttime, post.publisherName));
+                                        btn.addEventListener('click', () => approveUser(btn.dataset.userid, btn.dataset.username, btn.dataset.postid, btn.dataset.postclub, btn.dataset.posttime));
                                     });
                                     readyDiv.querySelectorAll('.reject-btn').forEach(btn => {
                                         btn.addEventListener('click', () => rejectUser(btn.dataset.userid, btn.dataset.postid));
                                     });
                                 } else {
-                                    // عرض زر أنا جاهز وزر سحب
                                     if (isUserReady) {
                                         readyDiv.innerHTML = `
                                             <button class="cancel-ready-btn" data-postid="${post.id}">❌ سحب طلبي</button>
@@ -567,7 +588,6 @@
             return;
         }
         
-        // إضافة المستخدم لقائمة المجهزين
         await set(ref(db, `postReady/${postId}/${currentUserId}`), {
             name: currentUser.name,
             userId: currentUserId,
@@ -575,7 +595,6 @@
             timestamp: Date.now()
         });
         
-        // إرسال إشعار للناشر
         await push(ref(db, `notifications/${publisherId}`), {
             type: 'new_ready',
             fromName: currentUser.name,
@@ -594,61 +613,81 @@
         showToast("❌ تم سحب طلبك");
     }
     
-    async function approveUser(userId, postId, clubName, eventTime, publisherName) {
-        // حذف المنشور
-        await remove(ref(db, `allPosts/${postId}`));
+    async function approveUser(userId, userName, postId, clubName, eventTime) {
+        // إنشاء نافذة منبثقة للرسالة
+        const modal = document.createElement("div");
+        modal.className = "modal";
+        modal.style.display = "flex";
+        modal.innerHTML = `
+            <div class="modal-content">
+                <h3 style="color:#2ecc71; margin-bottom:16px;">✉️ إرسال رسالة للشريك</h3>
+                <div class="message-preview">
+                    <p style="color:#2ecc71; margin-bottom:8px;">📝 الرسالة جاهزة للإرسال:</p>
+                    <p style="background:#0a0a0a; padding:12px; border-radius:12px;">🎉 أهلاً ${escapeHtml(userName)}!<br>✅ المعاد (${escapeHtml(eventTime)}) تمام بالنسبة لي<br>🤝 نتقابل في ${escapeHtml(clubName)} إن شاء الله</p>
+                </div>
+                <div style="display:flex; gap:12px; margin-top:16px;">
+                    <button id="cancelSendBtn" class="btn-outline" style="flex:1;">إلغاء</button>
+                    <button id="confirmSendBtn" class="btn-primary" style="flex:1;">📤 إرسال الرسالة</button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
         
-        // حذف قائمة المجهزين
-        await remove(ref(db, `postReady/${postId}`));
-        
-        // إنشاء الدردشة
-        const chatId = [currentUserId, userId].sort().join('_');
-        const chatData = {
-            participants: [currentUserId, userId],
-            participantNames: { [currentUserId]: currentUser.name, [userId]: publisherName },
-            createdAt: Date.now(),
-            clubName: clubName,
-            postId: postId,
-            eventTime: eventTime
-        };
-        await set(ref(db, `chats/${chatId}`), chatData);
-        
-        await set(ref(db, `userChats/${currentUserId}/${chatId}`), { 
-            chatId, otherId: userId, otherName: publisherName, clubName: clubName, lastUpdated: Date.now() 
+        document.getElementById("cancelSendBtn").addEventListener("click", () => modal.remove());
+        document.getElementById("confirmSendBtn").addEventListener("click", async () => {
+            modal.remove();
+            
+            // إنشاء الدردشة
+            const chatId = [currentUserId, userId].sort().join('_');
+            const chatData = {
+                participants: [currentUserId, userId],
+                participantNames: { [currentUserId]: currentUser.name, [userId]: userName },
+                createdAt: Date.now(),
+                clubName: clubName,
+                postId: postId,
+                eventTime: eventTime
+            };
+            await set(ref(db, `chats/${chatId}`), chatData);
+            
+            await set(ref(db, `userChats/${currentUserId}/${chatId}`), { 
+                chatId, otherId: userId, otherName: userName, clubName: clubName, lastUpdated: Date.now() 
+            });
+            await set(ref(db, `userChats/${userId}/${chatId}`), { 
+                chatId, otherId: currentUserId, otherName: currentUser.name, clubName: clubName, lastUpdated: Date.now() 
+            });
+            
+            // إرسال رسالة الترحيب (الرسالة جاهزة ومكتوبة لكنها ماتترسلش غير لما يدوس إرسال)
+            const welcomeMessage = `🎉 أهلاً ${userName}!\n✅ المعاد (${eventTime}) تمام بالنسبة لي\n🤝 نتقابل في ${clubName} إن شاء الله`;
+            const msgRef = push(ref(db, `chats/${chatId}/messages`));
+            await set(msgRef, { 
+                senderId: currentUserId, 
+                senderName: currentUser.name, 
+                text: welcomeMessage, 
+                timestamp: Date.now()
+            });
+            
+            // إرسال إشعار للمستخدم بالموافقة
+            await push(ref(db, `notifications/${userId}`), {
+                type: 'approved',
+                fromName: currentUser.name,
+                chatId: chatId,
+                message: `🎉 ${currentUser.name} وافق على طلبك! اذهب للدردشة الآن`,
+                timestamp: Date.now()
+            });
+            
+            // إزالة المستخدم من قائمة الانتظار فقط (المنشور يفضل موجود)
+            await remove(ref(db, `postReady/${postId}/${userId}`));
+            
+            showToast(`✅ تمت الموافقة على ${userName} وتم إرسال الرسالة`);
+            
+            // فتح الدردشة
+            setTimeout(() => window.openChat(chatId), 500);
         });
-        await set(ref(db, `userChats/${userId}/${chatId}`), { 
-            chatId, otherId: currentUserId, otherName: currentUser.name, clubName: clubName, lastUpdated: Date.now() 
-        });
-        
-        // إرسال رسالة ترحيب
-        const welcomeMessage = `🎉 أهلاً ${publisherName}!\n✅ المعاد (${eventTime}) تمام بالنسبة لي\n🤝 نتقابل في ${clubName} إن شاء الله`;
-        const msgRef = push(ref(db, `chats/${chatId}/messages`));
-        await set(msgRef, { 
-            senderId: currentUserId, 
-            senderName: currentUser.name, 
-            text: welcomeMessage, 
-            timestamp: Date.now()
-        });
-        
-        // إرسال إشعار للمستخدم بالموافقة
-        await push(ref(db, `notifications/${userId}`), {
-            type: 'approved',
-            fromName: currentUser.name,
-            chatId: chatId,
-            message: `🎉 ${currentUser.name} وافق على طلبك! اذهب للدردشة الآن`,
-            timestamp: Date.now()
-        });
-        
-        showToast(`✅ تمت الموافقة على ${publisherName}`);
-        
-        // فتح الدردشة
-        setTimeout(() => window.openChat(chatId), 500);
     }
     
     async function rejectUser(userId, postId) {
         await remove(ref(db, `postReady/${postId}/${userId}`));
         
-        // إرسال إشعار بالرفض
         const postSnap = await get(ref(db, `allPosts/${postId}`));
         if (postSnap.exists()) {
             const post = postSnap.val();
