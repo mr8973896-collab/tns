@@ -11,7 +11,6 @@
             box-sizing: border-box;
             font-family: 'Tajawal', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         }
-
         body {
             background-color: #000000;
             color: #f5f5f5;
@@ -20,7 +19,6 @@
             flex-direction: column;
             overflow: hidden;
         }
-
         .app-wrapper {
             flex: 1;
             display: flex;
@@ -30,43 +28,80 @@
             scroll-behavior: smooth;
         }
 
+        /* ==================== الـ Dock الجديد (شكل iPhone) ==================== */
         .bottom-tab-bar {
             position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: #000000;
-            border-top: 1px solid #222;
+            bottom: 12px;                /* مسافة من أسفل الشاشة */
+            left: 12px;
+            right: 12px;
+            background: rgba(18, 18, 18, 0.92);   /* شفاف + لون داكن */
+            border-radius: 28px;         /* شكل الـ Dock المستدير */
+            border-top: 1.5px solid rgba(46, 204, 113, 0.7);  /* الخط الرفيع اللامع (لون الـ shadow) */
+            box-shadow: 
+                0 8px 25px rgba(0, 0, 0, 0.6),
+                0 0 15px rgba(46, 204, 113, 0.25); /* glow خفيف حول الـ Dock */
             display: flex;
             justify-content: space-around;
             align-items: center;
-            padding: 8px 16px 12px;
+            padding: 10px 16px 14px;
             z-index: 100;
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(20px);   /* تأثير الزجاج الشفاف */
+            max-width: 420px;              /* عرض مناسب للـ iPhone */
+            margin: 0 auto;                /* توسيط الـ Dock */
         }
 
         .tab-item {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 4px;
+            gap: 0;
             background: none;
             border: none;
             color: #8e8e8e;
-            font-size: 12px;
             cursor: pointer;
             transition: 0.2s;
-            font-weight: 500;
+            position: relative;
+            padding: 4px;
         }
-
         .tab-item.active {
             color: #2ecc71;
         }
-
-        .tab-icon {
-            font-size: 24px;
+        .tab-icon-img {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+            filter: brightness(0.7) drop-shadow(0 0 4px #2ecc71);
+            transition: filter 0.3s ease;
+        }
+        .tab-item.active .tab-icon-img {
+            filter: brightness(1.35) drop-shadow(0 0 12px #2ecc71);
         }
 
+        /* عداد الإشعارات */
+        .badge-count {
+            position: absolute;
+            top: -6px;
+            right: -8px;
+            background: #e74c3c;
+            color: white;
+            font-size: 10px;
+            font-weight: bold;
+            padding: 2px 6px;
+            border-radius: 50%;
+            min-width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: pulse 0.5s ease;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        /* باقي الستايلات (نفسها بدون تغيير) */
         .post-card {
             background: #121212;
             border-radius: 20px;
@@ -75,7 +110,6 @@
             border: 1px solid #2a2a2a;
             transition: 0.2s;
         }
-
         .post-header {
             display: flex;
             justify-content: space-between;
@@ -84,18 +118,15 @@
             padding-bottom: 8px;
             border-bottom: 1px solid #2a2a2a;
         }
-
         .club-name {
             color: #2ecc71;
             font-size: 18px;
             font-weight: bold;
         }
-
         .post-time {
             font-size: 11px;
             color: #777;
         }
-
         .post-detail {
             color: #ddd;
             margin: 8px 0;
@@ -103,7 +134,6 @@
             align-items: center;
             gap: 8px;
         }
-
         .ready-btn-new {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             border: none;
@@ -118,17 +148,14 @@
             font-size: 14px;
             box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
         }
-
         .ready-btn-new:hover {
             transform: translateY(-2px);
         }
-
         .ready-btn-new:disabled {
             background: linear-gradient(135deg, #555, #444);
             transform: none;
             cursor: not-allowed;
         }
-
         .cancel-ready-btn {
             background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
             border: none;
@@ -141,7 +168,6 @@
             cursor: pointer;
             font-size: 12px;
         }
-
         .ready-count-badge {
             background: #2ecc71;
             color: black;
@@ -152,13 +178,11 @@
             display: inline-block;
             margin-top: 8px;
         }
-
         .ready-users-list {
             margin-top: 12px;
             padding-top: 8px;
             border-top: 1px solid #333;
         }
-
         .ready-user-item {
             display: flex;
             justify-content: space-between;
@@ -168,7 +192,6 @@
             border-radius: 12px;
             margin-bottom: 8px;
         }
-
         .approve-btn {
             background: #2ecc71;
             border: none;
@@ -179,7 +202,6 @@
             cursor: pointer;
             margin-left: 8px;
         }
-
         .reject-btn {
             background: #e74c3c;
             border: none;
@@ -189,14 +211,12 @@
             font-weight: bold;
             cursor: pointer;
         }
-
         .waiting-badge {
             background: #f39c12;
             padding: 4px 10px;
             border-radius: 20px;
             font-size: 11px;
         }
-
         .modal {
             display: none;
             position: fixed;
@@ -210,7 +230,6 @@
             align-items: center;
             backdrop-filter: blur(8px);
         }
-
         .modal-content {
             background: #121212;
             width: 92%;
@@ -219,7 +238,6 @@
             padding: 24px 20px;
             border: 1px solid #2ecc71;
         }
-
         .chat-modal-content {
             height: 85vh;
             max-width: 500px;
@@ -227,7 +245,6 @@
             flex-direction: column;
             padding: 16px;
         }
-
         .messages-container {
             flex: 1;
             overflow-y: auto;
@@ -236,29 +253,26 @@
             gap: 12px;
             padding: 12px 4px;
         }
-
         .message {
             max-width: 80%;
             padding: 10px 14px;
             border-radius: 22px;
             font-size: 14px;
             word-wrap: break-word;
+            position: relative;
         }
-
         .my-message {
             align-self: flex-end;
             background: #2ecc71;
             color: white;
             border-bottom-right-radius: 4px;
         }
-
         .other-message {
             align-self: flex-start;
             background: #262626;
             color: #efefef;
             border-bottom-left-radius: 4px;
         }
-
         .profile-header {
             display: flex;
             flex-direction: column;
@@ -297,7 +311,6 @@
             font-weight: bold;
             color: #2ecc71;
         }
-
         .btn-primary {
             background: #2ecc71;
             border: none;
@@ -317,6 +330,16 @@
             border-radius: 40px;
             font-weight: bold;
             cursor: pointer;
+        }
+        .btn-danger {
+            background: #e74c3c;
+            border: none;
+            padding: 10px;
+            border-radius: 40px;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            margin-top: 8px;
         }
         .btn-warning {
             background: #f39c12;
@@ -342,7 +365,7 @@
             color: #777;
             padding: 30px;
         }
-        
+       
         .toast-message {
             position: fixed;
             bottom: 80px;
@@ -356,13 +379,13 @@
             z-index: 1100;
             animation: fadeOut 2.5s ease forwards;
         }
-        
+       
         @keyframes fadeOut {
             0% { opacity: 1; }
             70% { opacity: 1; }
             100% { opacity: 0; visibility: hidden; }
         }
-        
+       
         .message-preview {
             background: #1e3c2c;
             border-radius: 16px;
@@ -370,46 +393,99 @@
             margin-top: 12px;
             border-right: 3px solid #2ecc71;
         }
-        
-        .send-message-btn {
-            background: #2ecc71;
+       
+        .header-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+       
+        .small-btn {
+            padding: 8px 16px;
+            font-size: 12px;
+            border-radius: 25px;
+        }
+       
+        .select-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 12px;
+            transition: 0.2s;
+        }
+       
+        .select-item:hover {
+            background: #1e1e1e;
+        }
+       
+        .select-checkbox {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: #2ecc71;
+        }
+       
+        .delete-selected-btn {
+            background: #e74c3c;
             border: none;
             padding: 8px 16px;
             border-radius: 25px;
-            color: black;
+            color: white;
             font-weight: bold;
             cursor: pointer;
-            margin-top: 8px;
+            margin-right: 10px;
+        }
+       
+        .select-all-btn {
+            background: #3498db;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 25px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+       
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+            align-items: center;
         }
     </style>
 </head>
 <body>
-
 <div class="app-wrapper" id="appContainer"></div>
 
+<!-- الـ Dock الجديد (شفاف + خط لامع رفيع) -->
 <div class="bottom-tab-bar" id="tabBar" style="display: none;">
     <button class="tab-item" data-tab="home">
-        <div class="tab-icon">🏠</div>
-        <span>الرئيسية</span>
+        <img src="hom.png" class="tab-icon-img" alt="الرئيسية" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 fill=%22white%22 viewBox=%220 0 24 24%22%3E%3Cpath d=%22M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z%22/%3E%3C/svg%3E'">
     </button>
-    <button class="tab-item" data-tab="chats">
-        <div class="tab-icon">💬</div>
-        <span>الدردشات</span>
+    <button class="tab-item" data-tab="chats" id="chatsTab">
+        <div style="position: relative;">
+            <img src="chat.png" class="tab-icon-img" alt="الدردشات" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 fill=%22white%22 viewBox=%220 0 24 24%22%3E%3Cpath d=%22M20 2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4V4c0-1.1-.9-2-2-2z%22/%3E%3C/svg%3E'">
+            <span id="chatsBadge" class="badge-count" style="display:none;">0</span>
+        </div>
     </button>
-    <button class="tab-item" data-tab="notifications">
-        <div class="tab-icon">🔔</div>
-        <span>الإشعارات</span>
+    <button class="tab-item" data-tab="notifications" id="notificationsTab">
+        <div style="position: relative;">
+            <img src="not.png" class="tab-icon-img" alt="الإشعارات" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 fill=%22white%22 viewBox=%220 0 24 24%22%3E%3Cpath d=%22M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.93 6 11v5l-2 2v1h16v-1l-2-2z%22/%3E%3C/svg%3E'">
+            <span id="notifBadge" class="badge-count" style="display:none;">0</span>
+        </div>
     </button>
     <button class="tab-item" data-tab="profile">
-        <div class="tab-icon">👤</div>
-        <span>الملف</span>
+        <img src="pro.png" class="tab-icon-img" alt="الملف الشخصي" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 fill=%22white%22 viewBox=%220 0 24 24%22%3E%3Cpath d=%22M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z%22/%3E%3C/svg%3E'">
     </button>
 </div>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getDatabase, ref, set, get, push, onValue, child, remove } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
-
+    import { getDatabase, ref, set, get, push, onValue, child, remove, update } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
     const firebaseConfig = {
         apiKey: "AIzaSyBT-WCUAI7QO2IlcF3eQlJOSrTOQN_52vU",
         authDomain: "pcon-f6efd.firebaseapp.com",
@@ -424,8 +500,13 @@
     let currentUser = null;
     let currentUserId = null;
     let activeTab = "home";
-
+   
+    let unreadNotificationsCount = 0;
+    let unreadMessagesCount = 0;
+    let notificationListener = null;
+    let chatsListener = null;
     function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[m])); }
+   
     function showToast(msg) {
         const toast = document.createElement('div');
         toast.className = 'toast-message';
@@ -433,9 +514,76 @@
         document.body.appendChild(toast);
         setTimeout(() => toast.remove(), 2500);
     }
+   
     function showTabBar() { document.getElementById("tabBar").style.display = "flex"; }
     function hideTabBar() { document.getElementById("tabBar").style.display = "none"; }
-
+   
+    function updateNotificationsBadge() {
+        const badge = document.getElementById('notifBadge');
+        if (unreadNotificationsCount > 0) {
+            badge.textContent = unreadNotificationsCount > 99 ? '99+' : unreadNotificationsCount;
+            badge.style.display = 'flex';
+        } else {
+            badge.style.display = 'none';
+        }
+    }
+   
+    function updateChatsBadge() {
+        const badge = document.getElementById('chatsBadge');
+        if (unreadMessagesCount > 0) {
+            badge.textContent = unreadMessagesCount > 99 ? '99+' : unreadMessagesCount;
+            badge.style.display = 'flex';
+        } else {
+            badge.style.display = 'none';
+        }
+    }
+   
+    function loadUnreadNotificationsCount() {
+        if (!currentUserId) return;
+        if (notificationListener) notificationListener();
+        notificationListener = onValue(ref(db, `notifications/${currentUserId}`), (snapshot) => {
+            const notifs = snapshot.val() || {};
+            let count = 0;
+            Object.values(notifs).forEach(notif => { if (!notif.read) count++; });
+            unreadNotificationsCount = count;
+            updateNotificationsBadge();
+        });
+    }
+   
+    function loadUnreadMessagesCount() {
+        if (!currentUserId) return;
+        if (chatsListener) chatsListener();
+        chatsListener = onValue(ref(db, `userChats/${currentUserId}`), async (snapshot) => {
+            const entries = snapshot.val() || {};
+            let totalUnread = 0;
+            for (const [chatId, chatData] of Object.entries(entries)) {
+                const lastReadSnap = await get(ref(db, `userChats/${currentUserId}/${chatId}/lastRead`));
+                const lastRead = lastReadSnap.val() || 0;
+                const messagesSnap = await get(ref(db, `chats/${chatId}/messages`));
+                const messages = messagesSnap.val() || {};
+                Object.values(messages).forEach(msg => {
+                    if (msg.senderId !== currentUserId && msg.timestamp > lastRead) totalUnread++;
+                });
+            }
+            unreadMessagesCount = totalUnread;
+            updateChatsBadge();
+        });
+    }
+   
+    async function updateLastRead(chatId) {
+        await set(ref(db, `userChats/${currentUserId}/${chatId}/lastRead`), Date.now());
+        loadUnreadMessagesCount();
+    }
+   
+    async function markAllNotificationsAsRead() {
+        if (!currentUserId) return;
+        const notifsRef = ref(db, `notifications/${currentUserId}`);
+        const snapshot = await get(notifsRef);
+        const notifs = snapshot.val() || {};
+        const updates = {};
+        Object.keys(notifs).forEach(id => { if (!notifs[id].read) updates[`notifications/${currentUserId}/${id}/read`] = true; });
+        if (Object.keys(updates).length > 0) await update(ref(db), updates);
+    }
     function showRegisterCard() {
         hideTabBar();
         document.getElementById("appContainer").innerHTML = `
@@ -465,25 +613,24 @@
             showMainApp();
         });
     }
-
     function showMainApp() {
         if (!currentUser) return;
         currentUserId = currentUser.id;
         showTabBar();
+        loadUnreadNotificationsCount();
+        loadUnreadMessagesCount();
         renderCurrentTab();
     }
-
     function renderCurrentTab() {
         if (activeTab === "home") renderHomeTab();
-        else if (activeTab === "chats") renderChatsTab();
-        else if (activeTab === "notifications") renderNotificationsTab();
+        else if (activeTab === "chats") { renderChatsTab(); setTimeout(() => loadUnreadMessagesCount(), 500); }
+        else if (activeTab === "notifications") { renderNotificationsTab(); markAllNotificationsAsRead(); }
         else if (activeTab === "profile") renderProfileTab();
         document.querySelectorAll('.tab-item').forEach(btn => {
             if (btn.dataset.tab === activeTab) btn.classList.add('active');
             else btn.classList.remove('active');
         });
     }
-
     function renderHomeTab() {
         const container = document.getElementById("appContainer");
         container.innerHTML = `
@@ -496,25 +643,21 @@
         document.getElementById("globalAddPostBtn").addEventListener("click", openAddPostModal);
         loadAllPostsForHome();
     }
-
     function loadAllPostsForHome() {
         onValue(ref(db, "allPosts"), (snapshot) => {
             const posts = snapshot.val() || {};
             let postsArray = Object.entries(posts).map(([id, data]) => ({ id, ...data })).reverse();
-            
             let html = '';
             if (postsArray.length === 0) {
                 html = `<div class="empty-state">📭 لا توجد منشورات حالياً<br><span style="font-size:12px;">✏️ أضف منشوراً جديداً لتبدأ اللعب!</span></div>`;
             } else {
                 postsArray.forEach(post => {
                     const isOwner = post.publisherId === currentUserId;
-                    
                     const readyRef = ref(db, `postReady/${post.id}`);
                     onValue(readyRef, (readySnap) => {
                         const readyUsers = readySnap.val() || {};
                         const readyCount = Object.keys(readyUsers).length;
                         const isUserReady = readyUsers[currentUserId] !== undefined;
-                        
                         const postElement = document.getElementById(`post-${post.id}`);
                         if (postElement) {
                             const readyDiv = postElement.querySelector('.ready-section');
@@ -534,415 +677,314 @@
                                             `;
                                         }
                                     });
-                                    readyDiv.innerHTML = `
-                                        <div class="ready-count-badge">👥 ${readyCount} يريدون اللعب</div>
-                                        ${usersHtml ? `<div class="ready-users-list">${usersHtml}</div>` : '<div class="ready-users-list" style="color:#777; text-align:center;">لا يوجد طلبات انتظار</div>'}
-                                    `;
-                                    
-                                    readyDiv.querySelectorAll('.approve-btn').forEach(btn => {
-                                        btn.addEventListener('click', () => approveUser(btn.dataset.userid, btn.dataset.username, btn.dataset.postid, btn.dataset.postclub, btn.dataset.posttime));
-                                    });
-                                    readyDiv.querySelectorAll('.reject-btn').forEach(btn => {
-                                        btn.addEventListener('click', () => rejectUser(btn.dataset.userid, btn.dataset.postid));
-                                    });
+                                    readyDiv.innerHTML = `<div class="ready-count-badge">👥 ${readyCount} يريدون اللعب</div>${usersHtml ? `<div class="ready-users-list">${usersHtml}</div>` : '<div class="ready-users-list" style="color:#777; text-align:center;">لا يوجد طلبات انتظار</div>'}`;
+                                    readyDiv.querySelectorAll('.approve-btn').forEach(btn => { btn.addEventListener('click', () => approveUser(btn.dataset.userid, btn.dataset.username, btn.dataset.postid, btn.dataset.postclub, btn.dataset.posttime)); });
+                                    readyDiv.querySelectorAll('.reject-btn').forEach(btn => { btn.addEventListener('click', () => rejectUser(btn.dataset.userid, btn.dataset.postid)); });
                                 } else {
                                     if (isUserReady) {
-                                        readyDiv.innerHTML = `
-                                            <button class="cancel-ready-btn" data-postid="${post.id}">❌ سحب طلبي</button>
-                                            <div class="waiting-badge" style="text-align:center; margin-top:8px;">⏳ في انتظار موافقة الناشر</div>
-                                        `;
+                                        readyDiv.innerHTML = `<button class="cancel-ready-btn" data-postid="${post.id}">❌ سحب طلبي</button><div class="waiting-badge" style="text-align:center; margin-top:8px;">⏳ في انتظار موافقة الناشر</div>`;
                                         readyDiv.querySelector('.cancel-ready-btn').addEventListener('click', () => cancelReady(post.id));
                                     } else {
-                                        readyDiv.innerHTML = `
-                                            <button class="ready-btn-new" data-post-id="${post.id}" data-post-club="${escapeHtml(post.clubName)}" data-post-time="${escapeHtml(post.time)}" data-post-publisher="${escapeHtml(post.publisherName)}" data-post-publisherid="${post.publisherId}">
-                                                ⚡ أنا جاهز للعب ⚡
-                                            </button>
-                                        `;
+                                        readyDiv.innerHTML = `<button class="ready-btn-new" data-post-id="${post.id}" data-post-club="${escapeHtml(post.clubName)}" data-post-time="${escapeHtml(post.time)}" data-post-publisher="${escapeHtml(post.publisherName)}" data-post-publisherid="${post.publisherId}">⚡ أنا جاهز للعب ⚡</button>`;
                                         readyDiv.querySelector('.ready-btn-new').addEventListener('click', (e) => handleReadyClick(e, post.id, post.clubName, post.time, post.publisherName, post.publisherId));
                                     }
                                 }
                             }
                         }
                     });
-                    
-                    html += `
-                        <div class="post-card" id="post-${post.id}">
-                            <div class="post-header">
-                                <span class="club-name">⚽ ${escapeHtml(post.clubName)}</span>
-                                <span class="post-time">${new Date(post.timestamp).toLocaleString('ar-EG')}</span>
-                            </div>
-                            <div class="post-detail">🕐 ${escapeHtml(post.time)}</div>
-                            <div class="post-detail">👤 الناشر: ${escapeHtml(post.publisherName)}</div>
-                            <div class="ready-section"></div>
-                        </div>
-                    `;
+                    html += `<div class="post-card" id="post-${post.id}"><div class="post-header"><span class="club-name">⚽ ${escapeHtml(post.clubName)}</span><span class="post-time">${new Date(post.timestamp).toLocaleString('ar-EG')}</span></div><div class="post-detail">🕐 ${escapeHtml(post.time)}</div><div class="post-detail">👤 الناشر: ${escapeHtml(post.publisherName)}</div><div class="ready-section"></div></div>`;
                 });
             }
             document.getElementById("postsList").innerHTML = html;
         });
     }
-
     async function handleReadyClick(e, postId, clubName, eventTime, publisherName, publisherId) {
-        if (publisherId === currentUserId) {
-            showToast("لا يمكنك التجهيز على منشورك");
-            return;
-        }
-        
-        await set(ref(db, `postReady/${postId}/${currentUserId}`), {
-            name: currentUser.name,
-            userId: currentUserId,
-            status: 'waiting',
-            timestamp: Date.now()
-        });
-        
-        await push(ref(db, `notifications/${publisherId}`), {
-            type: 'new_ready',
-            fromName: currentUser.name,
-            fromId: currentUserId,
-            clubName: clubName,
-            postId: postId,
-            message: `🔔 ${currentUser.name} جاهز للعب معك في ${clubName}`,
-            timestamp: Date.now()
-        });
-        
+        if (publisherId === currentUserId) { showToast("لا يمكنك التجهيز على منشورك"); return; }
+        await set(ref(db, `postReady/${postId}/${currentUserId}`), { name: currentUser.name, userId: currentUserId, status: 'waiting', timestamp: Date.now() });
+        await push(ref(db, `notifications/${publisherId}`), { type: 'new_ready', fromName: currentUser.name, fromId: currentUserId, clubName: clubName, postId: postId, message: `🔔 ${currentUser.name} جاهز للعب معك في ${clubName}`, timestamp: Date.now(), read: false });
         showToast(`✅ تم إرسال طلبك إلى ${publisherName}`);
     }
-    
-    async function cancelReady(postId) {
-        await remove(ref(db, `postReady/${postId}/${currentUserId}`));
-        showToast("❌ تم سحب طلبك");
-    }
-    
+   
+    async function cancelReady(postId) { await remove(ref(db, `postReady/${postId}/${currentUserId}`)); showToast("❌ تم سحب طلبك"); }
+   
     async function approveUser(userId, userName, postId, clubName, eventTime) {
-        // إنشاء نافذة منبثقة للرسالة
         const modal = document.createElement("div");
         modal.className = "modal";
         modal.style.display = "flex";
-        modal.innerHTML = `
-            <div class="modal-content">
-                <h3 style="color:#2ecc71; margin-bottom:16px;">✉️ إرسال رسالة للشريك</h3>
-                <div class="message-preview">
-                    <p style="color:#2ecc71; margin-bottom:8px;">📝 الرسالة جاهزة للإرسال:</p>
-                    <p style="background:#0a0a0a; padding:12px; border-radius:12px;">🎉 أهلاً ${escapeHtml(userName)}!<br>✅ المعاد (${escapeHtml(eventTime)}) تمام بالنسبة لي<br>🤝 نتقابل في ${escapeHtml(clubName)} إن شاء الله</p>
-                </div>
-                <div style="display:flex; gap:12px; margin-top:16px;">
-                    <button id="cancelSendBtn" class="btn-outline" style="flex:1;">إلغاء</button>
-                    <button id="confirmSendBtn" class="btn-primary" style="flex:1;">📤 إرسال الرسالة</button>
-                </div>
-            </div>
-        `;
+        modal.innerHTML = `<div class="modal-content"><h3 style="color:#2ecc71; margin-bottom:16px;">✉️ إرسال رسالة للشريك</h3><div class="message-preview"><p style="color:#2ecc71; margin-bottom:8px;">📝 الرسالة جاهزة للإرسال:</p><p style="background:#0a0a0a; padding:12px; border-radius:12px;">🎉 أهلاً ${escapeHtml(userName)}!<br>✅ المعاد (${escapeHtml(eventTime)}) تمام بالنسبة لي<br>🤝 نتقابل في ${escapeHtml(clubName)} إن شاء الله</p></div><div style="display:flex; gap:12px; margin-top:16px;"><button id="cancelSendBtn" class="btn-outline" style="flex:1;">إلغاء</button><button id="confirmSendBtn" class="btn-primary" style="flex:1;">📤 إرسال الرسالة</button></div></div>`;
         document.body.appendChild(modal);
-        
         document.getElementById("cancelSendBtn").addEventListener("click", () => modal.remove());
         document.getElementById("confirmSendBtn").addEventListener("click", async () => {
             modal.remove();
-            
-            // إنشاء الدردشة
             const chatId = [currentUserId, userId].sort().join('_');
-            const chatData = {
-                participants: [currentUserId, userId],
-                participantNames: { [currentUserId]: currentUser.name, [userId]: userName },
-                createdAt: Date.now(),
-                clubName: clubName,
-                postId: postId,
-                eventTime: eventTime
-            };
-            await set(ref(db, `chats/${chatId}`), chatData);
-            
-            await set(ref(db, `userChats/${currentUserId}/${chatId}`), { 
-                chatId, otherId: userId, otherName: userName, clubName: clubName, lastUpdated: Date.now() 
-            });
-            await set(ref(db, `userChats/${userId}/${chatId}`), { 
-                chatId, otherId: currentUserId, otherName: currentUser.name, clubName: clubName, lastUpdated: Date.now() 
-            });
-            
-            // إرسال رسالة الترحيب (الرسالة جاهزة ومكتوبة لكنها ماتترسلش غير لما يدوس إرسال)
-            const welcomeMessage = `🎉 أهلاً ${userName}!\n✅ المعاد (${eventTime}) تمام بالنسبة لي\n🤝 نتقابل في ${clubName} إن شاء الله`;
+            await set(ref(db, `chats/${chatId}`), { participants: [currentUserId, userId], participantNames: { [currentUserId]: currentUser.name, [userId]: userName }, createdAt: Date.now(), clubName: clubName, postId: postId, eventTime: eventTime });
+            await set(ref(db, `userChats/${currentUserId}/${chatId}`), { chatId, otherId: userId, otherName: userName, clubName: clubName, lastUpdated: Date.now(), lastRead: Date.now() });
+            await set(ref(db, `userChats/${userId}/${chatId}`), { chatId, otherId: currentUserId, otherName: currentUser.name, clubName: clubName, lastUpdated: Date.now(), lastRead: 0 });
             const msgRef = push(ref(db, `chats/${chatId}/messages`));
-            await set(msgRef, { 
-                senderId: currentUserId, 
-                senderName: currentUser.name, 
-                text: welcomeMessage, 
-                timestamp: Date.now()
-            });
-            
-            // إرسال إشعار للمستخدم بالموافقة
-            await push(ref(db, `notifications/${userId}`), {
-                type: 'approved',
-                fromName: currentUser.name,
-                chatId: chatId,
-                message: `🎉 ${currentUser.name} وافق على طلبك! اذهب للدردشة الآن`,
-                timestamp: Date.now()
-            });
-            
-            // إزالة المستخدم من قائمة الانتظار فقط (المنشور يفضل موجود)
+            await set(msgRef, { senderId: currentUserId, senderName: currentUser.name, text: `🎉 أهلاً ${userName}!\n✅ المعاد (${eventTime}) تمام بالنسبة لي\n🤝 نتقابل في ${clubName} إن شاء الله`, timestamp: Date.now() });
+            await push(ref(db, `notifications/${userId}`), { type: 'approved', fromName: currentUser.name, chatId: chatId, message: `🎉 ${currentUser.name} وافق على طلبك! اذهب للدردشة الآن`, timestamp: Date.now(), read: false });
             await remove(ref(db, `postReady/${postId}/${userId}`));
-            
             showToast(`✅ تمت الموافقة على ${userName} وتم إرسال الرسالة`);
-            
-            // فتح الدردشة
             setTimeout(() => window.openChat(chatId), 500);
         });
     }
-    
+   
     async function rejectUser(userId, postId) {
         await remove(ref(db, `postReady/${postId}/${userId}`));
-        
         const postSnap = await get(ref(db, `allPosts/${postId}`));
-        if (postSnap.exists()) {
-            const post = postSnap.val();
-            await push(ref(db, `notifications/${userId}`), {
-                type: 'rejected',
-                fromName: currentUser.name,
-                message: `😔 ${currentUser.name} اعتذر عن طلبك في ${post.clubName}`,
-                timestamp: Date.now()
-            });
-        }
-        
+        if (postSnap.exists()) { const post = postSnap.val(); await push(ref(db, `notifications/${userId}`), { type: 'rejected', fromName: currentUser.name, message: `😔 ${currentUser.name} اعتذر عن طلبك في ${post.clubName}`, timestamp: Date.now(), read: false }); }
         showToast("❌ تم رفض الطلب");
     }
-
     function renderChatsTab() {
         const container = document.getElementById("appContainer");
-        container.innerHTML = `<h3 style="color:#2ecc71; margin-bottom:16px;">💬 محادثاتي</h3><div id="chatsList"></div>`;
+        container.innerHTML = `
+            <div class="header-actions">
+                <h3 style="color:#2ecc71;">💬 محادثاتي</h3>
+                <div class="action-buttons">
+                    <button id="selectAllChatsBtn" class="select-all-btn small-btn">☑️ تحديد الكل</button>
+                    <button id="deleteSelectedChatsBtn" class="delete-selected-btn small-btn" style="display:none;">🗑️ حذف المحدد</button>
+                    <button id="cancelSelectChatsBtn" class="btn-outline small-btn" style="display:none;">إلغاء</button>
+                </div>
+            </div>
+            <div id="chatsList"></div>
+        `;
+       
+        let selectedChats = new Set();
+        let isSelectionMode = false;
+       
         if (!currentUserId) return;
-        onValue(ref(db, `userChats/${currentUserId}`), (snapshot) => {
+       
+        onValue(ref(db, `userChats/${currentUserId}`), async (snapshot) => {
             const entries = snapshot.val() || {};
             let html = '';
             if (Object.keys(entries).length === 0) html = `<div class="empty-state">لا توجد دردشات بعد<br>✏️ جهز على منشور لتبدأ محادثة</div>`;
             else {
-                Object.values(entries).forEach(entry => {
-                    html += `
-                        <div class="post-card" style="cursor:pointer;" onclick="window.openChat('${entry.chatId}')">
+                const entriesWithUnread = await Promise.all(Object.values(entries).map(async (entry) => {
+                    const lastReadSnap = await get(ref(db, `userChats/${currentUserId}/${entry.chatId}/lastRead`));
+                    const lastRead = lastReadSnap.val() || 0;
+                    const messagesSnap = await get(ref(db, `chats/${entry.chatId}/messages`));
+                    const messages = messagesSnap.val() || {};
+                    let hasUnread = false;
+                    Object.values(messages).forEach(msg => { if (msg.senderId !== currentUserId && msg.timestamp > lastRead) hasUnread = true; });
+                    return { ...entry, hasUnread };
+                }));
+                html = entriesWithUnread.map(entry => `
+                    <div class="select-item" data-chatid="${entry.chatId}" onclick="${isSelectionMode ? '' : 'window.openChatAndUpdateRead(\'' + entry.chatId + '\')'}">
+                        <input type="checkbox" class="select-checkbox chat-checkbox" data-chatid="${entry.chatId}" style="${isSelectionMode ? 'display:inline-block' : 'display:none'}">
+                        <div class="post-card" style="cursor:pointer; flex:1; ${entry.hasUnread ? 'border-right: 3px solid #2ecc71;' : ''} margin-bottom:0;">
                             <div class="club-name">🏟️ ${escapeHtml(entry.clubName)}</div>
                             <div class="post-detail">مع: ${escapeHtml(entry.otherName)}</div>
                             <div class="post-time">آخر تحديث: ${new Date(entry.lastUpdated).toLocaleString('ar-EG')}</div>
+                            ${entry.hasUnread ? '<div style="color:#2ecc71; font-size:11px; margin-top:5px;">📩 رسائل جديدة</div>' : ''}
                         </div>
-                    `;
-                });
+                    </div>
+                `).join('');
             }
             document.getElementById("chatsList").innerHTML = html;
+           
+            document.querySelectorAll('.chat-checkbox').forEach(cb => {
+                cb.addEventListener('change', (e) => {
+                    e.stopPropagation();
+                    const chatId = cb.dataset.chatid;
+                    if (cb.checked) selectedChats.add(chatId);
+                    else selectedChats.delete(chatId);
+                    updateDeleteButton();
+                });
+            });
+        });
+       
+        function updateDeleteButton() {
+            const deleteBtn = document.getElementById('deleteSelectedChatsBtn');
+            if (deleteBtn) deleteBtn.style.display = selectedChats.size > 0 ? 'inline-block' : 'none';
+        }
+       
+        document.getElementById('selectAllChatsBtn').addEventListener('click', () => {
+            isSelectionMode = true;
+            document.querySelectorAll('.chat-checkbox').forEach(cb => {
+                cb.style.display = 'inline-block';
+                cb.checked = true;
+                selectedChats.add(cb.dataset.chatid);
+            });
+            document.getElementById('deleteSelectedChatsBtn').style.display = 'inline-block';
+            document.getElementById('cancelSelectChatsBtn').style.display = 'inline-block';
+            document.getElementById('selectAllChatsBtn').style.display = 'none';
+            updateDeleteButton();
+        });
+       
+        document.getElementById('cancelSelectChatsBtn')?.addEventListener('click', () => {
+            isSelectionMode = false;
+            selectedChats.clear();
+            document.querySelectorAll('.chat-checkbox').forEach(cb => {
+                cb.style.display = 'none';
+                cb.checked = false;
+            });
+            document.getElementById('deleteSelectedChatsBtn').style.display = 'none';
+            document.getElementById('cancelSelectChatsBtn').style.display = 'none';
+            document.getElementById('selectAllChatsBtn').style.display = 'inline-block';
+        });
+       
+        document.getElementById('deleteSelectedChatsBtn')?.addEventListener('click', async () => {
+            if (selectedChats.size === 0) return;
+            if (!confirm(`⚠️ هل أنت متأكد من حذف ${selectedChats.size} دردشة؟ هذا الإجراء لا يمكن التراجع عنه!`)) return;
+            for (const chatId of selectedChats) {
+                await remove(ref(db, `chats/${chatId}`));
+                await remove(ref(db, `userChats/${currentUserId}/${chatId}`));
+            }
+            showToast(`✅ تم حذف ${selectedChats.size} دردشة بنجاح`);
+            selectedChats.clear();
+            document.getElementById('cancelSelectChatsBtn')?.click();
+            loadUnreadMessagesCount();
         });
     }
-
+   
     function renderNotificationsTab() {
         const container = document.getElementById("appContainer");
-        container.innerHTML = `<h3 style="color:#2ecc71; margin-bottom:16px;">🔔 الإشعارات</h3><div id="notifList"></div>`;
+        container.innerHTML = `
+            <div class="header-actions">
+                <h3 style="color:#2ecc71;">🔔 الإشعارات</h3>
+                <div class="action-buttons">
+                    <button id="selectAllNotifsBtn" class="select-all-btn small-btn">☑️ تحديد الكل</button>
+                    <button id="deleteSelectedNotifsBtn" class="delete-selected-btn small-btn" style="display:none;">🗑️ حذف المحدد</button>
+                    <button id="cancelSelectNotifsBtn" class="btn-outline small-btn" style="display:none;">إلغاء</button>
+                </div>
+            </div>
+            <div id="notifList"></div>
+        `;
+       
+        let selectedNotifs = new Set();
+        let isSelectionMode = false;
+       
         if (!currentUserId) return;
+       
         onValue(ref(db, `notifications/${currentUserId}`), (snapshot) => {
             const notifs = snapshot.val() || {};
             let html = '';
             if (Object.keys(notifs).length === 0) html = `<div class="empty-state">لا توجد إشعارات</div>`;
             else {
-                Object.entries(notifs).reverse().forEach(([id, n]) => {
-                    html += `
-                        <div class="post-card">
+                html = Object.entries(notifs).reverse().map(([id, n]) => `
+                    <div class="select-item" data-notifid="${id}">
+                        <input type="checkbox" class="select-checkbox notif-checkbox" data-notifid="${id}" style="${isSelectionMode ? 'display:inline-block' : 'display:none'}">
+                        <div class="post-card" style="flex:1; ${!n.read ? 'border-right: 3px solid #2ecc71;' : ''} margin-bottom:0;">
                             <p>${escapeHtml(n.message)}</p>
                             <div class="post-time">${new Date(n.timestamp).toLocaleString('ar-EG')}</div>
-                            ${n.chatId ? `<button class="ready-btn-new" onclick="window.openChat('${n.chatId}')" style="margin-top:10px;">💬 رد عليه</button>` : ''}
+                            ${n.chatId ? `<button class="ready-btn-new" onclick="window.openChatAndUpdateRead('${n.chatId}')" style="margin-top:10px;">💬 رد عليه</button>` : ''}
                         </div>
-                    `;
-                });
+                    </div>
+                `).join('');
             }
             document.getElementById("notifList").innerHTML = html;
+           
+            document.querySelectorAll('.notif-checkbox').forEach(cb => {
+                cb.addEventListener('change', (e) => {
+                    e.stopPropagation();
+                    const notifId = cb.dataset.notifid;
+                    if (cb.checked) selectedNotifs.add(notifId);
+                    else selectedNotifs.delete(notifId);
+                    updateDeleteButton();
+                });
+            });
+        });
+       
+        function updateDeleteButton() {
+            const deleteBtn = document.getElementById('deleteSelectedNotifsBtn');
+            if (deleteBtn) deleteBtn.style.display = selectedNotifs.size > 0 ? 'inline-block' : 'none';
+        }
+       
+        document.getElementById('selectAllNotifsBtn').addEventListener('click', () => {
+            isSelectionMode = true;
+            document.querySelectorAll('.notif-checkbox').forEach(cb => {
+                cb.style.display = 'inline-block';
+                cb.checked = true;
+                selectedNotifs.add(cb.dataset.notifid);
+            });
+            document.getElementById('deleteSelectedNotifsBtn').style.display = 'inline-block';
+            document.getElementById('cancelSelectNotifsBtn').style.display = 'inline-block';
+            document.getElementById('selectAllNotifsBtn').style.display = 'none';
+            updateDeleteButton();
+        });
+       
+        document.getElementById('cancelSelectNotifsBtn')?.addEventListener('click', () => {
+            isSelectionMode = false;
+            selectedNotifs.clear();
+            document.querySelectorAll('.notif-checkbox').forEach(cb => {
+                cb.style.display = 'none';
+                cb.checked = false;
+            });
+            document.getElementById('deleteSelectedNotifsBtn').style.display = 'none';
+            document.getElementById('cancelSelectNotifsBtn').style.display = 'none';
+            document.getElementById('selectAllNotifsBtn').style.display = 'inline-block';
+        });
+       
+        document.getElementById('deleteSelectedNotifsBtn')?.addEventListener('click', async () => {
+            if (selectedNotifs.size === 0) return;
+            if (!confirm(`⚠️ هل أنت متأكد من حذف ${selectedNotifs.size} إشعار؟ هذا الإجراء لا يمكن التراجع عنه!`)) return;
+            for (const notifId of selectedNotifs) {
+                await remove(ref(db, `notifications/${currentUserId}/${notifId}`));
+            }
+            showToast(`✅ تم حذف ${selectedNotifs.size} إشعار بنجاح`);
+            selectedNotifs.clear();
+            document.getElementById('cancelSelectNotifsBtn')?.click();
+            loadUnreadNotificationsCount();
         });
     }
-
+   
+    window.openChatAndUpdateRead = async function(chatId) { await updateLastRead(chatId); window.openChat(chatId); };
     async function renderProfileTab() {
         const container = document.getElementById("appContainer");
         const postsSnap = await get(ref(db, "allPosts"));
-        let myPostsCount = 0;
-        let myPosts = [];
-        if (postsSnap.exists()) {
-            const all = postsSnap.val();
-            myPosts = Object.entries(all).filter(([, p]) => p.publisherId === currentUserId);
-            myPostsCount = myPosts.length;
-        }
+        let myPostsCount = 0, myPosts = [];
+        if (postsSnap.exists()) { const all = postsSnap.val(); myPosts = Object.entries(all).filter(([, p]) => p.publisherId === currentUserId); myPostsCount = myPosts.length; }
         const chatsSnap = await get(ref(db, `userChats/${currentUserId}`));
         const chatsCount = chatsSnap.exists() ? Object.keys(chatsSnap.val()).length : 0;
-
-        container.innerHTML = `
-            <div class="profile-header">
-                <div class="avatar">${currentUser.name.charAt(0)}</div>
-                <h3>${escapeHtml(currentUser.name)}</h3>
-                <p>📞 ${currentUser.phone} | 🎂 ${currentUser.age} سنة</p>
-            </div>
-            <div class="stats-row">
-                <div class="stat" id="myPostsStat">
-                    <div class="stat-number">${myPostsCount}</div>
-                    <span>📝 منشوراتي</span>
-                </div>
-                <div class="stat">
-                    <div class="stat-number">${chatsCount}</div>
-                    <span>💬 دردشات</span>
-                </div>
-            </div>
-            <button id="logoutFromProfile" class="btn-outline" style="width:100%;">🚪 تسجيل خروج</button>
-        `;
+        container.innerHTML = `<div class="profile-header"><div class="avatar">${currentUser.name.charAt(0)}</div><h3>${escapeHtml(currentUser.name)}</h3><p>📞 ${currentUser.phone} | 🎂 ${currentUser.age} سنة</p></div><div class="stats-row"><div class="stat" id="myPostsStat"><div class="stat-number">${myPostsCount}</div><span>📝 منشوراتي</span></div><div class="stat"><div class="stat-number">${chatsCount}</div><span>💬 دردشات</span></div></div><button id="logoutFromProfile" class="btn-outline" style="width:100%;">🚪 تسجيل خروج</button>`;
         document.getElementById("logoutFromProfile").addEventListener("click", logout);
-        
-        document.getElementById("myPostsStat").addEventListener("click", () => {
-            showMyPostsModal(myPosts);
-        });
+        document.getElementById("myPostsStat").addEventListener("click", () => { showMyPostsModal(myPosts); });
     }
-    
+   
     async function showMyPostsModal(myPosts) {
         const modal = document.createElement("div");
         modal.className = "modal";
         modal.style.display = "flex";
-        
-        let postsHtml = '';
-        if (myPosts.length === 0) {
-            postsHtml = '<div class="empty-state">📭 ليس لديك منشورات حالياً</div>';
-        } else {
-            postsHtml = myPosts.map(([id, post]) => `
-                <div class="my-post-item" style="background:#1e1e1e; border-radius:16px; padding:12px; margin-bottom:12px;">
-                    <div class="club-name">⚽ ${escapeHtml(post.clubName)}</div>
-                    <div class="post-detail">🕐 ${escapeHtml(post.time)}</div>
-                    <div class="post-detail">📅 ${new Date(post.timestamp).toLocaleString('ar-EG')}</div>
-                    <button class="delete-post-btn" data-post-id="${id}" style="background:#e74c3c; border:none; padding:8px 16px; border-radius:20px; color:white; margin-top:8px;">🗑️ حذف المنشور</button>
-                </div>
-            `).join('');
-        }
-        
-        modal.innerHTML = `
-            <div class="modal-content" style="max-height:70vh; overflow-y:auto;">
-                <div style="display:flex; justify-content:space-between; margin-bottom:16px;">
-                    <h3 style="color:#2ecc71;">📝 منشوراتي</h3>
-                    <button onclick="this.closest('.modal').remove()" style="background:none; border:none; font-size:24px; color:#e74c3c;">✕</button>
-                </div>
-                <div id="myPostsList">
-                    ${postsHtml}
-                </div>
-            </div>
-        `;
+        let postsHtml = myPosts.length === 0 ? '<div class="empty-state">📭 ليس لديك منشورات حالياً</div>' : myPosts.map(([id, post]) => `<div style="background:#1e1e1e; border-radius:16px; padding:12px; margin-bottom:12px;"><div class="club-name">⚽ ${escapeHtml(post.clubName)}</div><div class="post-detail">🕐 ${escapeHtml(post.time)}</div><div class="post-detail">📅 ${new Date(post.timestamp).toLocaleString('ar-EG')}</div><button class="delete-post-btn" data-post-id="${id}" style="background:#e74c3c; border:none; padding:8px 16px; border-radius:20px; color:white; margin-top:8px;">🗑️ حذف المنشور</button></div>`).join('');
+        modal.innerHTML = `<div class="modal-content" style="max-height:70vh; overflow-y:auto;"><div style="display:flex; justify-content:space-between; margin-bottom:16px;"><h3 style="color:#2ecc71;">📝 منشوراتي</h3><button onclick="this.closest('.modal').remove()" style="background:none; border:none; font-size:24px; color:#e74c3c;">✕</button></div><div id="myPostsList">${postsHtml}</div></div>`;
         document.body.appendChild(modal);
-        
-        document.querySelectorAll('.delete-post-btn').forEach(btn => {
-            btn.addEventListener('click', async (e) => {
-                e.stopPropagation();
-                const postId = btn.dataset.postId;
-                if (confirm("هل أنت متأكد من حذف هذا المنشور؟")) {
-                    await remove(ref(db, `allPosts/${postId}`));
-                    await remove(ref(db, `postReady/${postId}`));
-                    showToast("✅ تم حذف المنشور بنجاح");
-                    modal.remove();
-                    if (activeTab === "profile") renderProfileTab();
-                    if (activeTab === "home") renderHomeTab();
-                }
-            });
-        });
+        document.querySelectorAll('.delete-post-btn').forEach(btn => { btn.addEventListener('click', async (e) => { e.stopPropagation(); const postId = btn.dataset.postId; if (confirm("هل أنت متأكد من حذف هذا المنشور؟")) { await remove(ref(db, `allPosts/${postId}`)); await remove(ref(db, `postReady/${postId}`)); showToast("✅ تم حذف المنشور بنجاح"); modal.remove(); if (activeTab === "profile") renderProfileTab(); if (activeTab === "home") renderHomeTab(); } }); });
     }
-
     window.openChat = async function(chatId) {
+        await updateLastRead(chatId);
         const modal = document.createElement("div");
         modal.className = "modal";
         modal.style.display = "flex";
-        modal.innerHTML = `
-            <div class="modal-content chat-modal-content">
-                <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
-                    <h3 id="chatTitle" style="color:#2ecc71;">دردشة</h3>
-                    <button onclick="this.closest('.modal').remove()" style="background:none; border:none; font-size:28px; color:#e74c3c;">✕</button>
-                </div>
-                <div id="chatMessages" class="messages-container"></div>
-                <div style="display:flex; gap:8px; margin-top:10px;">
-                    <input id="msgInput" type="text" placeholder="اكتب رسالة..." style="flex:1;">
-                    <button id="sendMsgBtn" style="background:linear-gradient(135deg, #667eea 0%, #764ba2 100%); border:none; padding:12px 24px; border-radius:30px; color:white; font-weight:bold;">إرسال</button>
-                </div>
-            </div>
-        `;
+        modal.innerHTML = `<div class="modal-content chat-modal-content"><div style="display:flex; justify-content:space-between; margin-bottom:10px;"><h3 id="chatTitle" style="color:#2ecc71;">دردشة</h3><button onclick="this.closest('.modal').remove()" style="background:none; border:none; font-size:28px; color:#e74c3c;">✕</button></div><div id="chatMessages" class="messages-container"></div><div style="display:flex; gap:8px; margin-top:10px;"><input id="msgInput" type="text" placeholder="اكتب رسالة..." style="flex:1;"><button id="sendMsgBtn" style="background:linear-gradient(135deg, #667eea 0%, #764ba2 100%); border:none; padding:12px 24px; border-radius:30px; color:white; font-weight:bold;">إرسال</button></div></div>`;
         document.body.appendChild(modal);
         const chatSnap = await get(ref(db, `chats/${chatId}`));
-        if (chatSnap.exists()) {
-            const chat = chatSnap.val();
-            const other = Object.entries(chat.participantNames).find(([id]) => id !== currentUserId);
-            document.getElementById("chatTitle").textContent = `💬 مع ${escapeHtml(other ? other[1] : 'اللاعب')}`;
-        }
+        if (chatSnap.exists()) { const chat = chatSnap.val(); const other = Object.entries(chat.participantNames).find(([id]) => id !== currentUserId); document.getElementById("chatTitle").textContent = `💬 مع ${escapeHtml(other ? other[1] : 'اللاعب')}`; }
         const messagesRef = ref(db, `chats/${chatId}/messages`);
         onValue(messagesRef, (snapshot) => {
             const msgs = snapshot.val() || {};
             let html = '';
-            Object.entries(msgs).sort(([,a], [,b]) => a.timestamp - b.timestamp).forEach(([, msg]) => {
-                const isMine = msg.senderId === currentUserId;
-                html += `<div class="message ${isMine ? 'my-message' : 'other-message'}">
-                            <small>${escapeHtml(msg.senderName)}</small><br>${escapeHtml(msg.text)}
-                            <div style="font-size:9px; margin-top:4px; opacity:0.6;">${new Date(msg.timestamp).toLocaleTimeString()}</div>
-                         </div>`;
-            });
-            const container = document.getElementById("chatMessages");
-            if (container) { container.innerHTML = html; container.scrollTop = container.scrollHeight; }
+            Object.entries(msgs).sort(([,a], [,b]) => a.timestamp - b.timestamp).forEach(([, msg]) => { const isMine = msg.senderId === currentUserId; html += `<div class="message ${isMine ? 'my-message' : 'other-message'}"><small>${escapeHtml(msg.senderName)}</small><br>${escapeHtml(msg.text)}<div style="font-size:9px; margin-top:4px; opacity:0.6;">${new Date(msg.timestamp).toLocaleTimeString()}</div></div>`; });
+            const container = document.getElementById("chatMessages"); if (container) { container.innerHTML = html; container.scrollTop = container.scrollHeight; }
         });
-        document.getElementById("sendMsgBtn").addEventListener("click", async () => {
-            const text = document.getElementById("msgInput").value.trim();
-            if (!text) return;
-            const msgRef = push(ref(db, `chats/${chatId}/messages`));
-            await set(msgRef, { senderId: currentUserId, senderName: currentUser.name, text, timestamp: Date.now() });
-            await set(ref(db, `userChats/${currentUserId}/${chatId}/lastUpdated`), Date.now());
-            document.getElementById("msgInput").value = "";
-        });
+        document.getElementById("sendMsgBtn").addEventListener("click", async () => { const text = document.getElementById("msgInput").value.trim(); if (!text) return; const msgRef = push(ref(db, `chats/${chatId}/messages`)); await set(msgRef, { senderId: currentUserId, senderName: currentUser.name, text, timestamp: Date.now() }); await set(ref(db, `userChats/${currentUserId}/${chatId}/lastUpdated`), Date.now()); document.getElementById("msgInput").value = ""; });
         document.getElementById("msgInput").addEventListener("keypress", (e) => { if (e.key === "Enter") document.getElementById("sendMsgBtn").click(); });
+        modal.addEventListener('click', (e) => { if (e.target === modal) modal.remove(); });
     };
-
     function openAddPostModal() {
         const modal = document.createElement("div");
         modal.className = "modal";
         modal.style.display = "flex";
-        modal.innerHTML = `
-            <div class="modal-content">
-                <h3 style="margin-bottom:16px;">➕ منشور جديد</h3>
-                <input id="clubName" placeholder="اسم النادي (مثال: الأهلي)">
-                <input id="eventTime" placeholder="الميعاد (مثال: 8:00 مساءً الجمعة)">
-                <div style="display:flex; gap:12px;">
-                    <button id="cancelModal" class="btn-outline" style="flex:1;">إلغاء</button>
-                    <button id="publishPost" class="btn-primary" style="flex:1;">نشر</button>
-                </div>
-            </div>
-        `;
+        modal.innerHTML = `<div class="modal-content"><h3 style="margin-bottom:16px;">➕ منشور جديد</h3><input id="clubName" placeholder="اسم النادي (مثال: الأهلي)"><input id="eventTime" placeholder="الميعاد (مثال: 8:00 مساءً الجمعة)"><div style="display:flex; gap:12px;"><button id="cancelModal" class="btn-outline" style="flex:1;">إلغاء</button><button id="publishPost" class="btn-primary" style="flex:1;">نشر</button></div></div>`;
         document.body.appendChild(modal);
         document.getElementById("cancelModal").addEventListener("click", () => modal.remove());
-        document.getElementById("publishPost").addEventListener("click", async () => {
-            const clubName = document.getElementById("clubName").value.trim();
-            const eventTime = document.getElementById("eventTime").value.trim();
-            if (!clubName || !eventTime) return alert("املأ الحقول");
-            await push(ref(db, "allPosts"), {
-                clubName, time: eventTime, publisherName: currentUser.name, publisherPhone: currentUser.phone,
-                publisherId: currentUserId, timestamp: Date.now()
-            });
-            modal.remove();
-            showToast("✅ تم النشر بنجاح! انتظر من يجهز عليك");
-            if (activeTab === "home") renderHomeTab();
-        });
+        document.getElementById("publishPost").addEventListener("click", async () => { const clubName = document.getElementById("clubName").value.trim(); const eventTime = document.getElementById("eventTime").value.trim(); if (!clubName || !eventTime) return alert("املأ الحقول"); await push(ref(db, "allPosts"), { clubName, time: eventTime, publisherName: currentUser.name, publisherPhone: currentUser.phone, publisherId: currentUserId, timestamp: Date.now() }); modal.remove(); showToast("✅ تم النشر بنجاح! انتظر من يجهز عليك"); if (activeTab === "home") renderHomeTab(); });
     }
-
-    function logout() {
-        localStorage.clear();
-        currentUser = null;
-        currentUserId = null;
-        showRegisterCard();
-    }
-
-    function bindTabs() {
-        document.querySelectorAll('.tab-item').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                activeTab = btn.dataset.tab;
-                renderCurrentTab();
-            });
-        });
-    }
-
+    function logout() { localStorage.clear(); currentUser = null; currentUserId = null; if (notificationListener) notificationListener(); if (chatsListener) chatsListener(); showRegisterCard(); }
+    function bindTabs() { document.querySelectorAll('.tab-item').forEach(btn => { btn.addEventListener('click', (e) => { activeTab = btn.dataset.tab; renderCurrentTab(); }); }); }
     async function initApp() {
         currentUserId = localStorage.getItem('clubApp_userId');
-        if (currentUserId) {
-            const snap = await get(child(ref(db, "users"), currentUserId));
-            if (snap.exists()) {
-                currentUser = snap.val();
-                showMainApp();
-                bindTabs();
-                return;
-            }
-        }
-        showRegisterCard();
-        bindTabs();
+        if (currentUserId) { const snap = await get(child(ref(db, "users"), currentUserId)); if (snap.exists()) { currentUser = snap.val(); showMainApp(); bindTabs(); return; } }
+        showRegisterCard(); bindTabs();
     }
     initApp();
 </script>
