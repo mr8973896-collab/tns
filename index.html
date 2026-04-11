@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>منصة النوادي | تواصل ولعب</title>
+    <title>منصة نوادي التنس | تواصل ولعب</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -12,7 +13,7 @@
             font-family: 'Tajawal', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         }
         body {
-            background-color: #000000;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #0a0a0a 100%);
             color: #f5f5f5;
             height: 100vh;
             display: flex;
@@ -27,25 +28,53 @@
             padding: 16px 12px 80px 12px;
             scroll-behavior: smooth;
         }
-        /* تصميم Dock شفاف مثل iOS */
+        
+        /* ✨ تصميم Dock شفاف بحواف لامعة رقيقة - ثيم التنس ✨ */
         .bottom-tab-bar {
             position: fixed;
             bottom: 12px;
             left: 12px;
             right: 12px;
-            background: rgba(18, 18, 18, 0.92);
+            /* خلفية شبه شفافة تماماً */
+            background: rgba(10, 10, 18, 0.35);
             border-radius: 28px;
-            border-top: 1.5px solid rgba(46, 204, 113, 0.7);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6), 0 0 15px rgba(46, 204, 113, 0.25);
+            /* حواف لامعة رقيقة متعددة الطبقات */
+            border: 1px solid rgba(100, 220, 180, 0.45);
+            box-shadow: 
+                0 0 0 1px rgba(180, 120, 255, 0.25),
+                0 8px 32px rgba(0, 0, 0, 0.5),
+                0 0 20px rgba(100, 220, 180, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.08);
             display: flex;
             justify-content: space-around;
             align-items: center;
             padding: 10px 16px 14px;
             z-index: 100;
-            backdrop-filter: blur(20px);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
             max-width: 420px;
             margin: 0 auto;
+            /* تأثير لمعان متحرك خفيف */
+            animation: subtleGlow 4s ease-in-out infinite;
         }
+        
+        @keyframes subtleGlow {
+            0%, 100% { 
+                box-shadow: 
+                    0 0 0 1px rgba(180, 120, 255, 0.25),
+                    0 8px 32px rgba(0, 0, 0, 0.5),
+                    0 0 20px rgba(100, 220, 180, 0.15),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+            }
+            50% { 
+                box-shadow: 
+                    0 0 0 1px rgba(180, 120, 255, 0.45),
+                    0 8px 32px rgba(0, 0, 0, 0.5),
+                    0 0 28px rgba(100, 220, 180, 0.28),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+            }
+        }
+        
         .tab-item {
             display: flex;
             flex-direction: column;
@@ -54,70 +83,122 @@
             background: none;
             border: none;
             cursor: pointer;
-            transition: 0.2s;
+            transition: all 0.25s ease;
             position: relative;
             padding: 4px;
+            border-radius: 16px;
+        }
+        .tab-item:hover {
+            background: rgba(100, 220, 180, 0.12);
+            transform: translateY(-2px);
         }
         .tab-item.active {
-            color: #2ecc71;
+            color: #64dcb4;
+        }
+        .tab-item.active::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            width: 24px;
+            height: 3px;
+            background: linear-gradient(90deg, #64dcb4, #b478ff);
+            border-radius: 3px;
+            animation: pulseLine 2s ease-in-out infinite;
+        }
+        @keyframes pulseLine {
+            0%, 100% { opacity: 0.7; transform: scaleX(0.9); }
+            50% { opacity: 1; transform: scaleX(1); }
         }
         .tab-icon-img {
             width: 28px;
             height: 28px;
             object-fit: contain;
-            filter: brightness(0.7) drop-shadow(0 0 4px #2ecc71);
-            transition: filter 0.3s ease;
+            filter: brightness(0.85) drop-shadow(0 0 3px rgba(100, 220, 180, 0.4));
+            transition: all 0.3s ease;
         }
-        .tab-item.active .tab-icon-img {
-            filter: brightness(1.35) drop-shadow(0 0 12px #2ecc71);
+        .tab-item.active .tab-icon-img,
+        .tab-item:hover .tab-icon-img {
+            filter: brightness(1.25) drop-shadow(0 0 10px rgba(100, 220, 180, 0.7));
+            transform: scale(1.08);
         }
-        /* عداد الإشعارات */
+        
+        /* عداد الإشعارات - تصميم متجدد */
         .badge-count {
             position: absolute;
-            top: -6px;
-            right: -8px;
-            background: #e74c3c;
+            top: -4px;
+            right: -6px;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a5a);
             color: white;
-            font-size: 10px;
-            font-weight: bold;
-            padding: 2px 6px;
+            font-size: 9px;
+            font-weight: 700;
+            padding: 2px 5px;
             border-radius: 50%;
-            min-width: 18px;
-            height: 18px;
+            min-width: 16px;
+            height: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
-            animation: pulse 0.5s ease;
+            animation: pulse 0.5s ease, float 3s ease-in-out infinite;
+            border: 1.5px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 2px 8px rgba(238, 90, 90, 0.5);
         }
         @keyframes pulse {
             0% { transform: scale(1); }
-            50% { transform: scale(1.2); }
+            50% { transform: scale(1.25); }
             100% { transform: scale(1); }
         }
+        @keyframes float {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-2px) scale(1.05); }
+        }
+        
         .post-card {
-            background: #121212;
-            border-radius: 20px;
+            background: linear-gradient(145deg, rgba(26, 26, 46, 0.9), rgba(18, 18, 34, 0.95));
+            border-radius: 22px;
             margin-bottom: 16px;
-            padding: 16px;
-            border: 1px solid #2a2a2a;
-            transition: 0.2s;
+            padding: 18px;
+            border: 1px solid rgba(100, 220, 180, 0.2);
+            transition: all 0.25s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .post-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 3px;
+            height: 100%;
+            background: linear-gradient(180deg, #64dcb4, #b478ff, #64dcb4);
+            opacity: 0.7;
+        }
+        .post-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(100, 220, 180, 0.45);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4), 0 0 20px rgba(100, 220, 180, 0.1);
         }
         .post-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 12px;
-            padding-bottom: 8px;
-            border-bottom: 1px solid #2a2a2a;
+            margin-bottom: 14px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(100, 220, 180, 0.15);
         }
         .club-name {
-            color: #2ecc71;
-            font-size: 18px;
-            font-weight: bold;
+            color: #64dcb4;
+            font-size: 19px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
         .post-time {
             font-size: 11px;
-            color: #777;
+            color: #888;
+            background: rgba(100, 220, 180, 0.1);
+            padding: 3px 10px;
+            border-radius: 20px;
         }
         .post-detail {
             color: #ddd;
@@ -125,107 +206,175 @@
             display: flex;
             align-items: center;
             gap: 8px;
-        }
-        .ready-btn-new {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border: none;
-            padding: 12px;
-            border-radius: 40px;
-            font-weight: bold;
-            color: white;
-            width: 100%;
-            margin-top: 12px;
-            cursor: pointer;
-            transition: all 0.3s ease;
             font-size: 14px;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        /* أزرار جاهزية جديدة - ثيم التنس */
+        .ready-btn-new {
+            background: linear-gradient(135deg, #64dcb4 0%, #4dd0c0 50%, #64dcb4 100%);
+            border: none;
+            padding: 13px;
+            border-radius: 42px;
+            font-weight: 700;
+            color: #0a1a15;
+            width: 100%;
+            margin-top: 14px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-size: 14px;
+            box-shadow: 
+                0 4px 20px rgba(100, 220, 180, 0.45),
+                0 0 0 1px rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        .ready-btn-new::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s ease;
+        }
+        .ready-btn-new:hover::before {
+            left: 100%;
         }
         .ready-btn-new:hover {
-            transform: translateY(-2px);
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 
+                0 6px 28px rgba(100, 220, 180, 0.65),
+                0 0 0 1px rgba(255, 255, 255, 0.2);
+        }
+        .ready-btn-new:active {
+            transform: translateY(-1px) scale(0.99);
         }
         .ready-btn-new:disabled {
-            background: linear-gradient(135deg, #555, #444);
+            background: linear-gradient(135deg, #3a3a4a, #2a2a3a);
             transform: none;
             cursor: not-allowed;
+            box-shadow: none;
+            color: #777;
         }
+        
         .approved-badge {
-            background: #2ecc71;
-            color: black;
-            padding: 10px;
-            border-radius: 40px;
-            font-weight: bold;
+            background: linear-gradient(135deg, #64dcb4, #4dd0c0);
+            color: #0a1a15;
+            padding: 12px;
+            border-radius: 42px;
+            font-weight: 700;
             text-align: center;
             width: 100%;
-            margin-top: 12px;
+            margin-top: 14px;
             font-size: 14px;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.25s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 18px rgba(100, 220, 180, 0.35);
         }
         .approved-badge:hover {
             transform: scale(1.03);
-            box-shadow: 0 4px 15px rgba(46, 204, 113, 0.4);
+            box-shadow: 0 6px 24px rgba(100, 220, 180, 0.55);
         }
+        
         .cancel-ready-btn {
-            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a5a 100%);
             border: none;
-            padding: 8px;
-            border-radius: 30px;
-            font-weight: bold;
+            padding: 9px;
+            border-radius: 32px;
+            font-weight: 700;
             color: white;
             width: 48%;
-            margin-top: 8px;
+            margin-top: 10px;
             cursor: pointer;
             font-size: 12px;
+            transition: all 0.2s ease;
+            box-shadow: 0 3px 12px rgba(238, 90, 90, 0.35);
         }
+        .cancel-ready-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 18px rgba(238, 90, 90, 0.55);
+        }
+        
         .ready-count-badge {
-            background: #2ecc71;
-            color: black;
-            padding: 4px 12px;
-            border-radius: 20px;
+            background: linear-gradient(135deg, rgba(100, 220, 180, 0.2), rgba(180, 120, 255, 0.2));
+            color: #64dcb4;
+            padding: 5px 14px;
+            border-radius: 22px;
             font-size: 12px;
-            font-weight: bold;
+            font-weight: 700;
             display: inline-block;
-            margin-top: 8px;
+            margin-top: 10px;
+            border: 1px solid rgba(100, 220, 180, 0.35);
         }
+        
         .ready-users-list {
-            margin-top: 12px;
-            padding-top: 8px;
-            border-top: 1px solid #333;
+            margin-top: 14px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(100, 220, 180, 0.15);
         }
         .ready-user-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 8px;
-            background: #1e1e1e;
-            border-radius: 12px;
-            margin-bottom: 8px;
+            padding: 10px;
+            background: rgba(30, 30, 50, 0.7);
+            border-radius: 14px;
+            margin-bottom: 10px;
+            border: 1px solid rgba(100, 220, 180, 0.1);
+            transition: all 0.2s ease;
         }
+        .ready-user-item:hover {
+            background: rgba(40, 40, 65, 0.9);
+            border-color: rgba(100, 220, 180, 0.3);
+        }
+        
         .approve-btn {
-            background: #2ecc71;
+            background: linear-gradient(135deg, #64dcb4, #4dd0c0);
             border: none;
-            padding: 6px 12px;
-            border-radius: 20px;
-            color: black;
-            font-weight: bold;
+            padding: 7px 14px;
+            border-radius: 22px;
+            color: #0a1a15;
+            font-weight: 700;
             cursor: pointer;
             margin-left: 8px;
+            font-size: 12px;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(100, 220, 180, 0.3);
+        }
+        .approve-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 14px rgba(100, 220, 180, 0.5);
         }
         .reject-btn {
-            background: #e74c3c;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a5a);
             border: none;
-            padding: 6px 12px;
-            border-radius: 20px;
+            padding: 7px 14px;
+            border-radius: 22px;
             color: white;
-            font-weight: bold;
+            font-weight: 700;
             cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(238, 90, 90, 0.3);
         }
+        .reject-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 14px rgba(238, 90, 90, 0.5);
+        }
+        
         .waiting-badge {
-            background: #f39c12;
-            padding: 4px 10px;
-            border-radius: 20px;
+            background: linear-gradient(135deg, rgba(243, 156, 18, 0.2), rgba(230, 126, 34, 0.2));
+            color: #f39c12;
+            padding: 5px 12px;
+            border-radius: 22px;
             font-size: 11px;
+            font-weight: 600;
+            border: 1px solid rgba(243, 156, 18, 0.35);
         }
+        
+        /* Modal Styles */
         .modal {
             display: none;
             position: fixed;
@@ -233,255 +382,443 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.94);
+            background: rgba(8, 8, 16, 0.92);
             z-index: 1000;
             justify-content: center;
             align-items: center;
-            backdrop-filter: blur(8px);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            animation: fadeIn 0.25s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
         .modal-content {
-            background: #121212;
+            background: linear-gradient(145deg, rgba(26, 26, 46, 0.98), rgba(18, 18, 34, 0.98));
             width: 92%;
             max-width: 450px;
-            border-radius: 28px;
-            padding: 24px 20px;
-            border: 1px solid #2ecc71;
+            border-radius: 30px;
+            padding: 26px 22px;
+            border: 1px solid rgba(100, 220, 180, 0.35);
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.6),
+                0 0 0 1px rgba(180, 120, 255, 0.2),
+                0 0 40px rgba(100, 220, 180, 0.15);
+            animation: slideUp 0.3s ease;
+        }
+        @keyframes slideUp {
+            from { 
+                opacity: 0; 
+                transform: translateY(30px) scale(0.97); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0) scale(1); 
+            }
         }
         .chat-modal-content {
             height: 85vh;
             max-width: 500px;
             display: flex;
             flex-direction: column;
-            padding: 16px;
+            padding: 18px;
         }
         .messages-container {
             flex: 1;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            padding: 12px 4px;
+            gap: 14px;
+            padding: 14px 6px;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(100, 220, 180, 0.4) transparent;
+        }
+        .messages-container::-webkit-scrollbar {
+            width: 5px;
+        }
+        .messages-container::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .messages-container::-webkit-scrollbar-thumb {
+            background: rgba(100, 220, 180, 0.4);
+            border-radius: 10px;
         }
         .message {
-            max-width: 80%;
-            padding: 10px 14px;
-            border-radius: 22px;
+            max-width: 82%;
+            padding: 12px 16px;
+            border-radius: 24px;
             font-size: 14px;
             word-wrap: break-word;
             position: relative;
+            line-height: 1.4;
+            animation: messageIn 0.2s ease;
+        }
+        @keyframes messageIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         .my-message {
             align-self: flex-end;
-            background: #2ecc71;
-            color: white;
-            border-bottom-right-radius: 4px;
+            background: linear-gradient(135deg, #64dcb4, #4dd0c0);
+            color: #0a1a15;
+            border-bottom-right-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
         .other-message {
             align-self: flex-start;
-            background: #262626;
+            background: rgba(38, 38, 58, 0.9);
             color: #efefef;
-            border-bottom-left-radius: 4px;
+            border-bottom-left-radius: 6px;
+            border: 1px solid rgba(100, 220, 180, 0.15);
         }
+        
         .profile-header {
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin-bottom: 24px;
+            margin-bottom: 26px;
+            padding: 20px;
+            background: linear-gradient(145deg, rgba(26, 26, 46, 0.7), rgba(18, 18, 34, 0.8));
+            border-radius: 26px;
+            border: 1px solid rgba(100, 220, 180, 0.2);
         }
         .avatar {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            width: 80px;
-            height: 80px;
+            background: linear-gradient(135deg, #64dcb4 0%, #b478ff 50%, #64dcb4 100%);
+            width: 84px;
+            height: 84px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 40px;
-            font-weight: bold;
-            margin-bottom: 12px;
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 14px;
+            color: #0a1a15;
+            border: 3px solid rgba(255, 255, 255, 0.25);
+            box-shadow: 0 8px 25px rgba(100, 220, 180, 0.35);
+            animation: avatarGlow 3s ease-in-out infinite;
+        }
+        @keyframes avatarGlow {
+            0%, 100% { box-shadow: 0 8px 25px rgba(100, 220, 180, 0.35); }
+            50% { box-shadow: 0 8px 35px rgba(180, 120, 255, 0.55); }
         }
         .stats-row {
             display: flex;
             justify-content: space-around;
-            background: #1e1e1e;
-            border-radius: 28px;
-            padding: 12px;
-            margin: 16px 0;
+            background: rgba(30, 30, 50, 0.7);
+            border-radius: 30px;
+            padding: 14px;
+            margin: 18px 0;
+            border: 1px solid rgba(100, 220, 180, 0.15);
         }
         .stat {
             text-align: center;
             cursor: pointer;
-            transition: 0.2s;
-            padding: 8px;
-            border-radius: 16px;
+            transition: all 0.2s ease;
+            padding: 10px;
+            border-radius: 18px;
+        }
+        .stat:hover {
+            background: rgba(100, 220, 180, 0.12);
+            transform: translateY(-2px);
         }
         .stat-number {
-            font-size: 20px;
-            font-weight: bold;
-            color: #2ecc71;
+            font-size: 22px;
+            font-weight: 700;
+            color: #64dcb4;
+            text-shadow: 0 0 10px rgba(100, 220, 180, 0.4);
         }
+        
         .btn-primary {
-            background: #2ecc71;
+            background: linear-gradient(135deg, #64dcb4 0%, #4dd0c0 100%);
             border: none;
-            padding: 12px;
-            border-radius: 40px;
-            font-weight: bold;
-            color: black;
+            padding: 14px;
+            border-radius: 44px;
+            font-weight: 700;
+            color: #0a1a15;
             width: 100%;
-            margin-top: 12px;
+            margin-top: 14px;
             cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 15px;
+            box-shadow: 0 5px 22px rgba(100, 220, 180, 0.4);
+        }
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(100, 220, 180, 0.6);
         }
         .btn-outline {
             background: transparent;
-            border: 1px solid #2ecc71;
-            color: #2ecc71;
-            padding: 10px;
-            border-radius: 40px;
-            font-weight: bold;
+            border: 2px solid #64dcb4;
+            color: #64dcb4;
+            padding: 12px;
+            border-radius: 44px;
+            font-weight: 700;
             cursor: pointer;
+            transition: all 0.25s ease;
+        }
+        .btn-outline:hover {
+            background: rgba(100, 220, 180, 0.12);
+            transform: translateY(-2px);
         }
         .btn-danger {
-            background: #e74c3c;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a5a);
             border: none;
-            padding: 10px;
-            border-radius: 40px;
-            font-weight: bold;
+            padding: 12px;
+            border-radius: 44px;
+            font-weight: 700;
             color: white;
             cursor: pointer;
-            margin-top: 8px;
+            margin-top: 10px;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 16px rgba(238, 90, 90, 0.35);
         }
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 22px rgba(238, 90, 90, 0.55);
+        }
+        
         input, textarea {
-            background: #1e1e1e;
-            border: 1px solid #333;
-            padding: 12px;
-            border-radius: 20px;
+            background: rgba(30, 30, 50, 0.8);
+            border: 1.5px solid rgba(100, 220, 180, 0.25);
+            padding: 14px 18px;
+            border-radius: 24px;
             color: white;
             width: 100%;
-            margin-bottom: 12px;
+            margin-bottom: 14px;
+            font-size: 14px;
+            transition: all 0.2s ease;
         }
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #64dcb4;
+            box-shadow: 0 0 0 3px rgba(100, 220, 180, 0.2);
+            background: rgba(35, 35, 58, 0.95);
+        }
+        input::placeholder, textarea::placeholder {
+            color: #777;
+        }
+        
         .empty-state {
             text-align: center;
             color: #777;
-            padding: 30px;
+            padding: 40px 20px;
+            background: rgba(30, 30, 50, 0.4);
+            border-radius: 24px;
+            border: 1px dashed rgba(100, 220, 180, 0.2);
+        }
+        .empty-state span {
+            color: #64dcb4;
+            font-weight: 600;
         }
       
         .toast-message {
             position: fixed;
-            bottom: 90px;
+            bottom: 95px;
             left: 50%;
             transform: translateX(-50%);
-            background: #2ecc71;
-            color: black;
-            padding: 12px 24px;
-            border-radius: 40px;
-            font-weight: bold;
+            background: linear-gradient(135deg, #64dcb4, #4dd0c0);
+            color: #0a1a15;
+            padding: 14px 28px;
+            border-radius: 44px;
+            font-weight: 700;
             z-index: 1100;
-            animation: fadeOut 2.5s ease forwards;
+            animation: toastIn 0.3s ease, toastOut 0.3s ease 2.2s forwards;
+            box-shadow: 
+                0 6px 25px rgba(100, 220, 180, 0.5),
+                0 0 0 1px rgba(255, 255, 255, 0.2);
         }
-      
-        @keyframes fadeOut {
-            0% { opacity: 1; }
-            70% { opacity: 1; }
-            100% { opacity: 0; visibility: hidden; }
+        @keyframes toastIn {
+            from { 
+                opacity: 0; 
+                transform: translateX(-50%) translateY(20px) scale(0.95); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateX(-50%) translateY(0) scale(1); 
+            }
+        }
+        @keyframes toastOut {
+            from { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+            to { opacity: 0; transform: translateX(-50%) translateY(-15px) scale(0.95); visibility: hidden; }
         }
       
         .message-preview {
-            background: #1e3c2c;
-            border-radius: 16px;
-            padding: 12px;
-            margin-top: 12px;
-            border-right: 3px solid #2ecc71;
+            background: rgba(20, 40, 35, 0.8);
+            border-radius: 18px;
+            padding: 14px;
+            margin-top: 14px;
+            border-right: 3px solid #64dcb4;
+            border-left: 2px solid rgba(180, 120, 255, 0.3);
+        }
+        .message-preview p {
+            color: #ddd;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+        .message-preview p[style*="color:#2ecc71"] {
+            color: #64dcb4 !important;
+            font-weight: 600;
         }
       
         .header-actions {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 16px;
-            gap: 10px;
+            margin-bottom: 18px;
+            gap: 12px;
             flex-wrap: wrap;
         }
       
         .small-btn {
-            padding: 8px 16px;
+            padding: 9px 18px;
             font-size: 12px;
-            border-radius: 25px;
+            border-radius: 28px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+        .small-btn:hover {
+            transform: translateY(-2px);
         }
       
         .select-item {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 14px;
             cursor: pointer;
-            padding: 8px;
-            border-radius: 12px;
-            transition: 0.2s;
+            padding: 10px;
+            border-radius: 16px;
+            transition: all 0.2s ease;
+            margin-bottom: 8px;
         }
-      
         .select-item:hover {
-            background: #1e1e1e;
+            background: rgba(30, 30, 50, 0.7);
+            transform: translateX(3px);
         }
       
         .select-checkbox {
-            width: 20px;
-            height: 20px;
+            width: 22px;
+            height: 22px;
             cursor: pointer;
-            accent-color: #2ecc71;
+            accent-color: #64dcb4;
+            border: 2px solid rgba(100, 220, 180, 0.4);
+            border-radius: 6px;
         }
       
         .delete-selected-btn {
-            background: #e74c3c;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a5a);
             border: none;
-            padding: 8px 16px;
-            border-radius: 25px;
+            padding: 9px 18px;
+            border-radius: 28px;
             color: white;
-            font-weight: bold;
+            font-weight: 700;
             cursor: pointer;
             margin-right: 10px;
+            transition: all 0.2s ease;
+            box-shadow: 0 3px 12px rgba(238, 90, 90, 0.3);
+        }
+        .delete-selected-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 18px rgba(238, 90, 90, 0.5);
         }
       
         .select-all-btn {
-            background: #3498db;
+            background: linear-gradient(135deg, #5dade2, #3498db);
             border: none;
-            padding: 8px 16px;
-            border-radius: 25px;
+            padding: 9px 18px;
+            border-radius: 28px;
             color: white;
-            font-weight: bold;
+            font-weight: 700;
             cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 3px 12px rgba(52, 152, 219, 0.3);
+        }
+        .select-all-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 18px rgba(52, 152, 219, 0.5);
         }
       
         .action-buttons {
             display: flex;
-            gap: 8px;
+            gap: 10px;
             align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        /* تحسينات إضافية للثيم */
+        ::selection {
+            background: rgba(100, 220, 180, 0.35);
+            color: white;
+        }
+        
+        /* تأثيرات تحميل ناعمة */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(100, 220, 180, 0.3);
+            border-radius: 50%;
+            border-top-color: #64dcb4;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* تحسينات للجوال */
+        @media (max-width: 480px) {
+            .bottom-tab-bar {
+                bottom: 10px;
+                left: 10px;
+                right: 10px;
+                padding: 8px 12px 12px;
+            }
+            .tab-icon-img {
+                width: 26px;
+                height: 26px;
+            }
+            .post-card {
+                padding: 14px;
+                border-radius: 20px;
+            }
+            .modal-content {
+                width: 95%;
+                padding: 22px 18px;
+                border-radius: 26px;
+            }
         }
     </style>
 </head>
 <body>
 <div class="app-wrapper" id="appContainer"></div>
+
+<!-- 🎾 شريط التنقل السفلي - تصميم شفاف بحواف لامعة 🎾 -->
 <div class="bottom-tab-bar" id="tabBar" style="display: none;">
-    <button class="tab-item" data-tab="home">
-        <img src="hom.png" class="tab-icon-img" alt="الرئيسية" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 fill=%22white%22 viewBox=%220 0 24 24%22%3E%3Cpath d=%22M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z%22/%3E%3C/svg%3E'">
+    <button class="tab-item" data-tab="home" title="الرئيسية">
+        <img src="hom.png" class="tab-icon-img" alt="🏠" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 fill=%22%2364dcb4%22 viewBox=%220 0 24 24%22%3E%3Cpath d=%22M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z%22/%3E%3C/svg%3E'">
     </button>
-    <button class="tab-item" data-tab="chats" id="chatsTab">
+    <button class="tab-item" data-tab="chats" id="chatsTab" title="الدردشات">
         <div style="position: relative;">
-            <img src="chat.png" class="tab-icon-img" alt="الدردشات" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 fill=%22white%22 viewBox=%220 0 24 24%22%3E%3Cpath d=%22M20 2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4V4c0-1.1-.9-2-2-2z%22/%3E%3C/svg%3E'">
+            <img src="chat.png" class="tab-icon-img" alt="💬" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 fill=%22%2364dcb4%22 viewBox=%220 0 24 24%22%3E%3Cpath d=%22M20 2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4V4c0-1.1-.9-2-2-2z%22/%3E%3C/svg%3E'">
             <span id="chatsBadge" class="badge-count" style="display:none;">0</span>
         </div>
     </button>
-    <button class="tab-item" data-tab="notifications" id="notificationsTab">
+    <button class="tab-item" data-tab="notifications" id="notificationsTab" title="الإشعارات">
         <div style="position: relative;">
-            <img src="not.png" class="tab-icon-img" alt="الإشعارات" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 fill=%22white%22 viewBox=%220 0 24 24%22%3E%3Cpath d=%22M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.93 6 11v5l-2 2v1h16v-1l-2-2z%22/%3E%3C/svg%3E'">
+            <img src="not.png" class="tab-icon-img" alt="🔔" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 fill=%22%2364dcb4%22 viewBox=%220 0 24 24%22%3E%3Cpath d=%22M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.93 6 11v5l-2 2v1h16v-1l-2-2z%22/%3E%3C/svg%3E'">
             <span id="notifBadge" class="badge-count" style="display:none;">0</span>
         </div>
     </button>
-    <button class="tab-item" data-tab="profile">
-        <img src="pro.png" class="tab-icon-img" alt="الملف الشخصي" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 fill=%22white%22 viewBox=%220 0 24 24%22%3E%3Cpath d=%22M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z%22/%3E%3C/svg%3E'">
+    <button class="tab-item" data-tab="profile" title="الملف الشخصي">
+        <img src="pro.png" class="tab-icon-img" alt="👤" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 fill=%22%2364dcb4%22 viewBox=%220 0 24 24%22%3E%3Cpath d=%22M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z%22/%3E%3C/svg%3E'">
     </button>
 </div>
+
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getDatabase, ref, set, get, push, onValue, child, remove, update } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+    
     const firebaseConfig = {
         apiKey: "AIzaSyBT-WCUAI7QO2IlcF3eQlJOSrTOQN_52vU",
         authDomain: "pcon-f6efd.firebaseapp.com",
@@ -491,6 +828,7 @@
         messagingSenderId: "971596240948",
         appId: "1:971596240948:web:9abf2f64a84be34521d261"
     };
+    
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
     let currentUser = null;
@@ -501,9 +839,16 @@
     let unreadMessagesCount = 0;
     let notificationListener = null;
     let chatsListener = null;
-    function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[m])); }
+    
+    function escapeHtml(str) { 
+        if (!str) return ''; 
+        return str.replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); 
+    }
   
     function showToast(msg) {
+        const existing = document.querySelector('.toast-message');
+        if (existing) existing.remove();
+        
         const toast = document.createElement('div');
         toast.className = 'toast-message';
         toast.textContent = msg;
@@ -511,8 +856,12 @@
         setTimeout(() => toast.remove(), 2500);
     }
   
-    function showTabBar() { document.getElementById("tabBar").style.display = "flex"; }
-    function hideTabBar() { document.getElementById("tabBar").style.display = "none"; }
+    function showTabBar() { 
+        document.getElementById("tabBar").style.display = "flex"; 
+    }
+    function hideTabBar() { 
+        document.getElementById("tabBar").style.display = "none"; 
+    }
   
     function updateNotificationsBadge() {
         const badge = document.getElementById('notifBadge');
@@ -580,17 +929,22 @@
         Object.keys(notifs).forEach(id => { if (!notifs[id].read) updates[`notifications/${currentUserId}/${id}/read`] = true; });
         if (Object.keys(updates).length > 0) await update(ref(db), updates);
     }
+    
     function showRegisterCard() {
         hideTabBar();
         document.getElementById("appContainer").innerHTML = `
-            <div style="display:flex; justify-content:center; align-items:center; min-height:80vh;">
-                <div style="background:#121212; border-radius:32px; padding:32px 24px; width:100%; max-width:400px; border:1px solid #2ecc71;">
-                    <h2 style="color:#2ecc71; text-align:center;">✨ مرحباً بك ✨</h2>
-                    <p style="text-align:center; margin-bottom:20px;">سجل بياناتك للمشاركة</p>
-                    <div><input type="text" id="userName" placeholder="الاسم الكامل"></div>
-                    <div><input type="number" id="userAge" placeholder="العمر"></div>
-                    <div><input type="tel" id="userPhone" placeholder="رقم الموبايل"></div>
-                    <button id="registerBtn" class="btn-primary">✅ موافق</button>
+            <div style="display:flex; justify-content:center; align-items:center; min-height:80vh; padding:20px;">
+                <div style="background:linear-gradient(145deg, rgba(26,26,46,0.95), rgba(18,18,34,0.98)); border-radius:34px; padding:36px 28px; width:100%; max-width:420px; border:1.5px solid rgba(100,220,180,0.4); box-shadow:0 20px 50px rgba(0,0,0,0.5), 0 0 30px rgba(100,220,180,0.15);">
+                    <div style="text-align:center; margin-bottom:24px;">
+                        <div style="font-size:48px; margin-bottom:12px;">🎾</div>
+                        <h2 style="color:#64dcb4; font-size:24px;">مرحباً بك في منصة التنس</h2>
+                        <p style="color:#aaa; margin-top:8px; font-size:14px;">سجل بياناتك للعب والتنسيق مع اللاعبين</p>
+                    </div>
+                    <div><input type="text" id="userName" placeholder="الاسم الكامل" style="text-align:center;"></div>
+                    <div><input type="number" id="userAge" placeholder="العمر" style="text-align:center;"></div>
+                    <div><input type="tel" id="userPhone" placeholder="رقم الموبايل" style="text-align:center;"></div>
+                    <button id="registerBtn" class="btn-primary">✨ بدء الرحلة ✨</button>
+                    <p style="text-align:center; color:#777; font-size:12px; margin-top:16px;">بالضغط على البدء، أنت توافق على شروط الاستخدام</p>
                 </div>
             </div>
         `;
@@ -604,11 +958,12 @@
             currentUserId = newUserRef.key;
             currentUser = { id: currentUserId, name, age, phone, registeredAt: new Date().toISOString() };
             await set(newUserRef, currentUser);
-            localStorage.setItem('clubApp_userId', currentUserId);
-            localStorage.setItem('clubApp_user', JSON.stringify(currentUser));
+            localStorage.setItem('tennisApp_userId', currentUserId);
+            localStorage.setItem('tennisApp_user', JSON.stringify(currentUser));
             showMainApp();
         });
     }
+    
     function showMainApp() {
         if (!currentUser) return;
         currentUserId = currentUser.id;
@@ -617,22 +972,29 @@
         loadUnreadMessagesCount();
         renderCurrentTab();
     }
+    
     function renderCurrentTab() {
         if (activeTab === "home") renderHomeTab();
         else if (activeTab === "chats") { renderChatsTab(); setTimeout(() => loadUnreadMessagesCount(), 500); }
         else if (activeTab === "notifications") { renderNotificationsTab(); markAllNotificationsAsRead(); }
         else if (activeTab === "profile") renderProfileTab();
+        
         document.querySelectorAll('.tab-item').forEach(btn => {
             if (btn.dataset.tab === activeTab) btn.classList.add('active');
             else btn.classList.remove('active');
         });
     }
+    
     function renderHomeTab() {
         const container = document.getElementById("appContainer");
         container.innerHTML = `
-            <div style="margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center;">
-                <h2 style="color:#2ecc71;">⚽ النادي</h2>
-                <button id="globalAddPostBtn" style="background:#2ecc71; border:none; padding:8px 20px; border-radius:30px; font-weight:bold;">+ منشور</button>
+            <div style="margin-bottom: 18px; display: flex; justify-content: space-between; align-items: center; flex-wrap:wrap; gap:10px;">
+                <h2 style="color:#64dcb4; display:flex; align-items:center; gap:8px; font-size:22px;">
+                    <span style="font-size:24px;">🎾</span> نوادي التنس
+                </h2>
+                <button id="globalAddPostBtn" style="background:linear-gradient(135deg, #64dcb4, #4dd0c0); border:none; padding:10px 22px; border-radius:32px; font-weight:700; color:#0a1a15; display:flex; align-items:center; gap:6px; box-shadow:0 4px 16px rgba(100,220,180,0.35);">
+                    <span style="font-size:18px;">+</span> منشور جديد
+                </button>
             </div>
             <div id="postsList"></div>
         `;
@@ -640,19 +1002,18 @@
         loadAllPostsForHome();
     }
 
-    /* الدالة المعدلة بالكامل لتحديث فوري بدون ريفريش */
     function loadAllPostsForHome() {
         onValue(ref(db, "allPosts"), (snapshot) => {
             const posts = snapshot.val() || {};
             let postsArray = Object.entries(posts).map(([id, data]) => ({ id, ...data })).reverse();
             let html = '';
             if (postsArray.length === 0) {
-                html = `<div class="empty-state">📭 لا توجد منشورات حالياً<br><span style="font-size:12px;">✏️ أضف منشوراً جديداً لتبدأ اللعب!</span></div>`;
+                html = `<div class="empty-state">🎾 لا توجد مباريات حالياً<br><span>✏️ أضف موعداً جديداً للعب!</span></div>`;
             } else {
                 postsArray.forEach(post => {
                     html += `<div class="post-card" id="post-${post.id}">
                         <div class="post-header">
-                            <span class="club-name">⚽ ${escapeHtml(post.clubName)}</span>
+                            <span class="club-name">🎾 ${escapeHtml(post.clubName)}</span>
                             <span class="post-time">${new Date(post.timestamp).toLocaleString('ar-EG')}</span>
                         </div>
                         <div class="post-detail">🕐 ${escapeHtml(post.time)}</div>
@@ -663,7 +1024,6 @@
             }
             document.getElementById("postsList").innerHTML = html;
 
-            /* بعد تحميل الـ DOM بالكامل → نربط listeners الـ ready (هذا هو الحل للمشكلة) */
             postsArray.forEach(post => {
                 const isOwner = post.publisherId === currentUserId;
                 const readyRef = ref(db, `postReady/${post.id}`);
@@ -684,7 +1044,7 @@
                             if (userData.status === 'waiting') {
                                 usersHtml += `
                                     <div class="ready-user-item">
-                                        <span>⚡ ${escapeHtml(userData.name)}</span>
+                                        <span>🎾 ${escapeHtml(userData.name)}</span>
                                         <div>
                                             <button class="approve-btn" data-userid="${userId}" data-username="${escapeHtml(userData.name)}" data-postid="${post.id}" data-postclub="${escapeHtml(post.clubName)}" data-posttime="${escapeHtml(post.time)}">✅ أوافق</button>
                                             <button class="reject-btn" data-userid="${userId}" data-postid="${post.id}">❌ رفض</button>
@@ -693,7 +1053,7 @@
                                 `;
                             }
                         });
-                        readyDiv.innerHTML = `<div class="ready-count-badge">👥 ${readyCount} يريدون اللعب</div>${usersHtml ? `<div class="ready-users-list">${usersHtml}</div>` : '<div class="ready-users-list" style="color:#777; text-align:center;">لا يوجد طلبات انتظار</div>'}`;
+                        readyDiv.innerHTML = `<div class="ready-count-badge">👥 ${readyCount} لاعب يريدون اللعب</div>${usersHtml ? `<div class="ready-users-list">${usersHtml}</div>` : '<div class="ready-users-list" style="color:#777; text-align:center;">لا يوجد طلبات انتظار</div>'}`;
                         readyDiv.querySelectorAll('.approve-btn').forEach(btn => {
                             btn.addEventListener('click', () => approveUser(btn.dataset.userid, btn.dataset.username, btn.dataset.postid, btn.dataset.postclub, btn.dataset.posttime));
                         });
@@ -703,13 +1063,13 @@
                     } else {
                         if (isUserApproved) {
                             const chatId = [currentUserId, post.publisherId].sort().join('_');
-                            readyDiv.innerHTML = `<button class="approved-badge" onclick="window.switchToTabAndOpenChat('chats', '${chatId}')">✅ تمت الموافقة عليك! 💬 اذهب للدردشة</button>`;
+                            readyDiv.innerHTML = `<button class="approved-badge" onclick="window.switchToTabAndOpenChat('chats', '${chatId}')">✅ تمت الموافقة! 💬 ابدأ الدردشة</button>`;
                         } else if (isUserReady) {
-                            readyDiv.innerHTML = `<button class="cancel-ready-btn" data-postid="${post.id}">❌ سحب طلبي</button><div class="waiting-badge" style="text-align:center; margin-top:8px;">⏳ في انتظار موافقة الناشر</div>`;
+                            readyDiv.innerHTML = `<button class="cancel-ready-btn" data-postid="${post.id}">❌ سحب طلبي</button><div class="waiting-badge" style="text-align:center; margin-top:10px;">⏳ في انتظار موافقة الناشر</div>`;
                             const cancelBtn = readyDiv.querySelector('.cancel-ready-btn');
                             if (cancelBtn) cancelBtn.addEventListener('click', () => cancelReady(post.id));
                         } else {
-                            readyDiv.innerHTML = `<button class="ready-btn-new" data-post-id="${post.id}" data-post-club="${escapeHtml(post.clubName)}" data-post-time="${escapeHtml(post.time)}" data-post-publisher="${escapeHtml(post.publisherName)}" data-post-publisherid="${post.publisherId}">⚡ أنا جاهز للعب ⚡</button>`;
+                            readyDiv.innerHTML = `<button class="ready-btn-new" data-post-id="${post.id}" data-post-club="${escapeHtml(post.clubName)}" data-post-time="${escapeHtml(post.time)}" data-post-publisher="${escapeHtml(post.publisherName)}" data-post-publisherid="${post.publisherId}">🎾 أنا جاهز للعب 🎾</button>`;
                             const readyBtn = readyDiv.querySelector('.ready-btn-new');
                             if (readyBtn) readyBtn.addEventListener('click', (e) => handleReadyClick(e, post.id, post.clubName, post.time, post.publisherName, post.publisherId));
                         }
@@ -735,7 +1095,7 @@
         const modal = document.createElement("div");
         modal.className = "modal";
         modal.style.display = "flex";
-        modal.innerHTML = `<div class="modal-content"><h3 style="color:#2ecc71; margin-bottom:16px;">✉️ إرسال رسالة للشريك</h3><div class="message-preview"><p style="color:#2ecc71; margin-bottom:8px;">📝 الرسالة جاهزة للإرسال:</p><p style="background:#0a0a0a; padding:12px; border-radius:12px;">🎉 أهلاً ${escapeHtml(userName)}!<br>✅ المعاد (${escapeHtml(eventTime)}) تمام بالنسبة لي<br>🤝 نتقابل في ${escapeHtml(clubName)} إن شاء الله</p></div><div style="display:flex; gap:12px; margin-top:16px;"><button id="cancelSendBtn" class="btn-outline" style="flex:1;">إلغاء</button><button id="confirmSendBtn" class="btn-primary" style="flex:1;">📤 إرسال الرسالة</button></div></div>`;
+        modal.innerHTML = `<div class="modal-content"><h3 style="color:#64dcb4; margin-bottom:18px; text-align:center;">✉️ إرسال رسالة للشريك</h3><div class="message-preview"><p style="color:#64dcb4; margin-bottom:10px; font-weight:600;">📝 الرسالة جاهزة للإرسال:</p><p style="background:rgba(15,25,22,0.8); padding:14px; border-radius:14px; line-height:1.5;">🎉 أهلاً ${escapeHtml(userName)}!<br>✅ الموعد (${escapeHtml(eventTime)}) تمام بالنسبة لي<br>🤝 نتقابل في ${escapeHtml(clubName)} إن شاء الله</p></div><div style="display:flex; gap:14px; margin-top:20px;"><button id="cancelSendBtn" class="btn-outline" style="flex:1;">إلغاء</button><button id="confirmSendBtn" class="btn-primary" style="flex:1;">📤 إرسال الرسالة</button></div></div>`;
         document.body.appendChild(modal);
         document.getElementById("cancelSendBtn").addEventListener("click", () => modal.remove());
         document.getElementById("confirmSendBtn").addEventListener("click", async () => {
@@ -746,7 +1106,7 @@
             await set(ref(db, `userChats/${currentUserId}/${chatId}`), { chatId, otherId: userId, otherName: userName, clubName: clubName, lastUpdated: Date.now(), lastRead: Date.now() });
             await set(ref(db, `userChats/${userId}/${chatId}`), { chatId, otherId: currentUserId, otherName: currentUser.name, clubName: clubName, lastUpdated: Date.now(), lastRead: 0 });
             const msgRef = push(ref(db, `chats/${chatId}/messages`));
-            await set(msgRef, { senderId: currentUserId, senderName: currentUser.name, text: `🎉 أهلاً ${userName}!\n✅ المعاد (${eventTime}) تمام بالنسبة لي\n🤝 نتقابل في ${clubName} إن شاء الله`, timestamp: Date.now() });
+            await set(msgRef, { senderId: currentUserId, senderName: currentUser.name, text: `🎉 أهلاً ${userName}!\n✅ الموعد (${eventTime}) تمام بالنسبة لي\n🤝 نتقابل في ${clubName} إن شاء الله`, timestamp: Date.now() });
             await push(ref(db, `notifications/${userId}`), { type: 'approved', fromName: currentUser.name, chatId: chatId, message: `🎉 ${currentUser.name} وافق على طلبك! اذهب للدردشة الآن`, timestamp: Date.now(), read: false });
             showToast(`✅ تمت الموافقة على ${userName} وتم إرسال الرسالة`);
             setTimeout(() => window.openChat(chatId), 500);
@@ -762,11 +1122,14 @@
         }
         showToast("❌ تم رفض الطلب");
     }
+    
     function renderChatsTab() {
         const container = document.getElementById("appContainer");
         container.innerHTML = `
             <div class="header-actions">
-                <h3 style="color:#2ecc71;">💬 محادثاتي</h3>
+                <h3 style="color:#64dcb4; display:flex; align-items:center; gap:8px; font-size:20px;">
+                    <span>💬</span> محادثاتي
+                </h3>
                 <div class="action-buttons">
                     <button id="selectAllChatsBtn" class="select-all-btn small-btn">☑️ تحديد الكل</button>
                     <button id="deleteSelectedChatsBtn" class="delete-selected-btn small-btn" style="display:none;">🗑️ حذف المحدد</button>
@@ -784,7 +1147,7 @@
         onValue(ref(db, `userChats/${currentUserId}`), async (snapshot) => {
             const entries = snapshot.val() || {};
             let html = '';
-            if (Object.keys(entries).length === 0) html = `<div class="empty-state">لا توجد دردشات بعد<br>✏️ جهز على منشور لتبدأ محادثة</div>`;
+            if (Object.keys(entries).length === 0) html = `<div class="empty-state">🎾 لا توجد دردشات بعد<br><span>✏️ جهز على منشور لتبدأ محادثة</span></div>`;
             else {
                 const entriesWithUnread = await Promise.all(Object.values(entries).map(async (entry) => {
                     const lastReadSnap = await get(ref(db, `userChats/${currentUserId}/${entry.chatId}/lastRead`));
@@ -798,11 +1161,11 @@
                 html = entriesWithUnread.map(entry => `
                     <div class="select-item" data-chatid="${entry.chatId}" onclick="if(!${isSelectionMode}) window.openChatAndUpdateRead('${entry.chatId}')">
                         <input type="checkbox" class="select-checkbox chat-checkbox" data-chatid="${entry.chatId}" style="${isSelectionMode ? 'display:inline-block' : 'display:none'}">
-                        <div class="post-card" style="cursor:pointer; flex:1; ${entry.hasUnread ? 'border-right: 3px solid #2ecc71;' : ''} margin-bottom:0;">
-                            <div class="club-name">🏟️ ${escapeHtml(entry.clubName)}</div>
+                        <div class="post-card" style="cursor:pointer; flex:1; ${entry.hasUnread ? 'border-right: 3px solid #64dcb4;' : ''} margin-bottom:0;">
+                            <div class="club-name">🎾 ${escapeHtml(entry.clubName)}</div>
                             <div class="post-detail">مع: ${escapeHtml(entry.otherName)}</div>
                             <div class="post-time">آخر تحديث: ${new Date(entry.lastUpdated).toLocaleString('ar-EG')}</div>
-                            ${entry.hasUnread ? '<div style="color:#2ecc71; font-size:11px; margin-top:5px;">📩 رسائل جديدة</div>' : ''}
+                            ${entry.hasUnread ? '<div style="color:#64dcb4; font-size:11px; margin-top:6px; font-weight:600;">📩 رسائل جديدة</div>' : ''}
                         </div>
                     </div>
                 `).join('');
@@ -868,7 +1231,9 @@
         const container = document.getElementById("appContainer");
         container.innerHTML = `
             <div class="header-actions">
-                <h3 style="color:#2ecc71;">🔔 الإشعارات</h3>
+                <h3 style="color:#64dcb4; display:flex; align-items:center; gap:8px; font-size:20px;">
+                    <span>🔔</span> الإشعارات
+                </h3>
                 <div class="action-buttons">
                     <button id="selectAllNotifsBtn" class="select-all-btn small-btn">☑️ تحديد الكل</button>
                     <button id="deleteSelectedNotifsBtn" class="delete-selected-btn small-btn" style="display:none;">🗑️ حذف المحدد</button>
@@ -886,15 +1251,15 @@
         onValue(ref(db, `notifications/${currentUserId}`), (snapshot) => {
             const notifs = snapshot.val() || {};
             let html = '';
-            if (Object.keys(notifs).length === 0) html = `<div class="empty-state">لا توجد إشعارات</div>`;
+            if (Object.keys(notifs).length === 0) html = `<div class="empty-state">🔔 لا توجد إشعارات جديدة</div>`;
             else {
                 html = Object.entries(notifs).reverse().map(([id, n]) => `
                     <div class="select-item" data-notifid="${id}">
                         <input type="checkbox" class="select-checkbox notif-checkbox" data-notifid="${id}" style="${isSelectionMode ? 'display:inline-block' : 'display:none'}">
-                        <div class="post-card" style="flex:1; ${!n.read ? 'border-right: 3px solid #2ecc71;' : ''} margin-bottom:0;">
-                            <p>${escapeHtml(n.message)}</p>
+                        <div class="post-card" style="flex:1; ${!n.read ? 'border-right: 3px solid #64dcb4;' : ''} margin-bottom:0;">
+                            <p style="line-height:1.4;">${escapeHtml(n.message)}</p>
                             <div class="post-time">${new Date(n.timestamp).toLocaleString('ar-EG')}</div>
-                            ${n.chatId ? `<button class="ready-btn-new" onclick="event.stopPropagation(); window.openChatAndUpdateRead('${n.chatId}')" style="margin-top:10px;">💬 رد عليه</button>` : ''}
+                            ${n.chatId ? `<button class="ready-btn-new" onclick="event.stopPropagation(); window.openChatAndUpdateRead('${n.chatId}')" style="margin-top:12px; padding:10px;">💬 رد عليه</button>` : ''}
                         </div>
                     </div>
                 `).join('');
@@ -960,7 +1325,6 @@
         window.openChat(chatId); 
     };
 
-    /* دالة جديدة للانتقال لتب الدردشات + فتح الدردشة مباشرة (كما طلبت) */
     window.switchToTabAndOpenChat = function(tab, chatId) {
         activeTab = tab;
         renderCurrentTab();
@@ -980,7 +1344,7 @@
         }
         const chatsSnap = await get(ref(db, `userChats/${currentUserId}`));
         const chatsCount = chatsSnap.exists() ? Object.keys(chatsSnap.val()).length : 0;
-        container.innerHTML = `<div class="profile-header"><div class="avatar">${currentUser.name.charAt(0)}</div><h3>${escapeHtml(currentUser.name)}</h3><p>📞 ${currentUser.phone} | 🎂 ${currentUser.age} سنة</p></div><div class="stats-row"><div class="stat" id="myPostsStat"><div class="stat-number">${myPostsCount}</div><span>📝 منشوراتي</span></div><div class="stat"><div class="stat-number">${chatsCount}</div><span>💬 دردشات</span></div></div><button id="logoutFromProfile" class="btn-outline" style="width:100%;">🚪 تسجيل خروج</button>`;
+        container.innerHTML = `<div class="profile-header"><div class="avatar">${currentUser.name.charAt(0)}</div><h3 style="color:#64dcb4; margin-top:8px;">${escapeHtml(currentUser.name)}</h3><p style="color:#aaa; margin-top:6px;">📞 ${currentUser.phone} | 🎂 ${currentUser.age} سنة</p></div><div class="stats-row"><div class="stat" id="myPostsStat"><div class="stat-number">${myPostsCount}</div><span style="color:#aaa; font-size:13px;">📝 منشوراتي</span></div><div class="stat"><div class="stat-number">${chatsCount}</div><span style="color:#aaa; font-size:13px;">💬 دردشات</span></div></div><button id="logoutFromProfile" class="btn-outline" style="width:100%; margin-top:8px;">🚪 تسجيل خروج</button>`;
         document.getElementById("logoutFromProfile").addEventListener("click", logout);
         document.getElementById("myPostsStat").addEventListener("click", () => { showMyPostsModal(myPosts); });
     }
@@ -989,8 +1353,8 @@
         const modal = document.createElement("div");
         modal.className = "modal";
         modal.style.display = "flex";
-        let postsHtml = myPosts.length === 0 ? '<div class="empty-state">📭 ليس لديك منشورات حالياً</div>' : myPosts.map(([id, post]) => `<div style="background:#1e1e1e; border-radius:16px; padding:12px; margin-bottom:12px;"><div class="club-name">⚽ ${escapeHtml(post.clubName)}</div><div class="post-detail">🕐 ${escapeHtml(post.time)}</div><div class="post-detail">📅 ${new Date(post.timestamp).toLocaleString('ar-EG')}</div><button class="delete-post-btn" data-post-id="${id}" style="background:#e74c3c; border:none; padding:8px 16px; border-radius:20px; color:white; margin-top:8px;">🗑️ حذف المنشور</button></div>`).join('');
-        modal.innerHTML = `<div class="modal-content" style="max-height:70vh; overflow-y:auto;"><div style="display:flex; justify-content:space-between; margin-bottom:16px;"><h3 style="color:#2ecc71;">📝 منشوراتي</h3><button onclick="this.closest('.modal').remove()" style="background:none; border:none; font-size:24px; color:#e74c3c;">✕</button></div><div id="myPostsList">${postsHtml}</div></div>`;
+        let postsHtml = myPosts.length === 0 ? '<div class="empty-state">🎾 ليس لديك منشورات حالياً</div>' : myPosts.map(([id, post]) => `<div style="background:rgba(30,30,50,0.7); border-radius:18px; padding:14px; margin-bottom:14px; border:1px solid rgba(100,220,180,0.15);"><div class="club-name">🎾 ${escapeHtml(post.clubName)}</div><div class="post-detail">🕐 ${escapeHtml(post.time)}</div><div class="post-detail">📅 ${new Date(post.timestamp).toLocaleString('ar-EG')}</div><button class="delete-post-btn" data-post-id="${id}" style="background:linear-gradient(135deg, #ff6b6b, #ee5a5a); border:none; padding:9px 18px; border-radius:22px; color:white; margin-top:10px; font-weight:600;">🗑️ حذف المنشور</button></div>`).join('');
+        modal.innerHTML = `<div class="modal-content" style="max-height:70vh; overflow-y:auto;"><div style="display:flex; justify-content:space-between; margin-bottom:18px; align-items:center;"><h3 style="color:#64dcb4; display:flex; align-items:center; gap:8px;"><span>📝</span> منشوراتي</h3><button onclick="this.closest('.modal').remove()" style="background:none; border:none; font-size:26px; color:#ff6b6b; cursor:pointer; transition:transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">✕</button></div><div id="myPostsList">${postsHtml}</div></div>`;
         document.body.appendChild(modal);
         document.querySelectorAll('.delete-post-btn').forEach(btn => { 
             btn.addEventListener('click', async (e) => { 
@@ -1007,12 +1371,13 @@
             }); 
         });
     }
+    
     window.openChat = async function(chatId) {
         await updateLastRead(chatId);
         const modal = document.createElement("div");
         modal.className = "modal";
         modal.style.display = "flex";
-        modal.innerHTML = `<div class="modal-content chat-modal-content"><div style="display:flex; justify-content:space-between; margin-bottom:10px;"><h3 id="chatTitle" style="color:#2ecc71;">دردشة</h3><button onclick="this.closest('.modal').remove()" style="background:none; border:none; font-size:28px; color:#e74c3c;">✕</button></div><div id="chatMessages" class="messages-container"></div><div style="display:flex; gap:8px; margin-top:10px;"><input id="msgInput" type="text" placeholder="اكتب رسالة..." style="flex:1;"><button id="sendMsgBtn" style="background:linear-gradient(135deg, #667eea 0%, #764ba2 100%); border:none; padding:12px 24px; border-radius:30px; color:white; font-weight:bold;">إرسال</button></div></div>`;
+        modal.innerHTML = `<div class="modal-content chat-modal-content"><div style="display:flex; justify-content:space-between; margin-bottom:12px; align-items:center;"><h3 id="chatTitle" style="color:#64dcb4; display:flex; align-items:center; gap:8px; font-size:18px;">💬 دردشة</h3><button onclick="this.closest('.modal').remove()" style="background:none; border:none; font-size:30px; color:#ff6b6b; cursor:pointer; transition:transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">✕</button></div><div id="chatMessages" class="messages-container"></div><div style="display:flex; gap:10px; margin-top:12px;"><input id="msgInput" type="text" placeholder="اكتب رسالة..." style="flex:1; margin-bottom:0;"><button id="sendMsgBtn" style="background:linear-gradient(135deg, #64dcb4, #4dd0c0); border:none; padding:14px 26px; border-radius:32px; color:#0a1a15; font-weight:700; cursor:pointer; transition:all 0.2s; box-shadow:0 4px 16px rgba(100,220,180,0.35);" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">إرسال</button></div></div>`;
         document.body.appendChild(modal);
         const chatSnap = await get(ref(db, `chats/${chatId}`));
         if (chatSnap.exists()) { 
@@ -1026,7 +1391,7 @@
             let html = '';
             Object.entries(msgs).sort(([,a], [,b]) => a.timestamp - b.timestamp).forEach(([, msg]) => { 
                 const isMine = msg.senderId === currentUserId; 
-                html += `<div class="message ${isMine ? 'my-message' : 'other-message'}"><small>${escapeHtml(msg.senderName)}</small><br>${escapeHtml(msg.text)}<div style="font-size:9px; margin-top:4px; opacity:0.6;">${new Date(msg.timestamp).toLocaleTimeString()}</div></div>`; 
+                html += `<div class="message ${isMine ? 'my-message' : 'other-message'}"><small style="opacity:0.8; font-size:11px; display:block; margin-bottom:3px;">${escapeHtml(msg.senderName)}</small>${escapeHtml(msg.text)}<div style="font-size:9px; margin-top:5px; opacity:0.5; text-align:right;">${new Date(msg.timestamp).toLocaleTimeString('ar-EG')}</div></div>`; 
             });
             const container = document.getElementById("chatMessages"); 
             if (container) { 
@@ -1041,27 +1406,32 @@
             await set(msgRef, { senderId: currentUserId, senderName: currentUser.name, text, timestamp: Date.now() }); 
             await set(ref(db, `userChats/${currentUserId}/${chatId}/lastUpdated`), Date.now()); 
             document.getElementById("msgInput").value = ""; 
+            document.getElementById("msgInput").focus();
         });
         document.getElementById("msgInput").addEventListener("keypress", (e) => { if (e.key === "Enter") document.getElementById("sendMsgBtn").click(); });
+        document.getElementById("msgInput").focus();
         modal.addEventListener('click', (e) => { if (e.target === modal) modal.remove(); });
     };
+    
     function openAddPostModal() {
         const modal = document.createElement("div");
         modal.className = "modal";
         modal.style.display = "flex";
-        modal.innerHTML = `<div class="modal-content"><h3 style="margin-bottom:16px;">➕ منشور جديد</h3><input id="clubName" placeholder="اسم النادي (مثال: الأهلي)"><input id="eventTime" placeholder="الميعاد (مثال: 8:00 مساءً الجمعة)"><div style="display:flex; gap:12px;"><button id="cancelModal" class="btn-outline" style="flex:1;">إلغاء</button><button id="publishPost" class="btn-primary" style="flex:1;">نشر</button></div></div>`;
+        modal.innerHTML = `<div class="modal-content"><h3 style="margin-bottom:20px; color:#64dcb4; text-align:center; display:flex; align-items:center; justify-content:center; gap:8px;"><span>🎾</span> منشور مباراة جديد</h3><input id="clubName" placeholder="اسم النادي أو الملعب (مثال: نادي الجزيرة)" style="text-align:center;"><input id="eventTime" placeholder="الميعاد (مثال: 6:00 مساءً الجمعة)" style="text-align:center;"><div style="display:flex; gap:14px; margin-top:20px;"><button id="cancelModal" class="btn-outline" style="flex:1;">إلغاء</button><button id="publishPost" class="btn-primary" style="flex:1;">✨ نشر المنشور ✨</button></div></div>`;
         document.body.appendChild(modal);
         document.getElementById("cancelModal").addEventListener("click", () => modal.remove());
         document.getElementById("publishPost").addEventListener("click", async () => { 
             const clubName = document.getElementById("clubName").value.trim(); 
             const eventTime = document.getElementById("eventTime").value.trim(); 
-            if (!clubName || !eventTime) return alert("املأ الحقول"); 
+            if (!clubName || !eventTime) return alert("⚠️ يرجى ملء جميع الحقول"); 
             await push(ref(db, "allPosts"), { clubName, time: eventTime, publisherName: currentUser.name, publisherPhone: currentUser.phone, publisherId: currentUserId, timestamp: Date.now() }); 
             modal.remove(); 
-            showToast("✅ تم النشر بنجاح! انتظر من يجهز عليك"); 
+            showToast("✅ تم النشر بنجاح! 🎾 انتظر من يجهز عليك"); 
             if (activeTab === "home") renderHomeTab(); 
         });
+        document.getElementById("clubName").focus();
     }
+    
     function logout() { 
         localStorage.clear(); 
         currentUser = null; 
@@ -1070,6 +1440,7 @@
         if (chatsListener) chatsListener(); 
         showRegisterCard(); 
     }
+    
     function bindTabs() { 
         document.querySelectorAll('.tab-item').forEach(btn => { 
             btn.addEventListener('click', (e) => { 
@@ -1078,8 +1449,9 @@
             }); 
         }); 
     }
+    
     async function initApp() {
-        currentUserId = localStorage.getItem('clubApp_userId');
+        currentUserId = localStorage.getItem('tennisApp_userId');
         if (currentUserId) { 
             const snap = await get(child(ref(db, "users"), currentUserId)); 
             if (snap.exists()) { 
@@ -1092,6 +1464,7 @@
         showRegisterCard(); 
         bindTabs();
     }
+    
     initApp();
 </script>
 </body>
