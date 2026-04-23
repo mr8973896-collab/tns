@@ -4,106 +4,168 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>منصة نوادي التنس | تواصل ولعب</title>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
     <style>
-        /* 🚫 إزالة تأثير اللمس الأزرق على الموبايل */
+        /* 🎨 متغيرات الألوان الرئيسية - ثيم التنس الاحترافي */
+        :root {
+            /* الخلفيات */
+            --bg-primary-start: #0a1f1a;
+            --bg-primary-end: #05100c;
+            --bg-card: rgba(12, 28, 22, 0.75);
+            --bg-card-hover: rgba(12, 28, 22, 0.9);
+            --bg-bottom-bar: rgba(8, 20, 15, 0.85);
+            --bg-modal: rgba(10, 28, 22, 0.98);
+            --bg-input: rgba(18, 38, 30, 0.85);
+            
+            /* الألوان الرئيسية */
+            --color-primary: #c8ff6e;        /* أخضر نيون - العنصر الأبرز */
+            --color-secondary: #8bc34a;      /* أخضر عشبي */
+            --color-accent: #ffd966;         /* ذهبي دافئ */
+            --color-tertiary: #a0d4b0;       /* أخضر باهت للنصوص الثانوية */
+            
+            /* النصوص */
+            --text-primary: #f5f5f5;
+            --text-secondary: #ddd;
+            --text-muted: #aaa;
+            --text-dark: #071a12;
+            
+            /* حالات خاصة */
+            --color-error: #ff6b6b;
+            --color-error-dark: #ee5a5a;
+            --color-warning: #ffb347;
+            --color-warning-dark: #f39c12;
+            --color-success: #64dcb4;
+            
+            /* الحدود والظلال */
+            --border-light: rgba(100, 220, 140, 0.25);
+            --border-active: rgba(200, 255, 110, 0.5);
+            --border-glow: rgba(200, 255, 110, 0.3);
+            --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.35);
+            --shadow-glow: 0 0 25px rgba(200, 255, 110, 0.15);
+            --shadow-strong: 0 12px 40px rgba(0, 0, 0, 0.5);
+            
+            /* التأثيرات */
+            --blur-glass: blur(16px);
+            --blur-strong: blur(24px);
+            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-bounce: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        /* 🚫 إزالة تأثيرات اللمس المزعجة */
         * {
             -webkit-tap-highlight-color: transparent;
             -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Tajawal', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            font-family: 'Tajawal', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
         }
 
         html {
             scroll-behavior: smooth;
-            scroll-padding-bottom: 100px; /* مسافة إضافية للسكرول */
+            scroll-padding-top: 20px;
         }
 
         body {
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #0a0a0a 100%);
-            color: #f5f5f5;
-            height: 100vh;
-            height: 100dvh; /* Dynamic viewport height للموبايل */
+            background: radial-gradient(ellipse at 15% 25%, var(--bg-primary-start) 0%, var(--bg-primary-end) 70%, #030a08 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
-            overflow: hidden;
+            overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+            position: relative;
         }
 
-        /* 🌀 سكرول ناعم جداً بدون تقطيع - محسّن */
+        /* 🎾 خلفية زخرفية بكرات تنس خفيفة */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 35%, rgba(200, 255, 110, 0.03) 0%, transparent 25%),
+                radial-gradient(circle at 85% 15%, rgba(139, 195, 74, 0.04) 0%, transparent 30%),
+                radial-gradient(circle at 50% 80%, rgba(255, 217, 102, 0.02) 0%, transparent 35%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* 🌀 حاوية التطبيق - سكرول ناعم */
         .app-wrapper {
             flex: 1;
             display: flex;
             flex-direction: column;
             overflow-y: auto;
-            overflow-x: hidden;
-            padding: 16px 12px 120px 12px; /* زيادة المسافة السفلية */
+            padding: 20px 16px 90px;
             scroll-behavior: smooth;
             -webkit-overflow-scrolling: touch;
-            overscroll-behavior-y: contain;
+            overscroll-behavior: contain;
+            position: relative;
+            z-index: 1;
             scrollbar-width: thin;
-            scrollbar-color: rgba(100, 220, 180, 0.4) transparent;
-            will-change: transform;
-            transform: translateZ(0);
-            -webkit-transform: translateZ(0);
+            scrollbar-color: var(--color-primary) transparent;
         }
 
         .app-wrapper::-webkit-scrollbar {
-            width: 4px;
+            width: 5px;
         }
         .app-wrapper::-webkit-scrollbar-track {
             background: transparent;
         }
         .app-wrapper::-webkit-scrollbar-thumb {
-            background: rgba(100, 220, 180, 0.4);
+            background: linear-gradient(180deg, var(--color-primary), var(--color-secondary));
             border-radius: 10px;
+            opacity: 0.7;
         }
 
-        /* ✨ تصميم Dock شفاف بحواف لامعة رقيقة - ثيم التنس ✨ */
+        /* ✨ شريط التنقل السفلي - تصميم زجاجي فاخر ✨ */
         .bottom-tab-bar {
             position: fixed;
-            bottom: env(safe-area-inset-bottom, 12px); /* دعم الـ safe area */
-            left: 12px;
-            right: 12px;
-            background: rgba(10, 10, 18, 0.35);
-            border-radius: 28px;
-            border: 1px solid rgba(100, 220, 180, 0.45);
-            box-shadow:
-                0 0 0 1px rgba(180, 120, 255, 0.25),
-                0 8px 32px rgba(0, 0, 0, 0.5),
-                0 0 20px rgba(100, 220, 180, 0.15),
-                inset 0 1px 0 rgba(255, 255, 255, 0.08);
+            bottom: 16px;
+            left: 16px;
+            right: 16px;
+            background: var(--bg-bottom-bar);
+            border-radius: 32px;
+            border: 1px solid var(--border-light);
+            box-shadow: 
+                var(--shadow-card),
+                var(--shadow-glow),
+                0 0 0 1px rgba(200, 255, 110, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
             display: flex;
             justify-content: space-around;
             align-items: center;
-            padding: 10px 16px 14px;
+            padding: 12px 20px 16px;
             z-index: 100;
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            max-width: 420px;
+            backdrop-filter: var(--blur-strong);
+            -webkit-backdrop-filter: var(--blur-strong);
+            max-width: 480px;
             margin: 0 auto;
-            animation: subtleGlow 4s ease-in-out infinite;
+            animation: floatGlow 5s ease-in-out infinite;
             will-change: transform;
             transform: translateZ(0);
         }
 
-        @keyframes subtleGlow {
+        @keyframes floatGlow {
             0%, 100% {
-                box-shadow:
-                    0 0 0 1px rgba(180, 120, 255, 0.25),
-                    0 8px 32px rgba(0, 0, 0, 0.5),
-                    0 0 20px rgba(100, 220, 180, 0.15),
-                    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+                box-shadow: 
+                    var(--shadow-card),
+                    0 0 25px rgba(200, 255, 110, 0.15),
+                    0 0 0 1px rgba(200, 255, 110, 0.15),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.1);
             }
             50% {
-                box-shadow:
-                    0 0 0 1px rgba(180, 120, 255, 0.45),
-                    0 8px 32px rgba(0, 0, 0, 0.5),
-                    0 0 28px rgba(100, 220, 180, 0.28),
-                    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+                box-shadow: 
+                    var(--shadow-card),
+                    0 0 35px rgba(200, 255, 110, 0.28),
+                    0 0 0 1px rgba(200, 255, 110, 0.25),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.18);
             }
         }
 
@@ -111,92 +173,93 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 0;
+            gap: 4px;
             background: none;
             border: none;
             cursor: pointer;
-            transition: transform 0.2s ease;
+            transition: var(--transition-bounce);
             position: relative;
-            padding: 4px;
-            border-radius: 16px;
-            -webkit-user-select: none;
-            user-select: none;
+            padding: 8px 4px;
+            border-radius: 20px;
+            min-width: 60px;
         }
         .tab-item:active {
-            transform: scale(0.98);
+            transform: scale(0.94);
         }
         .tab-item.active {
-            color: #64dcb4;
+            color: var(--color-primary);
         }
         .tab-item.active::after {
             content: '';
             position: absolute;
-            bottom: -6px;
-            width: 24px;
+            bottom: -8px;
+            width: 28px;
             height: 3px;
-            background: linear-gradient(90deg, #64dcb4, #b478ff);
+            background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
             border-radius: 3px;
+            box-shadow: 0 0 10px rgba(200, 255, 110, 0.6);
         }
         .tab-icon-img {
-            width: 28px;
-            height: 28px;
+            width: 30px;
+            height: 30px;
             object-fit: contain;
-            filter: brightness(0.85) drop-shadow(0 0 3px rgba(100, 220, 180, 0.4));
-            transition: filter 0.2s ease, transform 0.2s ease;
+            filter: brightness(0.9) drop-shadow(0 0 4px rgba(200, 255, 110, 0.3));
+            transition: var(--transition-smooth);
             pointer-events: none;
         }
         .tab-item.active .tab-icon-img {
-            filter: brightness(1.25) drop-shadow(0 0 10px rgba(100, 220, 180, 0.7));
+            filter: brightness(1.3) drop-shadow(0 0 12px rgba(200, 255, 110, 0.8));
+            transform: scale(1.08);
         }
 
         .badge-count {
             position: absolute;
-            top: -4px;
-            right: -6px;
-            background: linear-gradient(135deg, #ff6b6b, #ee5a5a);
+            top: -2px;
+            right: -4px;
+            background: linear-gradient(135deg, var(--color-error), var(--color-error-dark));
             color: white;
-            font-size: 9px;
-            font-weight: 700;
-            padding: 2px 5px;
+            font-size: 10px;
+            font-weight: 800;
+            padding: 2px 6px;
             border-radius: 50%;
-            min-width: 16px;
-            height: 16px;
+            min-width: 18px;
+            height: 18px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border: 1.5px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 2px 8px rgba(238, 90, 90, 0.5);
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 3px 10px rgba(238, 90, 90, 0.6);
             pointer-events: none;
+            animation: pulse 2s infinite;
         }
 
-        /* ✨ بطاقة الإعلان المكتمل - جديدة ✨ */
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.9; }
+        }
+
+        /* ✨ بطاقة الإعلان المكتمل - تصميم فاخر ✨ */
         .completed-announcement {
-            background: linear-gradient(145deg, rgba(30, 50, 45, 0.95), rgba(20, 35, 30, 0.98));
-            border-radius: 24px;
-            margin: 0 0 20px 0;
-            padding: 16px;
-            border: 2px solid rgba(100, 220, 180, 0.6);
+            background: linear-gradient(145deg, rgba(18, 42, 34, 0.95), rgba(12, 28, 22, 0.98));
+            border-radius: 28px;
+            margin: 0 0 24px 0;
+            padding: 20px;
+            border: 2px solid var(--border-active);
             position: relative;
             overflow: hidden;
             box-shadow:
-                0 8px 32px rgba(0, 0, 0, 0.5),
-                0 0 30px rgba(100, 220, 180, 0.25),
-                inset 0 1px 0 rgba(255, 255, 255, 0.1);
-            animation: slideDown 0.3s ease-out;
+                var(--shadow-card),
+                var(--shadow-glow),
+                inset 0 1px 0 rgba(255, 255, 255, 0.12);
+            animation: slideDown 0.4s ease-out;
             z-index: 10;
             will-change: transform;
             transform: translateZ(0);
         }
 
         @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-15px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(-20px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
         .completed-announcement::before {
@@ -205,326 +268,360 @@
             top: 0;
             right: 0;
             width: 100%;
-            height: 3px;
-            background: linear-gradient(90deg, #64dcb4, #b478ff);
-            opacity: 0.9;
+            height: 4px;
+            background: linear-gradient(90deg, var(--color-primary), var(--color-secondary), var(--color-accent));
+            opacity: 0.95;
+        }
+
+        .completed-announcement::after {
+            content: '🎾';
+            position: absolute;
+            top: 12px;
+            left: 16px;
+            font-size: 24px;
+            opacity: 0.3;
+            pointer-events: none;
         }
 
         .completed-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 12px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid rgba(100, 220, 180, 0.3);
+            margin-bottom: 16px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid var(--border-light);
         }
 
         .completed-title {
-            color: #64dcb4;
-            font-size: 17px;
-            font-weight: 700;
+            color: var(--color-primary);
+            font-size: 18px;
+            font-weight: 800;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
+            text-shadow: 0 0 15px rgba(200, 255, 110, 0.4);
         }
 
         .completed-badge {
-            background: linear-gradient(135deg, #64dcb4, #4dd0c0);
-            color: #0a1a15;
-            padding: 5px 14px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: 700;
+            background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+            color: var(--text-dark);
+            padding: 6px 16px;
+            border-radius: 24px;
+            font-size: 12px;
+            font-weight: 800;
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 5px;
+            box-shadow: 0 4px 15px rgba(139, 195, 74, 0.4);
         }
 
         .completed-details {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-            gap: 10px;
-            margin-bottom: 14px;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
+            margin-bottom: 18px;
         }
 
         .detail-item {
             display: flex;
             align-items: center;
-            gap: 6px;
-            font-size: 13px;
-            color: #ddd;
+            gap: 8px;
+            font-size: 14px;
+            color: var(--text-secondary);
+            padding: 6px 0;
         }
 
         .detail-item strong {
-            color: #64dcb4;
-            font-weight: 600;
+            color: var(--color-primary);
+            font-weight: 700;
+            font-size: 15px;
         }
 
         .completed-actions {
             display: flex;
-            gap: 8px;
+            gap: 10px;
             flex-wrap: wrap;
+            margin-top: 8px;
         }
 
-        .chat-team-btn {
-            background: linear-gradient(135deg, #64dcb4 0%, #4dd0c0 100%);
+        /* 🎾 أزرار احترافية بتأثيرات ناعمة */
+        .chat-team-btn,
+        .view-details-btn,
+        .ready-btn-new,
+        .approved-badge,
+        .cancel-ready-btn,
+        .btn-primary,
+        .btn-outline,
+        .btn-danger {
             border: none;
-            padding: 10px 18px;
-            border-radius: 26px;
+            padding: 12px 20px;
+            border-radius: 32px;
             font-weight: 700;
-            color: #0a1a15;
             cursor: pointer;
-            transition: transform 0.2s ease;
-            font-size: 13px;
+            transition: var(--transition-bounce);
+            font-size: 14px;
             display: flex;
             align-items: center;
-            gap: 5px;
-            flex: 1;
-            min-width: 110px;
             justify-content: center;
-        }
-        .chat-team-btn:active {
-            transform: scale(0.98);
+            gap: 6px;
+            position: relative;
+            overflow: hidden;
+            will-change: transform;
         }
 
-        .view-details-btn {
-            background: rgba(30, 30, 50, 0.8);
-            border: 1.5px solid rgba(100, 220, 180, 0.4);
-            padding: 10px 18px;
-            border-radius: 26px;
-            font-weight: 600;
-            color: #64dcb4;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-size: 13px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            flex: 1;
-            min-width: 110px;
-            justify-content: center;
+        .chat-team-btn,
+        .ready-btn-new,
+        .approved-badge,
+        .btn-primary {
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+            color: var(--text-dark);
+            box-shadow: 0 6px 20px rgba(139, 195, 74, 0.45);
         }
-        .view-details-btn:active {
-            transform: scale(0.98);
-            background: rgba(100, 220, 180, 0.15);
+        
+        .chat-team-btn:hover,
+        .ready-btn-new:hover,
+        .approved-badge:hover,
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px rgba(139, 195, 74, 0.65);
+        }
+
+        .view-details-btn,
+        .btn-outline {
+            background: rgba(18, 38, 30, 0.85);
+            border: 2px solid var(--border-light);
+            color: var(--color-primary);
+        }
+        .view-details-btn:hover,
+        .btn-outline:hover {
+            background: rgba(25, 50, 40, 0.95);
+            border-color: var(--border-active);
+            transform: translateY(-2px);
+        }
+
+        .cancel-ready-btn,
+        .btn-danger {
+            background: linear-gradient(135deg, var(--color-error), var(--color-error-dark));
+            color: white;
+            box-shadow: 0 6px 20px rgba(238, 90, 90, 0.4);
+        }
+        .cancel-ready-btn:hover,
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px rgba(238, 90, 90, 0.6);
+        }
+
+        .chat-team-btn:active,
+        .view-details-btn:active,
+        .ready-btn-new:active,
+        .approved-badge:active,
+        .cancel-ready-btn:active,
+        .btn-primary:active,
+        .btn-outline:active,
+        .btn-danger:active {
+            transform: scale(0.97) !important;
         }
 
         .players-avatars {
             display: flex;
-            gap: -6px;
-            margin-top: 12px;
-            padding-top: 12px;
-            border-top: 1px solid rgba(100, 220, 180, 0.2);
+            gap: -8px;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border-light);
         }
 
         .player-avatar {
-            width: 32px;
-            height: 32px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #64dcb4, #b478ff);
+            background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 13px;
-            font-weight: 700;
-            color: #0a1a15;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            margin-left: -6px;
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--text-dark);
+            border: 2.5px solid rgba(255, 255, 255, 0.35);
+            margin-left: -8px;
             cursor: pointer;
+            transition: var(--transition-bounce);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+        }
+        .player-avatar:hover {
+            transform: scale(1.15) translateY(-3px);
+            z-index: 5;
         }
         .player-avatar:first-child { margin-left: 0; }
         .player-avatar.plus {
-            background: rgba(100, 220, 180, 0.2);
-            border-color: rgba(100, 220, 180, 0.4);
-            color: #64dcb4;
-            font-size: 11px;
+            background: rgba(200, 255, 110, 0.15);
+            border-color: var(--border-active);
+            color: var(--color-primary);
+            font-size: 12px;
+            font-weight: 700;
         }
 
-        /* بطاقات المنشورات العادية */
+        /* 🎾 بطاقات المنشورات - تصميم زجاجي أنيق */
         .post-card {
-            background: linear-gradient(145deg, rgba(26, 26, 46, 0.9), rgba(18, 18, 34, 0.95));
-            border-radius: 22px;
-            margin-bottom: 16px;
-            padding: 18px;
-            border: 1px solid rgba(100, 220, 180, 0.2);
-            transition: transform 0.2s ease, border-color 0.2s ease;
+            background: var(--bg-card);
+            border-radius: 26px;
+            margin-bottom: 20px;
+            padding: 20px;
+            border: 1.5px solid var(--border-light);
+            transition: var(--transition-smooth);
             position: relative;
-            overflow: visible; /* تغيير من hidden لـ visible عشان المحتوى يظهر */
+            overflow: hidden;
             will-change: transform;
             transform: translateZ(0);
+            box-shadow: var(--shadow-card);
         }
+        
         .post-card::before {
             content: '';
             position: absolute;
             top: 0;
             right: 0;
-            width: 3px;
+            width: 4px;
             height: 100%;
-            background: linear-gradient(180deg, #64dcb4, #b478ff, #64dcb4);
-            opacity: 0.7;
+            background: linear-gradient(180deg, var(--color-primary), var(--color-secondary), var(--color-accent));
+            opacity: 0.85;
         }
+        
+        .post-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--border-active);
+            box-shadow: var(--shadow-card), var(--shadow-glow);
+        }
+        
         .post-card:active {
-            transform: translateY(-2px);
-            border-color: rgba(100, 220, 180, 0.45);
+            transform: translateY(-1px) !important;
         }
+
         .post-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 14px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid rgba(100, 220, 180, 0.15);
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border-light);
         }
+
         .club-name {
-            color: #64dcb4;
-            font-size: 19px;
-            font-weight: 700;
+            color: var(--color-primary);
+            font-size: 20px;
+            font-weight: 800;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 7px;
+            text-shadow: 0 0 12px rgba(200, 255, 110, 0.35);
         }
+
         .post-time {
-            font-size: 11px;
-            color: #888;
-            background: rgba(100, 220, 180, 0.1);
-            padding: 3px 10px;
-            border-radius: 20px;
+            font-size: 12px;
+            color: var(--text-muted);
+            background: rgba(200, 255, 110, 0.12);
+            padding: 4px 14px;
+            border-radius: 24px;
+            border: 1px solid var(--border-light);
+            font-weight: 600;
         }
+
         .post-detail {
-            color: #ddd;
-            margin: 8px 0;
+            color: var(--text-secondary);
+            margin: 9px 0;
             display: flex;
             align-items: center;
-            gap: 8px;
-            font-size: 14px;
+            gap: 9px;
+            font-size: 15px;
+            line-height: 1.4;
         }
 
         .countdown-section {
-            background: rgba(100, 220, 180, 0.12);
-            border-radius: 16px;
-            padding: 10px 14px;
-            margin: 12px 0 8px 0;
-            font-size: 13px;
+            background: rgba(200, 255, 110, 0.12);
+            border-radius: 20px;
+            padding: 12px 16px;
+            margin: 14px 0 10px 0;
+            font-size: 14px;
             font-weight: 700;
-            color: #64dcb4;
+            color: var(--color-primary);
             display: flex;
             align-items: center;
-            gap: 8px;
-            border: 1px solid rgba(100, 220, 180, 0.3);
-        }
-
-        .ready-btn-new {
-            background: linear-gradient(135deg, #64dcb4 0%, #4dd0c0 100%);
-            border: none;
-            padding: 13px;
-            border-radius: 42px;
-            font-weight: 700;
-            color: #0a1a15;
-            width: 100%;
-            margin-top: 14px;
-            cursor: pointer;
-            transition: transform 0.2s ease;
-            font-size: 14px;
-        }
-        .ready-btn-new:active {
-            transform: scale(0.98);
-        }
-
-        .approved-badge {
-            background: linear-gradient(135deg, #64dcb4, #4dd0c0);
-            color: #0a1a15;
-            padding: 12px;
-            border-radius: 42px;
-            font-weight: 700;
-            text-align: center;
-            width: 100%;
-            margin-top: 14px;
-            font-size: 14px;
-            cursor: pointer;
-            transition: transform 0.2s ease;
-        }
-        .approved-badge:active {
-            transform: scale(0.98);
-        }
-
-        .cancel-ready-btn {
-            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a5a 100%);
-            border: none;
-            padding: 9px;
-            border-radius: 32px;
-            font-weight: 700;
-            color: white;
-            width: 100%;
-            margin-top: 10px;
-            cursor: pointer;
-            font-size: 13px;
-            transition: transform 0.2s ease;
-        }
-        .cancel-ready-btn:active {
-            transform: scale(0.98);
+            gap: 9px;
+            border: 1.5px solid var(--border-active);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
         }
 
         .ready-count-badge {
-            background: linear-gradient(135deg, rgba(100, 220, 180, 0.2), rgba(180, 120, 255, 0.2));
-            color: #64dcb4;
-            padding: 5px 14px;
-            border-radius: 22px;
-            font-size: 12px;
+            background: linear-gradient(135deg, rgba(200, 255, 110, 0.18), rgba(139, 195, 74, 0.18));
+            color: var(--color-primary);
+            padding: 6px 16px;
+            border-radius: 26px;
+            font-size: 13px;
             font-weight: 700;
             display: inline-block;
-            margin-top: 10px;
-            border: 1px solid rgba(100, 220, 180, 0.35);
+            margin-top: 12px;
+            border: 1.5px solid var(--border-active);
+            box-shadow: 0 3px 12px rgba(200, 255, 110, 0.2);
         }
 
         .ready-users-list {
-            margin-top: 14px;
-            padding-top: 10px;
-            border-top: 1px solid rgba(100, 220, 180, 0.15);
+            margin-top: 16px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border-light);
         }
+
         .ready-user-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px;
-            background: rgba(30, 30, 50, 0.7);
-            border-radius: 14px;
+            padding: 12px 14px;
+            background: rgba(18, 38, 30, 0.75);
+            border-radius: 18px;
             margin-bottom: 10px;
-            border: 1px solid rgba(100, 220, 180, 0.1);
+            border: 1px solid var(--border-light);
+            transition: var(--transition-smooth);
+        }
+        .ready-user-item:hover {
+            background: rgba(25, 50, 40, 0.85);
+            border-color: var(--border-active);
         }
 
         .approve-btn, .reject-btn {
             border: none;
-            padding: 7px 14px;
-            border-radius: 22px;
+            padding: 8px 16px;
+            border-radius: 26px;
             font-weight: 700;
             cursor: pointer;
-            margin-left: 8px;
-            font-size: 12px;
-            transition: transform 0.2s ease;
+            margin-left: 6px;
+            font-size: 13px;
+            transition: var(--transition-bounce);
+            min-width: 42px;
         }
         .approve-btn {
-            background: linear-gradient(135deg, #64dcb4, #4dd0c0);
-            color: #0a1a15;
+            background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+            color: var(--text-dark);
         }
         .reject-btn {
-            background: linear-gradient(135deg, #ff6b6b, #ee5a5a);
+            background: linear-gradient(135deg, var(--color-error), var(--color-error-dark));
             color: white;
         }
-        .approve-btn:active, .reject-btn:active {
-            transform: scale(0.98);
+        .approve-btn:hover, .reject-btn:hover {
+            transform: scale(1.05);
         }
 
         .waiting-badge {
-            background: linear-gradient(135deg, rgba(243, 156, 18, 0.2), rgba(230, 126, 34, 0.2));
-            color: #f39c12;
-            padding: 5px 12px;
-            border-radius: 22px;
-            font-size: 11px;
-            font-weight: 600;
-            border: 1px solid rgba(243, 156, 18, 0.35);
+            background: linear-gradient(135deg, rgba(255, 179, 71, 0.22), rgba(243, 156, 18, 0.22));
+            color: var(--color-warning);
+            padding: 6px 14px;
+            border-radius: 24px;
+            font-size: 12px;
+            font-weight: 700;
+            border: 1.5px solid rgba(243, 156, 18, 0.4);
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
         }
 
-        /* Modal Styles - محسّنة للشاشات الكبيرة */
+        /* 💬 Modal Styles - تصميم زجاجي فاخر */
         .modal {
             display: none;
             position: fixed;
@@ -532,91 +629,107 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(8, 8, 16, 0.92);
+            background: rgba(5, 16, 12, 0.94);
             z-index: 1000;
             justify-content: center;
             align-items: center;
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            animation: fadeIn 0.2s ease;
+            backdrop-filter: var(--blur-glass);
+            -webkit-backdrop-filter: var(--blur-glass);
+            animation: fadeIn 0.25s ease;
+            padding: 16px;
         }
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
         }
         .modal-content {
-            background: linear-gradient(145deg, rgba(26, 26, 46, 0.98), rgba(18, 18, 34, 0.98));
-            width: 92%;
-            max-width: 450px;
-            border-radius: 30px;
-            padding: 24px 20px;
-            border: 1px solid rgba(100, 220, 180, 0.35);
+            background: var(--bg-modal);
+            width: 100%;
+            max-width: 460px;
+            border-radius: 34px;
+            padding: 26px 22px;
+            border: 1.5px solid var(--border-active);
             box-shadow:
-                0 20px 60px rgba(0, 0, 0, 0.6),
-                0 0 0 1px rgba(180, 120, 255, 0.2),
-                0 0 40px rgba(100, 220, 180, 0.15);
-            animation: slideUp 0.25s ease;
-            max-height: 85vh;
+                var(--shadow-strong),
+                0 0 0 1px rgba(200, 255, 110, 0.25),
+                0 0 45px rgba(200, 255, 110, 0.18);
+            animation: slideUp 0.3s ease;
+            max-height: 88vh;
             overflow-y: auto;
             scrollbar-width: thin;
-            scrollbar-color: rgba(100, 220, 180, 0.4) transparent;
+            scrollbar-color: var(--color-primary) transparent;
+            position: relative;
+        }
+        .modal-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--color-primary), var(--color-secondary), var(--color-accent));
+            border-radius: 34px 34px 0 0;
+            opacity: 0.95;
         }
         .modal-content::-webkit-scrollbar {
-            width: 4px;
+            width: 5px;
         }
         .modal-content::-webkit-scrollbar-track {
             background: transparent;
         }
         .modal-content::-webkit-scrollbar-thumb {
-            background: rgba(100, 220, 180, 0.4);
+            background: linear-gradient(180deg, var(--color-primary), var(--color-secondary));
             border-radius: 10px;
         }
         @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px) scale(0.98);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
+            from { opacity: 0; transform: translateY(25px) scale(0.97); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
-        /* 🖥️ تحسين المودال للشاشات الكبيرة */
+        /* 🖥️ تحسينات للشاشات الكبيرة */
         @media (min-width: 768px) {
             .modal-content {
-                max-width: 420px;
-                max-height: 70vh;
-                padding: 20px 18px;
-                margin: auto;
+                max-width: 440px;
+                max-height: 75vh;
+                padding: 24px 20px;
             }
             .completed-announcement {
-                max-width: 600px;
-                margin: 0 auto 20px auto;
+                max-width: 620px;
+                margin: 0 auto 24px auto;
             }
             .bottom-tab-bar {
-                max-width: 500px;
+                max-width: 520px;
+                padding: 14px 24px 18px;
+            }
+            .app-wrapper {
+                padding: 24px 20px 100px;
             }
         }
 
         @media (min-width: 1024px) {
             .modal-content {
-                max-height: 65vh;
-                max-width: 400px;
+                max-height: 70vh;
+                max-width: 420px;
+            }
+            body::before {
+                background-image: 
+                    radial-gradient(circle at 20% 35%, rgba(200, 255, 110, 0.05) 0%, transparent 25%),
+                    radial-gradient(circle at 85% 15%, rgba(139, 195, 74, 0.06) 0%, transparent 30%),
+                    radial-gradient(circle at 50% 80%, rgba(255, 217, 102, 0.04) 0%, transparent 35%);
             }
         }
 
         .chat-modal-content {
-            height: 85vh;
-            max-width: 500px;
+            height: 88vh;
+            max-width: 520px;
             display: flex;
             flex-direction: column;
-            padding: 16px;
+            padding: 18px;
         }
         @media (min-width: 768px) {
             .chat-modal-content {
-                height: 75vh;
-                max-width: 480px;
+                height: 78vh;
+                max-width: 500px;
             }
         }
 
@@ -625,194 +738,192 @@
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 14px;
-            padding: 12px 4px;
+            gap: 16px;
+            padding: 14px 6px;
             scrollbar-width: thin;
-            scrollbar-color: rgba(100, 220, 180, 0.4) transparent;
+            scrollbar-color: var(--color-primary) transparent;
             -webkit-overflow-scrolling: touch;
         }
         .messages-container::-webkit-scrollbar {
-            width: 4px;
+            width: 5px;
         }
         .messages-container::-webkit-scrollbar-track {
             background: transparent;
         }
         .messages-container::-webkit-scrollbar-thumb {
-            background: rgba(100, 220, 180, 0.4);
+            background: linear-gradient(180deg, var(--color-primary), var(--color-secondary));
             border-radius: 10px;
         }
         .message {
-            max-width: 82%;
-            padding: 12px 16px;
-            border-radius: 24px;
-            font-size: 14px;
+            max-width: 85%;
+            padding: 14px 18px;
+            border-radius: 26px;
+            font-size: 15px;
             word-wrap: break-word;
             position: relative;
-            line-height: 1.4;
+            line-height: 1.45;
+            animation: messageIn 0.25s ease;
+        }
+        @keyframes messageIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         .my-message {
             align-self: flex-end;
-            background: linear-gradient(135deg, #64dcb4, #4dd0c0);
-            color: #0a1a15;
-            border-bottom-right-radius: 6px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+            color: var(--text-dark);
+            border-bottom-right-radius: 8px;
+            border: 1.5px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 5px 18px rgba(139, 195, 74, 0.35);
         }
         .other-message {
             align-self: flex-start;
-            background: rgba(38, 38, 58, 0.9);
-            color: #efefef;
-            border-bottom-left-radius: 6px;
-            border: 1px solid rgba(100, 220, 180, 0.15);
+            background: rgba(18, 38, 30, 0.92);
+            color: var(--text-primary);
+            border-bottom-left-radius: 8px;
+            border: 1.5px solid var(--border-light);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
         }
 
+        /* 👤 صفحة الملف الشخصي */
         .profile-header {
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin-bottom: 26px;
-            padding: 20px;
-            background: linear-gradient(145deg, rgba(26, 26, 46, 0.7), rgba(18, 18, 34, 0.8));
-            border-radius: 26px;
-            border: 1px solid rgba(100, 220, 180, 0.2);
+            margin-bottom: 30px;
+            padding: 24px;
+            background: linear-gradient(145deg, rgba(18, 42, 34, 0.75), rgba(12, 28, 22, 0.85));
+            border-radius: 30px;
+            border: 1.5px solid var(--border-light);
+            box-shadow: var(--shadow-card);
+            position: relative;
+            overflow: hidden;
+        }
+        .profile-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(200, 255, 110, 0.08) 0%, transparent 70%);
+            pointer-events: none;
         }
         .avatar {
-            background: linear-gradient(135deg, #64dcb4 0%, #b478ff 50%, #64dcb4 100%);
-            width: 84px;
-            height: 84px;
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 50%, var(--color-accent) 100%);
+            width: 90px;
+            height: 90px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 42px;
-            font-weight: 700;
-            margin-bottom: 14px;
-            color: #0a1a15;
-            border: 3px solid rgba(255, 255, 255, 0.25);
+            font-size: 46px;
+            font-weight: 800;
+            margin-bottom: 16px;
+            color: var(--text-dark);
+            border: 3.5px solid rgba(255, 255, 255, 0.35);
+            box-shadow: 0 8px 25px rgba(200, 255, 110, 0.4);
+            position: relative;
+            z-index: 2;
         }
         .stats-row {
             display: flex;
             justify-content: space-around;
-            background: rgba(30, 30, 50, 0.7);
-            border-radius: 30px;
-            padding: 14px;
-            margin: 18px 0;
-            border: 1px solid rgba(100, 220, 180, 0.15);
+            background: rgba(18, 38, 30, 0.75);
+            border-radius: 34px;
+            padding: 16px;
+            margin: 22px 0;
+            border: 1.5px solid var(--border-light);
+            width: 100%;
+            max-width: 320px;
         }
         .stat {
             text-align: center;
             cursor: pointer;
-            transition: transform 0.2s ease;
-            padding: 10px;
-            border-radius: 18px;
+            transition: var(--transition-bounce);
+            padding: 12px;
+            border-radius: 22px;
+            min-width: 90px;
         }
         .stat:active {
-            transform: scale(0.98);
+            transform: scale(0.96);
+        }
+        .stat:hover {
+            background: rgba(25, 50, 40, 0.8);
         }
         .stat-number {
-            font-size: 22px;
-            font-weight: 700;
-            color: #64dcb4;
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--color-primary);
+            text-shadow: 0 0 12px rgba(200, 255, 110, 0.4);
         }
 
-        .btn-primary {
-            background: linear-gradient(135deg, #64dcb4 0%, #4dd0c0 100%);
-            border: none;
-            padding: 14px;
-            border-radius: 44px;
-            font-weight: 700;
-            color: #0a1a15;
-            width: 100%;
-            margin-top: 14px;
-            cursor: pointer;
-            transition: transform 0.2s ease;
-            font-size: 15px;
-        }
-        .btn-primary:active {
-            transform: scale(0.98);
-        }
-        .btn-outline {
-            background: transparent;
-            border: 2px solid #64dcb4;
-            color: #64dcb4;
-            padding: 12px;
-            border-radius: 44px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        .btn-outline:active {
-            transform: scale(0.98);
-            background: rgba(100, 220, 180, 0.12);
-        }
-        .btn-danger {
-            background: linear-gradient(135deg, #ff6b6b, #ee5a5a);
-            border: none;
-            padding: 12px;
-            border-radius: 44px;
-            font-weight: 700;
-            color: white;
-            cursor: pointer;
-            margin-top: 10px;
-            transition: transform 0.2s ease;
-        }
-        .btn-danger:active {
-            transform: scale(0.98);
-        }
-
+        /* 📝 حقول الإدخال */
         input, textarea, select {
-            background: rgba(30, 30, 50, 0.8);
-            border: 1.5px solid rgba(100, 220, 180, 0.25);
-            padding: 14px 18px;
-            border-radius: 24px;
-            color: white;
+            background: var(--bg-input);
+            border: 1.8px solid var(--border-light);
+            padding: 15px 20px;
+            border-radius: 28px;
+            color: var(--text-primary);
             width: 100%;
-            margin-bottom: 14px;
-            font-size: 14px;
-            transition: border-color 0.2s ease, background 0.2s ease;
+            margin-bottom: 16px;
+            font-size: 15px;
+            transition: var(--transition-smooth);
             -webkit-appearance: none;
             appearance: none;
         }
         input:focus, textarea:focus, select:focus {
             outline: none;
-            border-color: #64dcb4;
-            background: rgba(35, 35, 58, 0.95);
+            border-color: var(--color-primary);
+            background: rgba(22, 45, 36, 0.95);
+            box-shadow: 0 0 0 3px rgba(200, 255, 110, 0.25);
         }
         input::placeholder, textarea::placeholder {
-            color: #777;
+            color: var(--text-muted);
+            opacity: 0.8;
         }
 
         .empty-state {
             text-align: center;
-            color: #777;
-            padding: 40px 20px;
-            background: rgba(30, 30, 50, 0.4);
-            border-radius: 24px;
-            border: 1px dashed rgba(100, 220, 180, 0.2);
+            color: var(--text-muted);
+            padding: 45px 24px;
+            background: rgba(18, 38, 30, 0.45);
+            border-radius: 28px;
+            border: 2px dashed var(--border-light);
+            margin: 20px 0;
         }
         .empty-state span {
-            color: #64dcb4;
-            font-weight: 600;
+            color: var(--color-primary);
+            font-weight: 700;
+            display: block;
+            margin-top: 8px;
+            font-size: 15px;
         }
 
+        /* 🍞 Toast Messages */
         .toast-message {
             position: fixed;
-            bottom: 95px;
+            bottom: 105px;
             left: 50%;
             transform: translateX(-50%);
-            background: linear-gradient(135deg, #64dcb4, #4dd0c0);
-            color: #0a1a15;
-            padding: 14px 28px;
-            border-radius: 44px;
-            font-weight: 700;
+            background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+            color: var(--text-dark);
+            padding: 15px 32px;
+            border-radius: 48px;
+            font-weight: 800;
             z-index: 1100;
-            animation: toastIn 0.25s ease, toastOut 0.25s ease 2s forwards;
-            box-shadow: 0 6px 25px rgba(100, 220, 180, 0.5);
+            animation: toastIn 0.3s ease, toastOut 0.3s ease 2.2s forwards;
+            box-shadow: 
+                0 8px 30px rgba(139, 195, 74, 0.55),
+                0 0 0 2px rgba(255, 255, 255, 0.2);
             pointer-events: none;
+            font-size: 15px;
+            letter-spacing: 0.3px;
         }
         @keyframes toastIn {
             from {
                 opacity: 0;
-                transform: translateX(-50%) translateY(15px) scale(0.98);
+                transform: translateX(-50%) translateY(20px) scale(0.95);
             }
             to {
                 opacity: 1;
@@ -821,121 +932,131 @@
         }
         @keyframes toastOut {
             from { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
-            to { opacity: 0; transform: translateX(-50%) translateY(-10px) scale(0.98); visibility: hidden; }
+            to { opacity: 0; transform: translateX(-50%) translateY(-12px) scale(0.96); visibility: hidden; }
         }
 
         .header-actions {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 18px;
-            gap: 12px;
+            margin-bottom: 22px;
+            gap: 14px;
             flex-wrap: wrap;
         }
 
         .small-btn {
-            padding: 9px 18px;
-            font-size: 12px;
-            border-radius: 28px;
-            font-weight: 600;
-            transition: transform 0.2s ease;
+            padding: 10px 20px;
+            font-size: 13px;
+            border-radius: 30px;
+            font-weight: 700;
+            transition: var(--transition-bounce);
         }
         .small-btn:active {
-            transform: scale(0.98);
+            transform: scale(0.97);
         }
 
         .select-item {
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 16px;
             cursor: pointer;
-            padding: 10px;
-            border-radius: 16px;
-            transition: background 0.2s ease;
-            margin-bottom: 8px;
+            padding: 12px;
+            border-radius: 20px;
+            transition: var(--transition-smooth);
+            margin-bottom: 10px;
         }
-        .select-item:active {
-            background: rgba(30, 30, 50, 0.7);
+        .select-item:active,
+        .select-item:hover {
+            background: rgba(18, 38, 30, 0.75);
         }
 
         .select-checkbox {
-            width: 22px;
-            height: 22px;
+            width: 24px;
+            height: 24px;
             cursor: pointer;
-            accent-color: #64dcb4;
-            border: 2px solid rgba(100, 220, 180, 0.4);
-            border-radius: 6px;
+            accent-color: var(--color-primary);
+            border: 2.5px solid var(--border-light);
+            border-radius: 7px;
+            transition: var(--transition-smooth);
+        }
+        .select-checkbox:checked {
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px rgba(200, 255, 110, 0.25);
         }
 
         .delete-selected-btn, .select-all-btn {
             border: none;
-            padding: 9px 18px;
-            border-radius: 28px;
+            padding: 10px 20px;
+            border-radius: 30px;
             color: white;
             font-weight: 700;
             cursor: pointer;
             margin-right: 10px;
-            transition: transform 0.2s ease;
+            transition: var(--transition-bounce);
+            font-size: 13px;
         }
         .delete-selected-btn {
-            background: linear-gradient(135deg, #ff6b6b, #ee5a5a);
+            background: linear-gradient(135deg, var(--color-error), var(--color-error-dark));
         }
         .select-all-btn {
             background: linear-gradient(135deg, #5dade2, #3498db);
         }
         .delete-selected-btn:active, .select-all-btn:active {
-            transform: scale(0.98);
+            transform: scale(0.97);
         }
 
         .action-buttons {
             display: flex;
-            gap: 10px;
+            gap: 12px;
             align-items: center;
             flex-wrap: wrap;
         }
 
         ::selection {
-            background: rgba(100, 220, 180, 0.35);
-            color: white;
+            background: rgba(200, 255, 110, 0.35);
+            color: var(--text-dark);
         }
 
         .loading {
             display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 2px solid rgba(100, 220, 180, 0.3);
+            width: 22px;
+            height: 22px;
+            border: 2.5px solid rgba(200, 255, 110, 0.3);
             border-radius: 50%;
-            border-top-color: #64dcb4;
-            animation: spin 0.8s linear infinite;
+            border-top-color: var(--color-primary);
+            animation: spin 0.9s linear infinite;
         }
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
 
+        /* 📱 تحسينات الموبايل */
         @media (max-width: 480px) {
             .bottom-tab-bar {
-                bottom: env(safe-area-inset-bottom, 10px);
-                left: 10px;
-                right: 10px;
-                padding: 8px 12px 12px;
+                bottom: 12px;
+                left: 12px;
+                right: 12px;
+                padding: 10px 16px 14px;
+                border-radius: 28px;
             }
             .tab-icon-img {
-                width: 26px;
-                height: 26px;
+                width: 28px;
+                height: 28px;
             }
             .post-card {
-                padding: 14px;
-                border-radius: 20px;
+                padding: 16px;
+                border-radius: 24px;
             }
             .modal-content {
-                width: 95%;
-                padding: 20px 16px;
-                border-radius: 26px;
-                max-height: 88vh;
+                width: 96%;
+                padding: 22px 18px;
+                border-radius: 30px;
+                max-height: 90vh;
             }
             .completed-announcement {
-                padding: 14px;
-                margin: 0 0 16px 0;
+                padding: 16px;
+                margin: 0 0 20px 0;
+                border-radius: 24px;
             }
             .completed-details {
                 grid-template-columns: 1fr;
@@ -946,31 +1067,94 @@
             .chat-team-btn, .view-details-btn {
                 width: 100%;
             }
+            .app-wrapper {
+                padding: 16px 14px 85px;
+            }
+            .profile-header {
+                padding: 20px 16px;
+            }
+            .avatar {
+                width: 80px;
+                height: 80px;
+                font-size: 40px;
+            }
+        }
+
+        /* 🎾 تأثيرات إضافية للتنس */
+        .tennis-ball-decoration {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #c8ff6e, #8bc34a);
+            opacity: 0.12;
+            pointer-events: none;
+            animation: float 8s ease-in-out infinite;
+            z-index: 0;
+        }
+        .tennis-ball-decoration::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50px;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 2px;
+            transform: translate(-50%, -50%) rotate(-25deg);
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(5deg); }
+        }
+
+        /* 🌟 تأثيرات النص المتدرج */
+        .text-gradient {
+            background: linear-gradient(135deg, var(--text-primary), var(--color-primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+        }
+
+        /* 🎯 تحسينات الوصول */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- 🎾 زخارف خلفية بكرات تنس -->
+    <div class="tennis-ball-decoration" style="top: 15%; right: 8%;"></div>
+    <div class="tennis-ball-decoration" style="bottom: 25%; left: 5%; animation-delay: -2s;"></div>
+    <div class="tennis-ball-decoration" style="top: 60%; right: 15%; animation-delay: -4s;"></div>
+
 <div class="app-wrapper" id="appContainer"></div>
 
-<!-- 🎾 شريط التنقل السفلي - تصميم شفاف بحواف لامعة 🎾 -->
+<!-- 🎾 شريط التنقل السفلي - تصميم زجاجي فاخر 🎾 -->
 <div class="bottom-tab-bar" id="tabBar" style="display: none;">
     <button class="tab-item" data-tab="home" title="الرئيسية">
-        <img src="hom.png" class="tab-icon-img" alt="🏠" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 fill=%22%2364dcb4%22 viewBox=%220 0 24 24%22%3E%3Cpath d=%22M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z%22/%3E%3C/svg%3E'">
+        <img src="hom.png" class="tab-icon-img" alt="🏠" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 fill=%22%23c8ff6e%22 viewBox=%220 0 24 24%22%3E%3Cpath d=%22M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z%22/%3E%3C/svg%3E'">
     </button>
     <button class="tab-item" data-tab="chats" id="chatsTab" title="الدردشات">
         <div style="position: relative;">
-            <img src="chat.png" class="tab-icon-img" alt="💬" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 fill=%22%2364dcb4%22 viewBox=%220 0 24 24%22%3E%3Cpath d=%22M20 2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4V4c0-1.1-.9-2-2-2z%22/%3E%3C/svg%3E'">
+            <img src="chat.png" class="tab-icon-img" alt="💬" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 fill=%22%23c8ff6e%22 viewBox=%220 0 24 24%22%3E%3Cpath d=%22M20 2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4V4c0-1.1-.9-2-2-2z%22/%3E%3C/svg%3E'">
             <span id="chatsBadge" class="badge-count" style="display:none;">0</span>
         </div>
     </button>
     <button class="tab-item" data-tab="notifications" id="notificationsTab" title="الإشعارات">
         <div style="position: relative;">
-            <img src="not.png" class="tab-icon-img" alt="🔔" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 fill=%22%2364dcb4%22 viewBox=%220 0 24 24%22%3E%3Cpath d=%22M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.93 6 11v5l-2 2v1h16v-1l-2-2z%22/%3E%3C/svg%3E'">
+            <img src="not.png" class="tab-icon-img" alt="🔔" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 fill=%22%23c8ff6e%22 viewBox=%220 0 24 24%22%3E%3Cpath d=%22M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.93 6 11v5l-2 2v1h16v-1l-2-2z%22/%3E%3C/svg%3E'">
             <span id="notifBadge" class="badge-count" style="display:none;">0</span>
         </div>
     </button>
     <button class="tab-item" data-tab="profile" title="الملف الشخصي">
-        <img src="pro.png" class="tab-icon-img" alt="👤" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 fill=%22%2364dcb4%22 viewBox=%220 0 24 24%22%3E%3Cpath d=%22M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z%22/%3E%3C/svg%3E'">
+        <img src="pro.png" class="tab-icon-img" alt="👤" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 fill=%22%23c8ff6e%22 viewBox=%220 0 24 24%22%3E%3Cpath d=%22M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z%22/%3E%3C/svg%3E'">
     </button>
 </div>
 
@@ -1018,7 +1202,7 @@
         toast.className = 'toast-message';
         toast.textContent = msg;
         document.body.appendChild(toast);
-        setTimeout(() => toast.remove(), 2200);
+        setTimeout(() => toast.remove(), 2400);
     }
 
     function showTabBar() { document.getElementById("tabBar").style.display = "flex"; }
@@ -1108,13 +1292,13 @@
         const modal = document.createElement("div");
         modal.className = "modal";
         modal.style.display = "flex";
-        modal.innerHTML = `<div class="modal-content" style="max-width:380px; text-align:center; padding:30px 22px;">
-            <div style="font-size:48px; margin-bottom:18px;">🚪</div>
-            <h3 style="color:#64dcb4; margin-bottom:12px; font-size:20px;">تسجيل الخروج؟</h3>
-            <p style="color:#aaa; margin-bottom:28px; font-size:14px;">سيتم مسح بيانات الدخول</p>
-            <div style="display:flex; gap:14px;">
-                <button id="cancelLogoutBtn" class="btn-outline" style="flex:1; padding:14px;">إلغاء</button>
-                <button id="confirmLogoutBtn" class="btn-danger" style="flex:1; padding:14px;">خروج</button>
+        modal.innerHTML = `<div class="modal-content" style="max-width:400px; text-align:center; padding:32px 24px;">
+            <div style="font-size:52px; margin-bottom:20px; text-shadow: 0 0 20px rgba(200,255,110,0.4);">🚪</div>
+            <h3 style="color:var(--color-primary); margin-bottom:14px; font-size:22px; font-weight:800;">تسجيل الخروج؟</h3>
+            <p style="color:var(--text-muted); margin-bottom:30px; font-size:15px;">سيتم مسح بيانات الدخول من الجهاز</p>
+            <div style="display:flex; gap:16px;">
+                <button id="cancelLogoutBtn" class="btn-outline" style="flex:1; padding:15px; font-size:15px;">إلغاء</button>
+                <button id="confirmLogoutBtn" class="btn-danger" style="flex:1; padding:15px; font-size:15px;">خروج</button>
             </div></div>`;
         document.body.appendChild(modal);
         document.getElementById("cancelLogoutBtn").addEventListener("click", () => modal.remove());
@@ -1126,7 +1310,7 @@
         modal.className = "modal";
         modal.style.display = "flex";
         modal.innerHTML = `<div class="modal-content">
-            <h3 style="margin-bottom:22px; color:#64dcb4; text-align:center;">✏️ تعديل البيانات</h3>
+            <h3 style="margin-bottom:24px; color:var(--color-primary); text-align:center; font-size:20px; font-weight:800;">✏️ تعديل البيانات</h3>
             <input type="text" id="editName" value="${escapeHtml(currentUser.name)}" placeholder="الاسم" style="text-align:center;">
             <input type="number" id="editAge" value="${currentUser.age}" placeholder="العمر" style="text-align:center;">
             <input type="tel" id="editPhone" value="${currentUser.phone}" placeholder="الموبايل" style="text-align:center;">
@@ -1137,9 +1321,9 @@
                 <option value="أعلى من متوسط" ${currentUser.tennisLevel==='أعلى من متوسط'?'selected':''}>أعلى من متوسط</option>
                 <option value="محترف" ${currentUser.tennisLevel==='محترف'?'selected':''}>محترف</option>
             </select>
-            <div style="display:flex; gap:12px; margin-top:20px;">
-                <button id="cancelEditBtn" class="btn-outline" style="flex:1;">إلغاء</button>
-                <button id="saveEditBtn" class="btn-primary" style="flex:1;">💾 حفظ</button>
+            <div style="display:flex; gap:14px; margin-top:22px;">
+                <button id="cancelEditBtn" class="btn-outline" style="flex:1; padding:15px;">إلغاء</button>
+                <button id="saveEditBtn" class="btn-primary" style="flex:1; padding:15px;">💾 حفظ</button>
             </div></div>`;
         document.body.appendChild(modal);
         document.getElementById("cancelEditBtn").addEventListener("click", () => modal.remove());
@@ -1153,29 +1337,29 @@
             await update(ref(db, `users/${currentUserId}`), { name: newName, age: newAge, phone: newPhone, tennisLevel: newLevel });
             currentUser.name = newName; currentUser.age = newAge; currentUser.phone = newPhone; currentUser.tennisLevel = newLevel;
             localStorage.setItem('tennisApp_user', JSON.stringify(currentUser));
-            showToast("✅ تم الحفظ"); modal.remove(); renderProfileTab();
+            showToast("✅ تم الحفظ بنجاح"); modal.remove(); renderProfileTab();
         });
     }
 
     function showRegisterCard() {
         hideTabBar();
-        document.getElementById("appContainer").innerHTML = `<div style="display:flex; justify-content:center; align-items:center; min-height:80vh; padding:20px;">
-            <div style="background:linear-gradient(145deg, rgba(26,26,46,0.95), rgba(18,18,34,0.98)); border-radius:32px; padding:32px 26px; width:100%; max-width:400px; border:1.5px solid rgba(100,220,180,0.4);">
-                <div style="text-align:center; margin-bottom:22px;">
-                    <div style="font-size:44px; margin-bottom:10px;">🎾</div>
-                    <h2 style="color:#64dcb4; font-size:22px;">منصة التنس</h2>
-                    <p style="color:#aaa; margin-top:6px; font-size:13px;">سجل للعب مع اللاعبين</p>
+        document.getElementById("appContainer").innerHTML = `<div style="display:flex; justify-content:center; align-items:center; min-height:85vh; padding:20px;">
+            <div style="background:linear-gradient(145deg, rgba(18,42,34,0.95), rgba(12,28,22,0.98)); border-radius:36px; padding:36px 28px; width:100%; max-width:420px; border:2px solid var(--border-active); box-shadow: var(--shadow-card), var(--shadow-glow);">
+                <div style="text-align:center; margin-bottom:26px;">
+                    <div style="font-size:56px; margin-bottom:12px; text-shadow: 0 0 25px rgba(200,255,110,0.5);">🎾</div>
+                    <h2 style="color:var(--color-primary); font-size:26px; font-weight:800; text-shadow: 0 0 15px rgba(200,255,110,0.3);">منصة التنس</h2>
+                    <p style="color:var(--text-muted); margin-top:8px; font-size:14px;">سجل للعب مع اللاعبين المحترفين</p>
                 </div>
                 <input type="text" id="userName" placeholder="الاسم" style="text-align:center;">
                 <input type="number" id="userAge" placeholder="العمر" style="text-align:center;">
                 <input type="tel" id="userPhone" placeholder="الموبايل" style="text-align:center;">
                 <select id="userTennisLevel" style="text-align:center;">
-                    <option value="">مستواك</option>
+                    <option value="">مستواك في التنس</option>
                     <option value="مبتدئ">مبتدئ</option><option value="أقل من متوسط">أقل من متوسط</option>
                     <option value="متوسط">متوسط</option><option value="أعلى من متوسط">أعلى من متوسط</option><option value="محترف">محترف</option>
                 </select>
-                <button id="registerBtn" class="btn-primary">✨ ابدأ</button>
-                <p style="text-align:center; color:#666; font-size:11px; margin-top:14px;">بالضغط توافق على الشروط</p>
+                <button id="registerBtn" class="btn-primary" style="padding:16px; font-size:16px; margin-top:8px;">✨ ابدأ الآن</button>
+                <p style="text-align:center; color:var(--text-muted); font-size:12px; margin-top:18px;">بالضغط توافق على الشروط والأحكام</p>
             </div></div>`;
         document.getElementById("registerBtn").addEventListener("click", async () => {
             const name = document.getElementById("userName").value.trim();
@@ -1216,10 +1400,10 @@
     function renderHomeTab() {
         const container = document.getElementById("appContainer");
         container.innerHTML = `<div id="completedAnnouncementsContainer"></div>
-            <div style="margin-bottom:16px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
-                <h2 style="color:#64dcb4; display:flex; align-items:center; gap:6px; font-size:20px;"><span>🎾</span> نوادي التنس</h2>
-                <button id="globalAddPostBtn" style="background:linear-gradient(135deg, #64dcb4, #4dd0c0); border:none; padding:9px 20px; border-radius:30px; font-weight:700; color:#0a1a15; display:flex; align-items:center; gap:4px; font-size:13px;">
-                    <span style="font-size:16px;">+</span> منشور
+            <div style="margin-bottom:20px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                <h2 style="color:var(--color-primary); display:flex; align-items:center; gap:8px; font-size:22px; font-weight:800; text-shadow: 0 0 15px rgba(200,255,110,0.3);"><span>🎾</span> نوادي التنس</h2>
+                <button id="globalAddPostBtn" style="background:linear-gradient(135deg, var(--color-primary), var(--color-secondary)); border:none; padding:11px 22px; border-radius:32px; font-weight:800; color:var(--text-dark); display:flex; align-items:center; gap:5px; font-size:14px; box-shadow: 0 6px 20px rgba(139,195,74,0.45);">
+                    <span style="font-size:18px; font-weight:900;">+</span> منشور جديد
                 </button>
             </div><div id="postsList"></div>`;
         document.getElementById("globalAddPostBtn").addEventListener("click", openAddPostModal);
@@ -1248,7 +1432,7 @@
                 const avatarsHtml = approvedNames.slice(0, 4).map(name => `<div class="player-avatar" title="${escapeHtml(name)}">${name.charAt(0)}</div>`).join('');
                 const extraHtml = approvedNames.length > 4 ? `<div class="player-avatar plus">+${approvedNames.length-4}</div>` : '';
                 html += `<div class="completed-announcement" data-post-id="${id}">
-                    <div class="completed-header"><div class="completed-title">فريق مكتمل 🎾</div><div class="completed-badge">✅ جاهز</div></div>
+                    <div class="completed-header"><div class="completed-title">فريق مكتمل 🎾</div><div class="completed-badge">✅ جاهز للعب</div></div>
                     <div class="completed-details">
                         <div class="detail-item"><strong>🏟️</strong> ${escapeHtml(post.clubName)}</div>
                         <div class="detail-item"><strong>📍</strong> ${escapeHtml(post.location||'غير محدد')}</div>
@@ -1258,7 +1442,7 @@
                     </div>
                     <div class="players-avatars">${avatarsHtml}${extraHtml}</div>
                     <div class="completed-actions">
-                        <button class="chat-team-btn" data-chat-id="${post.teamChatId}">💬 الفريق</button>
+                        <button class="chat-team-btn" data-chat-id="${post.teamChatId}">💬 دردشة الفريق</button>
                         <button class="view-details-btn" data-post-id="${id}">📋 التفاصيل</button>
                     </div></div>`;
             });
@@ -1267,7 +1451,7 @@
                 btn.addEventListener('click', (e) => {
                     const chatId = e.currentTarget.dataset.chatId;
                     if (chatId) window.switchToTabAndOpenChat('chats', chatId);
-                    else showToast("⚠️ لا توجد دردشة");
+                    else showToast("⚠️ لا توجد دردشة لهذا الفريق");
                 });
             });
             document.querySelectorAll('.view-details-btn').forEach(btn => {
@@ -1278,7 +1462,7 @@
 
     function showCompletedPostDetails(postId) {
         get(ref(db, `completedPosts/${postId}`)).then((snapshot) => {
-            if (!snapshot.exists()) { showToast("⚠️ غير موجود"); return; }
+            if (!snapshot.exists()) { showToast("⚠️ المنشور غير موجود"); return; }
             const post = snapshot.val();
             const eventDate = new Date(post.eventTimestamp);
             const formattedEvent = `${eventDate.toLocaleDateString('ar-EG', {weekday:'long', day:'numeric', month:'long', year:'numeric'})} - ${eventDate.toLocaleTimeString('ar-EG', {hour:'numeric', minute:'2-digit'})}`;
@@ -1286,22 +1470,22 @@
             modal.className = "modal";
             modal.style.display = "flex";
             modal.innerHTML = `<div class="modal-content">
-                <div style="display:flex; justify-content:space-between; margin-bottom:16px; align-items:center;">
-                    <h3 style="color:#64dcb4; font-size:18px;">📋 التفاصيل</h3>
-                    <button onclick="this.closest('.modal').remove()" style="background:none; border:none; font-size:26px; color:#ff6b6b; cursor:pointer;">✕</button>
+                <div style="display:flex; justify-content:space-between; margin-bottom:18px; align-items:center;">
+                    <h3 style="color:var(--color-primary); font-size:20px; font-weight:800;">📋 تفاصيل المباراة</h3>
+                    <button onclick="this.closest('.modal').remove()" style="background:none; border:none; font-size:28px; color:var(--color-error); cursor:pointer; transition: transform 0.2s;">✕</button>
                 </div>
-                <div style="background:rgba(30,50,45,0.6); border-radius:18px; padding:16px; border:1px solid rgba(100,220,180,0.3);">
-                    <div style="display:grid; gap:12px;">
-                        <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid rgba(100,220,180,0.2);"><span style="color:#aaa;">🏟️ النادي</span><span style="color:#64dcb4; font-weight:600;">${escapeHtml(post.clubName)}</span></div>
-                        <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid rgba(100,220,180,0.2);"><span style="color:#aaa;">📍 الموقع</span><span style="color:#64dcb4; font-weight:600;">${escapeHtml(post.location||'غير محدد')}</span></div>
-                        <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid rgba(100,220,180,0.2);"><span style="color:#aaa;">🕐 الموعد</span><span style="color:#64dcb4; font-weight:600;">${formattedEvent}</span></div>
-                        <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid rgba(100,220,180,0.2);"><span style="color:#aaa;">👥 اللاعبين</span><span style="color:#64dcb4; font-weight:600;">${post.approvedNames?.length||0}/${post.neededPlayers}</span></div>
-                        <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid rgba(100,220,180,0.2);"><span style="color:#aaa;">🎯 المستوى</span><span style="color:#64dcb4; font-weight:600;">${escapeHtml(post.preferredLevel||'غير محدد')}</span></div>
-                        <div style="display:flex; justify-content:space-between; padding:8px 0;"><span style="color:#aaa;">👤 الناشر</span><span style="color:#64dcb4; font-weight:600;">${escapeHtml(post.publisherName)}</span></div>
+                <div style="background:rgba(18,42,34,0.65); border-radius:22px; padding:18px; border:1.5px solid var(--border-active);">
+                    <div style="display:grid; gap:14px;">
+                        <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid var(--border-light);"><span style="color:var(--text-muted);">🏟️ النادي</span><span style="color:var(--color-primary); font-weight:700;">${escapeHtml(post.clubName)}</span></div>
+                        <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid var(--border-light);"><span style="color:var(--text-muted);">📍 الموقع</span><span style="color:var(--color-primary); font-weight:700;">${escapeHtml(post.location||'غير محدد')}</span></div>
+                        <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid var(--border-light);"><span style="color:var(--text-muted);">🕐 الموعد</span><span style="color:var(--color-primary); font-weight:700;">${formattedEvent}</span></div>
+                        <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid var(--border-light);"><span style="color:var(--text-muted);">👥 اللاعبين</span><span style="color:var(--color-primary); font-weight:700;">${post.approvedNames?.length||0}/${post.neededPlayers}</span></div>
+                        <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid var(--border-light);"><span style="color:var(--text-muted);">🎯 المستوى</span><span style="color:var(--color-primary); font-weight:700;">${escapeHtml(post.preferredLevel||'غير محدد')}</span></div>
+                        <div style="display:flex; justify-content:space-between; padding:10px 0;"><span style="color:var(--text-muted);">👤 الناشر</span><span style="color:var(--color-primary); font-weight:700;">${escapeHtml(post.publisherName)}</span></div>
                     </div>
-                    ${post.approvedNames?.length ? `<div style="margin-top:14px; padding-top:14px; border-top:1px solid rgba(100,220,180,0.2);"><div style="color:#aaa; margin-bottom:8px; font-size:13px;">👥 الأعضاء:</div><div style="display:flex; flex-wrap:wrap; gap:6px;">${post.approvedNames.map(n=>`<span style="background:rgba(100,220,180,0.15); color:#64dcb4; padding:5px 12px; border-radius:18px; font-size:12px;">${escapeHtml(n)}</span>`).join('')}</div></div>`:''}
+                    ${post.approvedNames?.length ? `<div style="margin-top:16px; padding-top:16px; border-top:1.5px solid var(--border-light);"><div style="color:var(--text-muted); margin-bottom:10px; font-size:14px; font-weight:600;">👥 أعضاء الفريق:</div><div style="display:flex; flex-wrap:wrap; gap:8px;">${post.approvedNames.map(n=>`<span style="background:rgba(200,255,110,0.18); color:var(--color-primary); padding:6px 14px; border-radius:22px; font-size:13px; font-weight:600; border:1px solid var(--border-active);">${escapeHtml(n)}</span>`).join('')}</div></div>`:''}
                 </div>
-                ${post.teamChatId ? `<button class="btn-primary" style="margin-top:16px; padding:12px;" onclick="window.switchToTabAndOpenChat('chats', '${post.teamChatId}'); this.closest('.modal').remove();">💬 دردشة الفريق</button>`:''}
+                ${post.teamChatId ? `<button class="btn-primary" style="margin-top:20px; padding:14px; font-size:15px;" onclick="window.switchToTabAndOpenChat('chats', '${post.teamChatId}'); this.closest('.modal').remove();">💬 دردشة الفريق</button>`:''}
             </div>`;
             document.body.appendChild(modal);
         });
@@ -1313,7 +1497,7 @@
             let postsArray = Object.entries(posts).map(([id, data]) => ({ id, ...data }))
                 .filter(post => !post.completed && post.eventTimestamp && post.eventTimestamp > Date.now()).reverse();
             let html = '';
-            if (postsArray.length === 0) html = `<div class="empty-state">🎾 لا توجد مباريات<br><span>✏️ أضف موعداً!</span></div>`;
+            if (postsArray.length === 0) html = `<div class="empty-state">🎾 لا توجد مباريات متاحة حالياً<br><span>✏️ كن أول من ينشر موعداً!</span></div>`;
             else postsArray.forEach(post => {
                 const eventDate = new Date(post.eventTimestamp);
                 const formattedEvent = `${eventDate.toLocaleDateString('ar-EG', {weekday:'short', day:'numeric', month:'long'})} - ${eventDate.toLocaleTimeString('ar-EG', {hour:'numeric', minute:'2-digit'})}`;
@@ -1323,7 +1507,7 @@
                     <div class="post-detail">📍 ${escapeHtml(post.location||'غير محدد')}</div>
                     <div class="post-detail">👥 يحتاج ${post.neededPlayers||'؟'} لاعب • ${escapeHtml(post.preferredLevel||'غير محدد')}</div>
                     <div class="post-detail">👤 ${escapeHtml(post.publisherName)}</div>
-                    <div class="countdown-section" data-event-timestamp="${post.eventTimestamp}">⏳ <span class="time-remaining"></span> • 👥 <span class="remaining-spots">${Math.max(0, (post.neededPlayers||9999))}</span> مكان</div>
+                    <div class="countdown-section" data-event-timestamp="${post.eventTimestamp}">⏳ <span class="time-remaining"></span> • 👥 <span class="remaining-spots">${Math.max(0, (post.neededPlayers||9999))}</span> مكان متاح</div>
                     <div class="ready-section"></div></div>`;
             });
             document.getElementById("postsList").innerHTML = html;
@@ -1354,21 +1538,21 @@
                                 <button class="approve-btn" data-userid="${userId}" data-username="${escapeHtml(userData.name)}" data-postid="${post.id}" data-postclub="${escapeHtml(post.clubName)}" data-posttime="${escapeHtml(post.time)}">✅</button>
                                 <button class="reject-btn" data-userid="${userId}" data-postid="${post.id}">❌</button></div></div>`;
                         });
-                        readyDiv.innerHTML = `<div class="ready-count-badge">👥 ${approvedCount}/${needed===9999?'∞':needed} • ${Object.keys(readyUsers).length} طلب</div>${usersHtml ? `<div class="ready-users-list">${usersHtml}</div>` : '<div class="ready-users-list" style="color:#777; text-align:center; padding:10px;">لا يوجد طلبات</div>'}`;
+                        readyDiv.innerHTML = `<div class="ready-count-badge">👥 ${approvedCount}/${needed===9999?'∞':needed} • ${Object.keys(readyUsers).length} طلب انضمام</div>${usersHtml ? `<div class="ready-users-list">${usersHtml}</div>` : '<div class="ready-users-list" style="color:var(--text-muted); text-align:center; padding:12px; font-size:14px;">لا يوجد طلبات حالياً</div>'}`;
                         readyDiv.querySelectorAll('.approve-btn').forEach(btn => btn.addEventListener('click', () => approveUser(btn.dataset.userid, btn.dataset.username, btn.dataset.postid, btn.dataset.postclub, btn.dataset.posttime)));
                         readyDiv.querySelectorAll('.reject-btn').forEach(btn => btn.addEventListener('click', () => rejectUser(btn.dataset.userid, btn.dataset.postid)));
                     } else {
-                        let readyContent = `<div class="ready-count-badge">👥 ${approvedCount}/${needed===9999?'∞':needed} • باقي ${remaining}</div>`;
+                        let readyContent = `<div class="ready-count-badge">👥 ${approvedCount}/${needed===9999?'∞':needed} • باقي ${remaining} مكان</div>`;
                         if (isUserApproved) {
                             const chatId = [currentUserId, post.publisherId].sort().join('_');
-                            readyContent += `<div style="margin-top:6px; padding:10px; background:linear-gradient(135deg,#64dcb4,#4dd0c0); color:#0a1a15; border-radius:20px; text-align:center; font-weight:700; font-size:13px;">✅ تمت الموافقة</div>
-                                <button class="approved-badge" onclick="window.switchToTabAndOpenChat('chats', '${chatId}')" style="padding:10px; font-size:13px;">💬 دردشة</button>
-                                <button class="cancel-ready-btn" data-postid="${post.id}" style="margin-top:6px; padding:8px; font-size:12px;">❌ سحب</button>`;
+                            readyContent += `<div style="margin-top:8px; padding:12px; background:linear-gradient(135deg,var(--color-primary),var(--color-secondary)); color:var(--text-dark); border-radius:24px; text-align:center; font-weight:800; font-size:14px; box-shadow: 0 4px 15px rgba(139,195,74,0.4);">✅ تمت الموافقة عليك</div>
+                                <button class="approved-badge" onclick="window.switchToTabAndOpenChat('chats', '${chatId}')" style="padding:12px; font-size:14px; margin-top:8px;">💬 دردشة مع الفريق</button>
+                                <button class="cancel-ready-btn" data-postid="${post.id}" style="margin-top:8px; padding:10px; font-size:13px;">❌ سحب طلبي</button>`;
                         } else if (isUserReady) {
-                            readyContent += `<button class="cancel-ready-btn" data-postid="${post.id}" style="margin-top:6px; padding:8px; font-size:12px;">❌ سحب</button><div class="waiting-badge" style="text-align:center; margin-top:8px; padding:6px 10px; font-size:10px;">⏳ في الانتظار</div>`;
+                            readyContent += `<button class="cancel-ready-btn" data-postid="${post.id}" style="margin-top:8px; padding:10px; font-size:13px;">❌ سحب طلبي</button><div class="waiting-badge" style="text-align:center; margin-top:10px; padding:8px 12px; font-size:12px;">⏳ في قائمة الانتظار</div>`;
                         } else {
-                            if (remaining > 0) readyContent += `<button class="ready-btn-new" data-post-id="${post.id}" data-post-club="${escapeHtml(post.clubName)}" data-post-time="${escapeHtml(post.time)}" data-post-publisher="${escapeHtml(post.publisherName)}" data-post-publisherid="${post.publisherId}" data-post-preferredlevel="${escapeHtml(post.preferredLevel||'')}" style="padding:11px; font-size:13px;">🎾 جاهز للعب</button>`;
-                            else readyContent += `<div class="waiting-badge" style="text-align:center; padding:12px; font-size:13px;">🎉 اكتمل التيم</div>`;
+                            if (remaining > 0) readyContent += `<button class="ready-btn-new" data-post-id="${post.id}" data-post-club="${escapeHtml(post.clubName)}" data-post-time="${escapeHtml(post.time)}" data-post-publisher="${escapeHtml(post.publisherName)}" data-post-publisherid="${post.publisherId}" data-post-preferredlevel="${escapeHtml(post.preferredLevel||'')}" style="padding:13px; font-size:14px; margin-top:10px;">🎾 جاهز للعب</button>`;
+                            else readyContent += `<div class="waiting-badge" style="text-align:center; padding:14px; font-size:14px; margin-top:10px; font-weight:700;">🎉 اكتمل الفريق بنجاح</div>`;
                         }
                         readyDiv.innerHTML = readyContent;
                         const readyBtn = readyDiv.querySelector('.ready-btn-new');
@@ -1382,13 +1566,13 @@
     }
 
     async function handleReadyClick(e, postId, clubName, eventTime, publisherName, publisherId, preferredLevel = '') {
-        if (publisherId === currentUserId) { showToast("لا يمكنك التجهيز على منشورك"); return; }
+        if (publisherId === currentUserId) { showToast("لا يمكنك التجهيز على منشورك الخاص"); return; }
         const userLevelVal = getLevelValue(currentUser.tennisLevel);
         const requiredLevelVal = getLevelValue(preferredLevel);
         if (requiredLevelVal > 0 && userLevelVal < requiredLevelVal) { showToast(`مستواك أقل من المطلوب (${preferredLevel})`); return; }
         await set(ref(db, `postReady/${postId}/${currentUserId}`), { name: currentUser.name, userId: currentUserId, status: 'waiting', timestamp: Date.now() });
         await push(ref(db, `notifications/${publisherId}`), { type: 'new_ready', fromName: currentUser.name, fromId: currentUserId, clubName, postId, message: `🔔 ${currentUser.name} جاهز للعب في ${clubName}`, timestamp: Date.now(), read: false });
-        showToast(`✅ تم الإرسال إلى ${publisherName}`);
+        showToast(`✅ تم إرسال طلبك إلى ${publisherName}`);
     }
 
     async function cancelReady(postId) {
@@ -1406,16 +1590,16 @@
                 }
             }
         } catch(e) {}
-        showToast("❌ تم السحب");
+        showToast("❌ تم سحب الطلب بنجاح");
     }
 
     async function approveUser(userId, userName, postId, clubName, eventTime) {
         const modal = document.createElement("div");
         modal.className = "modal";
         modal.style.display = "flex";
-        modal.innerHTML = `<div class="modal-content"><h3 style="color:#64dcb4; margin-bottom:16px; text-align:center;">✉️ إرسال رسالة</h3>
-            <div style="background:rgba(15,25,22,0.8); padding:12px; border-radius:12px; margin-bottom:18px; font-size:13px; line-height:1.4;">🎉 أهلاً ${escapeHtml(userName)}!<br>✅ الموعد تمام 🤝 ${escapeHtml(clubName)}</div>
-            <div style="display:flex; gap:12px;"><button id="cancelSendBtn" class="btn-outline" style="flex:1; padding:12px;">إلغاء</button><button id="confirmSendBtn" class="btn-primary" style="flex:1; padding:12px;">📤 إرسال</button></div></div>`;
+        modal.innerHTML = `<div class="modal-content"><h3 style="color:var(--color-primary); margin-bottom:18px; text-align:center; font-size:20px; font-weight:800;">✉️ إرسال رسالة تأكيد</h3>
+            <div style="background:rgba(15,35,28,0.85); padding:14px; border-radius:16px; margin-bottom:20px; font-size:14px; line-height:1.5; border:1.5px solid var(--border-active);">🎉 أهلاً بك ${escapeHtml(userName)}!<br>✅ الموعد تمام ومؤكد 🤝 <span style="color:var(--color-primary); font-weight:700;">${escapeHtml(clubName)}</span></div>
+            <div style="display:flex; gap:14px;"><button id="cancelSendBtn" class="btn-outline" style="flex:1; padding:14px; font-size:15px;">إلغاء</button><button id="confirmSendBtn" class="btn-primary" style="flex:1; padding:14px; font-size:15px;">📤 إرسال وتأكيد</button></div></div>`;
         document.body.appendChild(modal);
         document.getElementById("cancelSendBtn").addEventListener("click", () => modal.remove());
         document.getElementById("confirmSendBtn").addEventListener("click", async () => {
@@ -1426,8 +1610,8 @@
             await set(ref(db, `userChats/${currentUserId}/${chatId}`), { chatId, otherId: userId, otherName: userName, clubName, lastUpdated: Date.now(), lastRead: Date.now() });
             await set(ref(db, `userChats/${userId}/${chatId}`), { chatId, otherId: currentUserId, otherName: currentUser.name, clubName, lastUpdated: Date.now(), lastRead: 0 });
             const msgRef = push(ref(db, `chats/${chatId}/messages`));
-            await set(msgRef, { senderId: currentUserId, senderName: currentUser.name, text: `🎉 أهلاً ${userName}!\n✅ الموعد تمام 🤝 ${clubName}`, timestamp: Date.now() });
-            await push(ref(db, `notifications/${userId}`), { type: 'approved', fromName: currentUser.name, chatId, message: `🎉 ${currentUser.name} وافق! اذهب للدردشة`, timestamp: Date.now(), read: false });
+            await set(msgRef, { senderId: currentUserId, senderName: currentUser.name, text: `🎉 أهلاً ${userName}!\n✅ الموعد تمام ومؤكد 🤝 ${clubName}`, timestamp: Date.now() });
+            await push(ref(db, `notifications/${userId}`), { type: 'approved', fromName: currentUser.name, chatId, message: `🎉 ${currentUser.name} وافق على طلبك! اذهب للدردشة`, timestamp: Date.now(), read: false });
             const readySnap = await get(ref(db, `postReady/${postId}`));
             const rUsers = readySnap.val() || {};
             const approvedUsers = Object.values(rUsers).filter(u => u.status === 'approved');
@@ -1443,13 +1627,13 @@
                     await set(ref(db, `chats/${teamChatId}`), { participants: allParticipants, participantNames: { [post.publisherId]: post.publisherName, ...Object.fromEntries(approvedUsers.map(u => [u.userId, u.name])) }, createdAt: Date.now(), clubName, postId, eventTime: post.time, isTeamChat: true });
                     for (const participantId of allParticipants) await set(ref(db, `userChats/${participantId}/${teamChatId}`), { chatId: teamChatId, otherName: "فريق التنس", clubName, lastUpdated: Date.now(), lastRead: Date.now(), isTeamChat: true });
                     const welcomeRef = push(ref(db, `chats/${teamChatId}/messages`));
-                    await set(welcomeRef, { senderId: 'system', senderName: 'النظام', text: `🎉 أهلاً بالفريق! 🎾\nالموعد: ${post.time}\nالمكان: ${post.location||post.clubName}\nلنلعب مباراة رائعة! 💪`, timestamp: Date.now(), isSystem: true });
-                    for (const participantId of allParticipants) await push(ref(db, `notifications/${participantId}`), { type: 'team_complete', message: `🎉 اكتمل فريق ${post.clubName}! الموعد: ${post.time}`, chatId: teamChatId, timestamp: Date.now(), read: false });
+                    await set(welcomeRef, { senderId: 'system', senderName: 'النظام', text: `🎉 أهلاً بالفريق الرائع! 🎾\nالموعد: ${post.time}\nالمكان: ${post.location||post.clubName}\nلنلعب مباراة ممتعة ورائعة! 💪🔥`, timestamp: Date.now(), isSystem: true });
+                    for (const participantId of allParticipants) await push(ref(db, `notifications/${participantId}`), { type: 'team_complete', message: `🎉 اكتمل فريق ${post.clubName} بنجاح! الموعد: ${post.time}`, chatId: teamChatId, timestamp: Date.now(), read: false });
                     await update(ref(db, `allPosts/${postId}`), { completed: true, completedAt: Date.now(), teamChatId });
-                    showToast("🎉 اكتمل التيم! ظهر الإعلان");
+                    showToast("🎉 اكتمل الفريق! ظهر الإعلان في صفحة المكتمل");
                 }
             }
-            showToast(`✅ تمت الموافقة على ${userName}`);
+            showToast(`✅ تمت الموافقة على ${userName} بنجاح`);
             setTimeout(() => window.openChat(chatId), 400);
         });
     }
@@ -1458,19 +1642,19 @@
         await remove(ref(db, `postReady/${postId}/${userId}`));
         const postSnap = await get(ref(db, `allPosts/${postId}`));
         if (postSnap.exists()) await push(ref(db, `notifications/${userId}`), { type: 'rejected', fromName: currentUser.name, message: `😔 ${currentUser.name} اعتذر عن طلبك في ${postSnap.val().clubName}`, timestamp: Date.now(), read: false });
-        showToast("❌ تم الرفض");
+        showToast("❌ تم رفض الطلب");
     }
 
     function renderChatsTab() {
         const container = document.getElementById("appContainer");
-        container.innerHTML = `<div class="header-actions"><h3 style="color:#64dcb4; display:flex; align-items:center; gap:6px; font-size:18px;"><span>💬</span> محادثاتي</h3>
-            <div class="action-buttons"><button id="selectAllChatsBtn" class="select-all-btn small-btn">☑️ الكل</button><button id="deleteSelectedChatsBtn" class="delete-selected-btn small-btn" style="display:none;">🗑️ حذف</button><button id="cancelSelectChatsBtn" class="btn-outline small-btn" style="display:none;">إلغاء</button></div></div><div id="chatsList"></div>`;
+        container.innerHTML = `<div class="header-actions"><h3 style="color:var(--color-primary); display:flex; align-items:center; gap:7px; font-size:20px; font-weight:800;"><span>💬</span> محادثاتي</h3>
+            <div class="action-buttons"><button id="selectAllChatsBtn" class="select-all-btn small-btn">☑️ تحديد الكل</button><button id="deleteSelectedChatsBtn" class="delete-selected-btn small-btn" style="display:none;">🗑️ حذف المحدد</button><button id="cancelSelectChatsBtn" class="btn-outline small-btn" style="display:none;">إلغاء</button></div></div><div id="chatsList"></div>`;
         let selectedChats = new Set(), isSelectionMode = false;
         if (!currentUserId) return;
         onValue(ref(db, `userChats/${currentUserId}`), async (snapshot) => {
             const entries = snapshot.val() || {};
             let html = '';
-            if (Object.keys(entries).length === 0) html = `<div class="empty-state">🎾 لا توجد دردشات<br><span>✏️ جهز على منشور</span></div>`;
+            if (Object.keys(entries).length === 0) html = `<div class="empty-state">🎾 لا توجد دردشات حالياً<br><span>✏️ جهز على منشور للبدء</span></div>`;
             else {
                 const entriesWithUnread = await Promise.all(Object.values(entries).map(async (entry) => {
                     const lastReadSnap = await get(ref(db, `userChats/${currentUserId}/${entry.chatId}/lastRead`));
@@ -1483,10 +1667,10 @@
                 }));
                 html = entriesWithUnread.map(entry => `<div class="select-item" data-chatid="${entry.chatId}" onclick="if(!${isSelectionMode}) window.openChatAndUpdateRead('${entry.chatId}')">
                     <input type="checkbox" class="select-checkbox chat-checkbox" data-chatid="${entry.chatId}" style="${isSelectionMode?'display:inline-block':'display:none'}">
-                    <div class="post-card" style="cursor:pointer; flex:1; ${entry.hasUnread?'border-right:3px solid #64dcb4;':''} margin-bottom:0;">
-                        <div class="club-name">🎾 ${escapeHtml(entry.clubName)}</div><div class="post-detail">مع: ${escapeHtml(entry.otherName)}</div>
+                    <div class="post-card" style="cursor:pointer; flex:1; ${entry.hasUnread?'border-right:4px solid var(--color-primary); box-shadow: var(--shadow-card), var(--shadow-glow);':''} margin-bottom:0; transition: var(--transition-smooth);">
+                        <div class="club-name" style="font-size:18px;">🎾 ${escapeHtml(entry.clubName)}</div><div class="post-detail" style="font-size:14px;">مع: ${escapeHtml(entry.otherName)}</div>
                         <div class="post-time">${new Date(entry.lastUpdated).toLocaleString('ar-EG')}</div>
-                        ${entry.hasUnread?'<div style="color:#64dcb4; font-size:11px; margin-top:4px; font-weight:600;">📩 جديد</div>':''}
+                        ${entry.hasUnread?'<div style="color:var(--color-primary); font-size:12px; margin-top:6px; font-weight:700; display:flex; align-items:center; gap:4px;"><span style="width:8px; height:8px; background:var(--color-primary); border-radius:50%; display:inline-block; box-shadow: 0 0 8px var(--color-primary);"></span> رسالة جديدة</div>':''}
                     </div></div>`).join('');
             }
             document.getElementById("chatsList").innerHTML = html;
@@ -1495,24 +1679,24 @@
         function updateDeleteButton() { const btn = document.getElementById('deleteSelectedChatsBtn'); if(btn) btn.style.display = selectedChats.size>0?'inline-block':'none'; }
         document.getElementById('selectAllChatsBtn').addEventListener('click', () => { isSelectionMode=true; document.querySelectorAll('.chat-checkbox').forEach(cb=>{cb.style.display='inline-block';cb.checked=true;selectedChats.add(cb.dataset.chatid);}); document.getElementById('deleteSelectedChatsBtn').style.display='inline-block'; document.getElementById('cancelSelectChatsBtn').style.display='inline-block'; document.getElementById('selectAllChatsBtn').style.display='none'; updateDeleteButton(); });
         document.getElementById('cancelSelectChatsBtn')?.addEventListener('click', () => { isSelectionMode=false; selectedChats.clear(); document.querySelectorAll('.chat-checkbox').forEach(cb=>{cb.style.display='none';cb.checked=false;}); document.getElementById('deleteSelectedChatsBtn').style.display='none'; document.getElementById('cancelSelectChatsBtn').style.display='none'; document.getElementById('selectAllChatsBtn').style.display='inline-block'; });
-        document.getElementById('deleteSelectedChatsBtn')?.addEventListener('click', async () => { if(selectedChats.size===0)return; if(!confirm(`⚠️ حذف ${selectedChats.size} دردشة؟`))return; for(const chatId of selectedChats){await remove(ref(db,`chats/${chatId}`)); await remove(ref(db,`userChats/${currentUserId}/${chatId}`));} showToast(`✅ تم الحذف`); selectedChats.clear(); document.getElementById('cancelSelectChatsBtn')?.click(); loadUnreadMessagesCount(); });
+        document.getElementById('deleteSelectedChatsBtn')?.addEventListener('click', async () => { if(selectedChats.size===0)return; if(!confirm(`⚠️ حذف ${selectedChats.size} دردشة؟`))return; for(const chatId of selectedChats){await remove(ref(db,`chats/${chatId}`)); await remove(ref(db,`userChats/${currentUserId}/${chatId}`));} showToast(`✅ تم الحذف بنجاح`); selectedChats.clear(); document.getElementById('cancelSelectChatsBtn')?.click(); loadUnreadMessagesCount(); });
     }
 
     function renderNotificationsTab() {
         const container = document.getElementById("appContainer");
-        container.innerHTML = `<div class="header-actions"><h3 style="color:#64dcb4; display:flex; align-items:center; gap:6px; font-size:18px;"><span>🔔</span> الإشعارات</h3>
-            <div class="action-buttons"><button id="selectAllNotifsBtn" class="select-all-btn small-btn">☑️ الكل</button><button id="deleteSelectedNotifsBtn" class="delete-selected-btn small-btn" style="display:none;">🗑️ حذف</button><button id="cancelSelectNotifsBtn" class="btn-outline small-btn" style="display:none;">إلغاء</button></div></div><div id="notifList"></div>`;
+        container.innerHTML = `<div class="header-actions"><h3 style="color:var(--color-primary); display:flex; align-items:center; gap:7px; font-size:20px; font-weight:800;"><span>🔔</span> الإشعارات</h3>
+            <div class="action-buttons"><button id="selectAllNotifsBtn" class="select-all-btn small-btn">☑️ تحديد الكل</button><button id="deleteSelectedNotifsBtn" class="delete-selected-btn small-btn" style="display:none;">🗑️ حذف المحدد</button><button id="cancelSelectNotifsBtn" class="btn-outline small-btn" style="display:none;">إلغاء</button></div></div><div id="notifList"></div>`;
         let selectedNotifs = new Set(), isSelectionMode = false;
         if (!currentUserId) return;
         onValue(ref(db, `notifications/${currentUserId}`), (snapshot) => {
             const notifs = snapshot.val() || {};
             let html = '';
-            if (Object.keys(notifs).length === 0) html = `<div class="empty-state">🔔 لا توجد إشعارات</div>`;
+            if (Object.keys(notifs).length === 0) html = `<div class="empty-state">🔔 لا توجد إشعارات جديدة</div>`;
             else html = Object.entries(notifs).reverse().map(([id, n]) => `<div class="select-item" data-notifid="${id}">
                 <input type="checkbox" class="select-checkbox notif-checkbox" data-notifid="${id}" style="${isSelectionMode?'display:inline-block':'display:none'}">
-                <div class="post-card" style="flex:1; ${!n.read?'border-right:3px solid #64dcb4;':''} margin-bottom:0;">
-                    <p style="line-height:1.4; font-size:14px;">${escapeHtml(n.message)}</p><div class="post-time">${new Date(n.timestamp).toLocaleString('ar-EG')}</div>
-                    ${n.chatId?`<button class="ready-btn-new" onclick="event.stopPropagation(); window.openChatAndUpdateRead('${n.chatId}')" style="margin-top:10px; padding:9px; font-size:12px;">💬 رد</button>`:''}
+                <div class="post-card" style="flex:1; ${!n.read?'border-right:4px solid var(--color-primary); box-shadow: var(--shadow-card), var(--shadow-glow);':''} margin-bottom:0; transition: var(--transition-smooth);">
+                    <p style="line-height:1.45; font-size:15px; color:var(--text-secondary);">${escapeHtml(n.message)}</p><div class="post-time">${new Date(n.timestamp).toLocaleString('ar-EG')}</div>
+                    ${n.chatId?`<button class="ready-btn-new" onclick="event.stopPropagation(); window.openChatAndUpdateRead('${n.chatId}')" style="margin-top:12px; padding:10px 16px; font-size:13px;">💬 الرد الآن</button>`:''}
                 </div></div>`).join('');
             document.getElementById("notifList").innerHTML = html;
             document.querySelectorAll('.notif-checkbox').forEach(cb => cb.addEventListener('change', (e) => { e.stopPropagation(); const notifId = cb.dataset.notifid; cb.checked ? selectedNotifs.add(notifId) : selectedNotifs.delete(notifId); updateDeleteButton(); }));
@@ -1520,7 +1704,7 @@
         function updateDeleteButton() { const btn = document.getElementById('deleteSelectedNotifsBtn'); if(btn) btn.style.display = selectedNotifs.size>0?'inline-block':'none'; }
         document.getElementById('selectAllNotifsBtn').addEventListener('click', () => { isSelectionMode=true; document.querySelectorAll('.notif-checkbox').forEach(cb=>{cb.style.display='inline-block';cb.checked=true;selectedNotifs.add(cb.dataset.notifid);}); document.getElementById('deleteSelectedNotifsBtn').style.display='inline-block'; document.getElementById('cancelSelectNotifsBtn').style.display='inline-block'; document.getElementById('selectAllNotifsBtn').style.display='none'; updateDeleteButton(); });
         document.getElementById('cancelSelectNotifsBtn')?.addEventListener('click', () => { isSelectionMode=false; selectedNotifs.clear(); document.querySelectorAll('.notif-checkbox').forEach(cb=>{cb.style.display='none';cb.checked=false;}); document.getElementById('deleteSelectedNotifsBtn').style.display='none'; document.getElementById('cancelSelectNotifsBtn').style.display='none'; document.getElementById('selectAllNotifsBtn').style.display='inline-block'; });
-        document.getElementById('deleteSelectedNotifsBtn')?.addEventListener('click', async () => { if(selectedNotifs.size===0)return; if(!confirm(`⚠️ حذف ${selectedNotifs.size} إشعار؟`))return; for(const notifId of selectedNotifs) await remove(ref(db, `notifications/${currentUserId}/${notifId}`)); showToast(`✅ تم الحذف`); selectedNotifs.clear(); document.getElementById('cancelSelectNotifsBtn')?.click(); loadUnreadNotificationsCount(); });
+        document.getElementById('deleteSelectedNotifsBtn')?.addEventListener('click', async () => { if(selectedNotifs.size===0)return; if(!confirm(`⚠️ حذف ${selectedNotifs.size} إشعار؟`))return; for(const notifId of selectedNotifs) await remove(ref(db, `notifications/${currentUserId}/${notifId}`)); showToast(`✅ تم الحذف بنجاح`); selectedNotifs.clear(); document.getElementById('cancelSelectNotifsBtn')?.click(); loadUnreadNotificationsCount(); });
     }
 
     window.openChatAndUpdateRead = async function(chatId) { await updateLastRead(chatId); window.openChat(chatId); };
@@ -1534,14 +1718,14 @@
         const chatsSnap = await get(ref(db, `userChats/${currentUserId}`));
         const chatsCount = chatsSnap.exists() ? Object.keys(chatsSnap.val()).length : 0;
         container.innerHTML = `<div class="profile-header">
-            <div class="avatar">${currentUser.name.charAt(0)}</div><h3 style="color:#64dcb4; margin-top:6px;">${escapeHtml(currentUser.name)}</h3>
-            <p style="color:#aaa; margin-top:4px; font-size:13px;">📞 ${currentUser.phone} | 🎂 ${currentUser.age} | 🎾 ${currentUser.tennisLevel||'غير محدد'}</p></div>
+            <div class="avatar">${currentUser.name.charAt(0)}</div><h3 style="color:var(--color-primary); margin-top:8px; font-size:22px; font-weight:800; text-shadow: 0 0 12px rgba(200,255,110,0.3);">${escapeHtml(currentUser.name)}</h3>
+            <p style="color:var(--text-muted); margin-top:6px; font-size:14px; line-height:1.5;">📞 ${currentUser.phone} &nbsp;|&nbsp; 🎂 ${currentUser.age} سنة &nbsp;|&nbsp; 🎾 ${currentUser.tennisLevel||'غير محدد'}</p></div>
             <div class="stats-row">
-                <div class="stat" id="myPostsStat"><div class="stat-number">${myPostsCount}</div><span style="color:#aaa; font-size:12px;">📝 منشوراتي</span></div>
-                <div class="stat"><div class="stat-number">${chatsCount}</div><span style="color:#aaa; font-size:12px;">💬 دردشات</span></div></div>
-            <div style="display:flex; gap:12px; margin-top:20px;">
-                <button id="editProfileBtn" class="btn-primary" style="flex:1; padding:14px 18px;">✏️ تعديل</button>
-                <button id="logoutFromProfile" class="btn-danger" style="flex:1; padding:14px 18px;">🚪 خروج</button></div>`;
+                <div class="stat" id="myPostsStat"><div class="stat-number">${myPostsCount}</div><span style="color:var(--text-muted); font-size:13px; display:block; margin-top:4px;">📝 منشوراتي</span></div>
+                <div class="stat"><div class="stat-number">${chatsCount}</div><span style="color:var(--text-muted); font-size:13px; display:block; margin-top:4px;">💬 دردشات</span></div></div>
+            <div style="display:flex; gap:14px; margin-top:24px; width:100%; max-width:340px;">
+                <button id="editProfileBtn" class="btn-primary" style="flex:1; padding:16px 18px; font-size:15px;">✏️ تعديل البيانات</button>
+                <button id="logoutFromProfile" class="btn-danger" style="flex:1; padding:16px 18px; font-size:15px;">🚪 خروج</button></div>`;
         document.getElementById("editProfileBtn").addEventListener("click", showEditProfileModal);
         document.getElementById("logoutFromProfile").addEventListener("click", showLogoutConfirmModal);
         document.getElementById("myPostsStat").addEventListener("click", () => showMyPostsModal(myPosts));
@@ -1551,14 +1735,14 @@
         const modal = document.createElement("div");
         modal.className = "modal";
         modal.style.display = "flex";
-        let postsHtml = myPosts.length === 0 ? '<div class="empty-state">🎾 ليس لديك منشورات</div>' : myPosts.map(([id, post]) => `<div style="background:rgba(30,30,50,0.7); border-radius:16px; padding:12px; margin-bottom:12px; border:1px solid rgba(100,220,180,0.15);">
-            <div class="club-name">🎾 ${escapeHtml(post.clubName)}</div><div class="post-detail">🕐 ${escapeHtml(post.time)}</div>
-            <div class="post-detail">📍 ${escapeHtml(post.location||'غير محدد')}</div><div class="post-detail">👥 ${post.neededPlayers||'؟'} لاعب • ${escapeHtml(post.preferredLevel||'غير محدد')}</div>
-            <div class="post-detail">📅 ${new Date(post.eventTimestamp||post.timestamp).toLocaleString('ar-EG')}</div>
-            <button class="delete-post-btn" data-post-id="${id}" style="background:linear-gradient(135deg, #ff6b6b, #ee5a5a); border:none; padding:8px 16px; border-radius:20px; color:white; margin-top:8px; font-weight:600; font-size:12px;">🗑️ حذف</button></div>`).join('');
-        modal.innerHTML = `<div class="modal-content" style="max-height:65vh;"><div style="display:flex; justify-content:space-between; margin-bottom:16px; align-items:center;"><h3 style="color:#64dcb4; font-size:18px;">📝 منشوراتي</h3><button onclick="this.closest('.modal').remove()" style="background:none; border:none; font-size:24px; color:#ff6b6b; cursor:pointer;">✕</button></div><div id="myPostsList">${postsHtml}</div></div>`;
+        let postsHtml = myPosts.length === 0 ? '<div class="empty-state">🎾 ليس لديك منشورات حتى الآن</div>' : myPosts.map(([id, post]) => `<div style="background:rgba(18,38,30,0.75); border-radius:20px; padding:14px; margin-bottom:14px; border:1.5px solid var(--border-light); transition: var(--transition-smooth);">
+            <div class="club-name" style="font-size:18px;">🎾 ${escapeHtml(post.clubName)}</div><div class="post-detail" style="font-size:14px;">🕐 ${escapeHtml(post.time)}</div>
+            <div class="post-detail" style="font-size:14px;">📍 ${escapeHtml(post.location||'غير محدد')}</div><div class="post-detail" style="font-size:14px;">👥 ${post.neededPlayers||'؟'} لاعب • ${escapeHtml(post.preferredLevel||'غير محدد')}</div>
+            <div class="post-detail" style="font-size:14px;">📅 ${new Date(post.eventTimestamp||post.timestamp).toLocaleString('ar-EG')}</div>
+            <button class="delete-post-btn" data-post-id="${id}" style="background:linear-gradient(135deg, var(--color-error), var(--color-error-dark)); border:none; padding:9px 18px; border-radius:24px; color:white; margin-top:10px; font-weight:700; font-size:13px; width:100%;">🗑️ حذف هذا المنشور</button></div>`).join('');
+        modal.innerHTML = `<div class="modal-content" style="max-height:68vh;"><div style="display:flex; justify-content:space-between; margin-bottom:18px; align-items:center;"><h3 style="color:var(--color-primary); font-size:20px; font-weight:800;">📝 منشوراتي</h3><button onclick="this.closest('.modal').remove()" style="background:none; border:none; font-size:26px; color:var(--color-error); cursor:pointer; transition: transform 0.2s;">✕</button></div><div id="myPostsList">${postsHtml}</div></div>`;
         document.body.appendChild(modal);
-        document.querySelectorAll('.delete-post-btn').forEach(btn => btn.addEventListener('click', async (e) => { e.stopPropagation(); const postId = btn.dataset.postId; if(confirm("حذف هذا المنشور؟")) { await remove(ref(db, `allPosts/${postId}`)); await remove(ref(db, `postReady/${postId}`)); await remove(ref(db, `completedPosts/${postId}`)); showToast("✅ تم الحذف"); modal.remove(); if(activeTab==="profile") renderProfileTab(); if(activeTab==="home") renderHomeTab(); }}));
+        document.querySelectorAll('.delete-post-btn').forEach(btn => btn.addEventListener('click', async (e) => { e.stopPropagation(); const postId = btn.dataset.postId; if(confirm("⚠️ هل أنت متأكد من حذف هذا المنشور؟")) { await remove(ref(db, `allPosts/${postId}`)); await remove(ref(db, `postReady/${postId}`)); await remove(ref(db, `completedPosts/${postId}`)); showToast("✅ تم حذف المنشور بنجاح"); modal.remove(); if(activeTab==="profile") renderProfileTab(); if(activeTab==="home") renderHomeTab(); }}));
     }
 
     window.openChat = async function(chatId) {
@@ -1566,7 +1750,7 @@
         const modal = document.createElement("div");
         modal.className = "modal";
         modal.style.display = "flex";
-        modal.innerHTML = `<div class="modal-content chat-modal-content"><div style="display:flex; justify-content:space-between; margin-bottom:10px; align-items:center;"><h3 id="chatTitle" style="color:#64dcb4; display:flex; align-items:center; gap:6px; font-size:17px;">💬 دردشة</h3><button onclick="this.closest('.modal').remove()" style="background:none; border:none; font-size:28px; color:#ff6b6b; cursor:pointer;">✕</button></div><div id="chatMessages" class="messages-container"></div><div style="display:flex; gap:8px; margin-top:10px;"><input id="msgInput" type="text" placeholder="اكتب..." style="flex:1; margin-bottom:0; padding:12px 16px;"><button id="sendMsgBtn" style="background:linear-gradient(135deg, #64dcb4, #4dd0c0); border:none; padding:12px 22px; border-radius:30px; color:#0a1a15; font-weight:700; cursor:pointer; font-size:13px;">إرسال</button></div></div>`;
+        modal.innerHTML = `<div class="modal-content chat-modal-content"><div style="display:flex; justify-content:space-between; margin-bottom:12px; align-items:center;"><h3 id="chatTitle" style="color:var(--color-primary); display:flex; align-items:center; gap:7px; font-size:18px; font-weight:800;">💬 دردشة</h3><button onclick="this.closest('.modal').remove()" style="background:none; border:none; font-size:30px; color:var(--color-error); cursor:pointer; transition: transform 0.2s;">✕</button></div><div id="chatMessages" class="messages-container"></div><div style="display:flex; gap:10px; margin-top:12px;"><input id="msgInput" type="text" placeholder="اكتب رسالتك..." style="flex:1; margin-bottom:0; padding:14px 18px; border-radius:30px;"><button id="sendMsgBtn" style="background:linear-gradient(135deg, var(--color-primary), var(--color-secondary)); border:none; padding:14px 24px; border-radius:32px; color:var(--text-dark); font-weight:800; cursor:pointer; font-size:14px; box-shadow: 0 6px 20px rgba(139,195,74,0.45);">إرسال ✨</button></div></div>`;
         document.body.appendChild(modal);
         const chatSnap = await get(ref(db, `chats/${chatId}`));
         if (chatSnap.exists()) { const chat = chatSnap.val(); const other = Object.entries(chat.participantNames).find(([id]) => id !== currentUserId); document.getElementById("chatTitle").textContent = `💬 ${escapeHtml(other?other[1]:'اللاعب')}`; }
@@ -1576,8 +1760,8 @@
             let html = '';
             Object.entries(msgs).sort(([,a],[,b])=>a.timestamp-b.timestamp).forEach(([,msg]) => {
                 const isMine = msg.senderId === currentUserId;
-                const systemClass = msg.isSystem ? 'style="background:linear-gradient(135deg, #b478ff, #64dcb4); color:#0a1a15; text-align:center; font-weight:600; border:none; max-width:95%; align-self:center;"' : '';
-                html += `<div class="message ${isMine?'my-message':'other-message'}" ${systemClass}><small style="opacity:0.8; font-size:10px; display:block; margin-bottom:2px;">${escapeHtml(msg.senderName)}</small>${escapeHtml(msg.text)}<div style="font-size:9px; margin-top:4px; opacity:0.5; text-align:right;">${new Date(msg.timestamp).toLocaleTimeString('ar-EG')}</div></div>`;
+                const systemClass = msg.isSystem ? 'style="background:linear-gradient(135deg, var(--color-primary), var(--color-secondary)); color:var(--text-dark); text-align:center; font-weight:700; border:none; max-width:95%; align-self:center; box-shadow: 0 5px 18px rgba(139,195,74,0.4);"' : '';
+                html += `<div class="message ${isMine?'my-message':'other-message'}" ${systemClass}><small style="opacity:0.85; font-size:11px; display:block; margin-bottom:3px; font-weight:600;">${escapeHtml(msg.senderName)}</small>${escapeHtml(msg.text)}<div style="font-size:10px; margin-top:5px; opacity:0.6; text-align:right; font-weight:500;">${new Date(msg.timestamp).toLocaleTimeString('ar-EG')}</div></div>`;
             });
             const container = document.getElementById("chatMessages");
             if (container) { container.innerHTML = html; container.scrollTop = container.scrollHeight; }
@@ -1593,15 +1777,15 @@
         modal.className = "modal";
         modal.style.display = "flex";
         modal.innerHTML = `<div class="modal-content">
-            <h3 style="margin-bottom:18px; color:#64dcb4; text-align:center; font-size:18px;"><span>🎾</span> منشور جديد</h3>
-            <input id="clubName" placeholder="اسم النادي" style="text-align:center;">
-            <input id="location" placeholder="الموقع" style="text-align:center;">
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;"><input id="eventDate" type="date" style="text-align:center;"><input id="eventTimeInput" type="time" style="text-align:center;"></div>
-            <input type="number" id="neededPlayers" placeholder="عدد اللاعبين" min="1" style="text-align:center;">
-            <select id="preferredLevel" style="background:rgba(30,30,50,0.8); border:1.5px solid rgba(100,220,180,0.25); padding:14px 18px; border-radius:24px; color:white; width:100%; margin-bottom:14px;">
-                <option value="">المستوى المطلوب</option><option value="مبتدئ">مبتدئ</option><option value="أقل من متوسط">أقل من متوسط</option><option value="متوسط">متوسط</option><option value="أعلى من متوسط">أعلى من متوسط</option><option value="محترف">محترف</option>
+            <h3 style="margin-bottom:20px; color:var(--color-primary); text-align:center; font-size:20px; font-weight:800;"><span>🎾</span> إنشاء منشور جديد</h3>
+            <input id="clubName" placeholder="اسم النادي أو المكان" style="text-align:center;">
+            <input id="location" placeholder="الموقع بالتفصيل" style="text-align:center;">
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;"><input id="eventDate" type="date" style="text-align:center;"><input id="eventTimeInput" type="time" style="text-align:center;"></div>
+            <input type="number" id="neededPlayers" placeholder="عدد اللاعبين المطلوب" min="1" style="text-align:center;">
+            <select id="preferredLevel" style="background:var(--bg-input); border:1.8px solid var(--border-light); padding:15px 20px; border-radius:28px; color:var(--text-primary); width:100%; margin-bottom:16px; font-size:15px;">
+                <option value="">المستوى المطلوب للاعبين</option><option value="مبتدئ">مبتدئ</option><option value="أقل من متوسط">أقل من متوسط</option><option value="متوسط">متوسط</option><option value="أعلى من متوسط">أعلى من متوسط</option><option value="محترف">محترف</option>
             </select>
-            <div style="display:flex; gap:12px; margin-top:18px;"><button id="cancelModal" class="btn-outline" style="flex:1;">إلغاء</button><button id="publishPost" class="btn-primary" style="flex:1;">✨ نشر</button></div></div>`;
+            <div style="display:flex; gap:14px; margin-top:20px;"><button id="cancelModal" class="btn-outline" style="flex:1; padding:15px; font-size:15px;">إلغاء</button><button id="publishPost" class="btn-primary" style="flex:1; padding:15px; font-size:15px;">✨ نشر المنشور</button></div></div>`;
         document.body.appendChild(modal);
         document.getElementById("cancelModal").addEventListener("click", () => modal.remove());
         document.getElementById("publishPost").addEventListener("click", async () => {
@@ -1611,13 +1795,13 @@
             const eventTimeInput = document.getElementById("eventTimeInput").value;
             const neededPlayers = parseInt(document.getElementById("neededPlayers").value);
             const preferredLevel = document.getElementById("preferredLevel").value;
-            if (!clubName || !location || !eventDate || !eventTimeInput || !neededPlayers || neededPlayers<1 || !preferredLevel) return alert("⚠️ املأ جميع الحقول");
+            if (!clubName || !location || !eventDate || !eventTimeInput || !neededPlayers || neededPlayers<1 || !preferredLevel) return alert("⚠️ يرجى ملء جميع الحقول المطلوبة");
             const eventDateTime = `${eventDate}T${eventTimeInput}:00`;
             const eventTimestamp = new Date(eventDateTime).getTime();
-            if (isNaN(eventTimestamp) || eventTimestamp < Date.now()+7200000) return alert("⚠️ الموعد بعد ساعتين على الأقل");
+            if (isNaN(eventTimestamp) || eventTimestamp < Date.now()+7200000) return alert("⚠️ يجب أن يكون الموعد بعد ساعتين على الأقل من الآن");
             const displayTime = new Date(eventTimestamp).toLocaleString('ar-EG', { weekday:'long', year:'numeric', month:'long', day:'numeric', hour:'numeric', minute:'2-digit' });
             await push(ref(db, "allPosts"), { clubName, location, time: displayTime, eventTimestamp, neededPlayers, preferredLevel, publisherName: currentUser.name, publisherPhone: currentUser.phone, publisherId: currentUserId, timestamp: Date.now(), completed: false });
-            modal.remove(); showToast("✅ تم النشر! 🎾"); if(activeTab==="home") renderHomeTab();
+            modal.remove(); showToast("✅ تم نشر المنشور بنجاح! 🎾"); if(activeTab==="home") renderHomeTab();
         });
         document.getElementById("clubName").focus();
     }
