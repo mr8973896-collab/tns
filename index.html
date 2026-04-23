@@ -6,11 +6,18 @@
     <title>منصة نوادي التنس | تواصل ولعب</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
+        /* 🚫 إزالة تأثير اللمس الأزرق على الموبايل */
         * {
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Tajawal', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
         }
 
         body {
@@ -20,8 +27,11 @@
             display: flex;
             flex-direction: column;
             overflow: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
+        /* 🌀 سكرول ناعم جداً بدون تقطيع */
         .app-wrapper {
             flex: 1;
             display: flex;
@@ -29,6 +39,23 @@
             overflow-y: auto;
             padding: 16px 12px 80px 12px;
             scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            overscroll-behavior: contain;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(100, 220, 180, 0.4) transparent;
+            will-change: transform;
+            transform: translateZ(0);
+        }
+
+        .app-wrapper::-webkit-scrollbar {
+            width: 4px;
+        }
+        .app-wrapper::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .app-wrapper::-webkit-scrollbar-thumb {
+            background: rgba(100, 220, 180, 0.4);
+            border-radius: 10px;
         }
 
         /* ✨ تصميم Dock شفاف بحواف لامعة رقيقة - ثيم التنس ✨ */
@@ -55,6 +82,8 @@
             max-width: 420px;
             margin: 0 auto;
             animation: subtleGlow 4s ease-in-out infinite;
+            will-change: transform;
+            transform: translateZ(0);
         }
 
         @keyframes subtleGlow {
@@ -82,14 +111,15 @@
             background: none;
             border: none;
             cursor: pointer;
-            transition: all 0.25s ease;
+            transition: transform 0.2s ease;
             position: relative;
             padding: 4px;
             border-radius: 16px;
+            -webkit-user-select: none;
+            user-select: none;
         }
-        .tab-item:hover {
-            background: rgba(100, 220, 180, 0.12);
-            transform: translateY(-2px);
+        .tab-item:active {
+            transform: scale(0.98);
         }
         .tab-item.active {
             color: #64dcb4;
@@ -102,23 +132,17 @@
             height: 3px;
             background: linear-gradient(90deg, #64dcb4, #b478ff);
             border-radius: 3px;
-            animation: pulseLine 2s ease-in-out infinite;
-        }
-        @keyframes pulseLine {
-            0%, 100% { opacity: 0.7; transform: scaleX(0.9); }
-            50% { opacity: 1; transform: scaleX(1); }
         }
         .tab-icon-img {
             width: 28px;
             height: 28px;
             object-fit: contain;
             filter: brightness(0.85) drop-shadow(0 0 3px rgba(100, 220, 180, 0.4));
-            transition: all 0.3s ease;
+            transition: filter 0.2s ease, transform 0.2s ease;
+            pointer-events: none;
         }
-        .tab-item.active .tab-icon-img,
-        .tab-item:hover .tab-icon-img {
+        .tab-item.active .tab-icon-img {
             filter: brightness(1.25) drop-shadow(0 0 10px rgba(100, 220, 180, 0.7));
-            transform: scale(1.08);
         }
 
         .badge-count {
@@ -136,18 +160,9 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            animation: pulse 0.5s ease, float 3s ease-in-out infinite;
             border: 1.5px solid rgba(255, 255, 255, 0.3);
             box-shadow: 0 2px 8px rgba(238, 90, 90, 0.5);
-        }
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.25); }
-            100% { transform: scale(1); }
-        }
-        @keyframes float {
-            0%, 100% { transform: translateY(0) scale(1); }
-            50% { transform: translateY(-2px) scale(1.05); }
+            pointer-events: none;
         }
 
         /* ✨ بطاقة الإعلان المكتمل - جديدة ✨ */
@@ -155,7 +170,7 @@
             background: linear-gradient(145deg, rgba(30, 50, 45, 0.95), rgba(20, 35, 30, 0.98));
             border-radius: 24px;
             margin: 0 0 20px 0;
-            padding: 20px;
+            padding: 16px;
             border: 2px solid rgba(100, 220, 180, 0.6);
             position: relative;
             overflow: hidden;
@@ -163,33 +178,20 @@
                 0 8px 32px rgba(0, 0, 0, 0.5),
                 0 0 30px rgba(100, 220, 180, 0.25),
                 inset 0 1px 0 rgba(255, 255, 255, 0.1);
-            animation: slideDown 0.4s ease, glowPulse 3s ease-in-out infinite;
+            animation: slideDown 0.3s ease-out;
             z-index: 10;
+            will-change: transform;
+            transform: translateZ(0);
         }
 
         @keyframes slideDown {
             from {
                 opacity: 0;
-                transform: translateY(-20px) scale(0.98);
+                transform: translateY(-15px);
             }
             to {
                 opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-        }
-
-        @keyframes glowPulse {
-            0%, 100% {
-                box-shadow:
-                    0 8px 32px rgba(0, 0, 0, 0.5),
-                    0 0 30px rgba(100, 220, 180, 0.25),
-                    inset 0 1px 0 rgba(255, 255, 255, 0.1);
-            }
-            50% {
-                box-shadow:
-                    0 8px 32px rgba(0, 0, 0, 0.5),
-                    0 0 45px rgba(100, 220, 180, 0.45),
-                    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+                transform: translateY(0);
             }
         }
 
@@ -199,73 +201,53 @@
             top: 0;
             right: 0;
             width: 100%;
-            height: 4px;
-            background: linear-gradient(90deg, #64dcb4, #b478ff, #64dcb4, #b478ff);
-            background-size: 300% 100%;
-            animation: gradientMove 3s linear infinite;
+            height: 3px;
+            background: linear-gradient(90deg, #64dcb4, #b478ff);
             opacity: 0.9;
-        }
-
-        @keyframes gradientMove {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
         }
 
         .completed-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 16px;
-            padding-bottom: 12px;
+            margin-bottom: 12px;
+            padding-bottom: 10px;
             border-bottom: 1px solid rgba(100, 220, 180, 0.3);
         }
 
         .completed-title {
             color: #64dcb4;
-            font-size: 18px;
+            font-size: 17px;
             font-weight: 700;
             display: flex;
             align-items: center;
-            gap: 8px;
-        }
-
-        .completed-title::before {
-            content: '🎉';
-            font-size: 20px;
-            animation: bounce 1.5s ease-in-out infinite;
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-5px); }
+            gap: 6px;
         }
 
         .completed-badge {
             background: linear-gradient(135deg, #64dcb4, #4dd0c0);
             color: #0a1a15;
-            padding: 6px 16px;
+            padding: 5px 14px;
             border-radius: 20px;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 700;
             display: flex;
             align-items: center;
             gap: 4px;
-            box-shadow: 0 3px 12px rgba(100, 220, 180, 0.4);
         }
 
         .completed-details {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 12px;
-            margin-bottom: 16px;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 10px;
+            margin-bottom: 14px;
         }
 
         .detail-item {
             display: flex;
             align-items: center;
-            gap: 8px;
-            font-size: 14px;
+            gap: 6px;
+            font-size: 13px;
             color: #ddd;
         }
 
@@ -276,98 +258,82 @@
 
         .completed-actions {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             flex-wrap: wrap;
         }
 
         .chat-team-btn {
             background: linear-gradient(135deg, #64dcb4 0%, #4dd0c0 100%);
             border: none;
-            padding: 12px 20px;
-            border-radius: 28px;
+            padding: 10px 18px;
+            border-radius: 26px;
             font-weight: 700;
             color: #0a1a15;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            font-size: 14px;
+            transition: transform 0.2s ease;
+            font-size: 13px;
             display: flex;
             align-items: center;
-            gap: 6px;
-            box-shadow: 0 4px 20px rgba(100, 220, 180, 0.45);
+            gap: 5px;
             flex: 1;
-            min-width: 120px;
+            min-width: 110px;
             justify-content: center;
         }
-
-        .chat-team-btn:hover {
-            transform: translateY(-3px) scale(1.03);
-            box-shadow: 0 6px 28px rgba(100, 220, 180, 0.65);
+        .chat-team-btn:active {
+            transform: scale(0.98);
         }
 
         .view-details-btn {
             background: rgba(30, 30, 50, 0.8);
             border: 1.5px solid rgba(100, 220, 180, 0.4);
-            padding: 12px 20px;
-            border-radius: 28px;
+            padding: 10px 18px;
+            border-radius: 26px;
             font-weight: 600;
             color: #64dcb4;
             cursor: pointer;
-            transition: all 0.25s ease;
-            font-size: 14px;
+            transition: all 0.2s ease;
+            font-size: 13px;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 5px;
             flex: 1;
-            min-width: 120px;
+            min-width: 110px;
             justify-content: center;
         }
-
-        .view-details-btn:hover {
+        .view-details-btn:active {
+            transform: scale(0.98);
             background: rgba(100, 220, 180, 0.15);
-            transform: translateY(-2px);
-            border-color: #64dcb4;
         }
 
         .players-avatars {
             display: flex;
-            gap: -8px;
-            margin-top: 14px;
-            padding-top: 14px;
+            gap: -6px;
+            margin-top: 12px;
+            padding-top: 12px;
             border-top: 1px solid rgba(100, 220, 180, 0.2);
         }
 
         .player-avatar {
-            width: 36px;
-            height: 36px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
             background: linear-gradient(135deg, #64dcb4, #b478ff);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 700;
             color: #0a1a15;
             border: 2px solid rgba(255, 255, 255, 0.3);
-            margin-left: -8px;
-            transition: all 0.2s ease;
+            margin-left: -6px;
             cursor: pointer;
         }
-
-        .player-avatar:first-child {
-            margin-left: 0;
-        }
-
-        .player-avatar:hover {
-            transform: scale(1.15) translateY(-3px);
-            z-index: 5;
-            box-shadow: 0 4px 16px rgba(100, 220, 180, 0.5);
-        }
-
+        .player-avatar:first-child { margin-left: 0; }
         .player-avatar.plus {
             background: rgba(100, 220, 180, 0.2);
             border-color: rgba(100, 220, 180, 0.4);
             color: #64dcb4;
-            font-size: 12px;
+            font-size: 11px;
         }
 
         /* بطاقات المنشورات العادية */
@@ -377,9 +343,11 @@
             margin-bottom: 16px;
             padding: 18px;
             border: 1px solid rgba(100, 220, 180, 0.2);
-            transition: all 0.25s ease;
+            transition: transform 0.2s ease, border-color 0.2s ease;
             position: relative;
             overflow: hidden;
+            will-change: transform;
+            transform: translateZ(0);
         }
         .post-card::before {
             content: '';
@@ -391,10 +359,9 @@
             background: linear-gradient(180deg, #64dcb4, #b478ff, #64dcb4);
             opacity: 0.7;
         }
-        .post-card:hover {
-            transform: translateY(-3px);
+        .post-card:active {
+            transform: translateY(-2px);
             border-color: rgba(100, 220, 180, 0.45);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4), 0 0 20px rgba(100, 220, 180, 0.1);
         }
         .post-header {
             display: flex;
@@ -443,7 +410,7 @@
         }
 
         .ready-btn-new {
-            background: linear-gradient(135deg, #64dcb4 0%, #4dd0c0 50%, #64dcb4 100%);
+            background: linear-gradient(135deg, #64dcb4 0%, #4dd0c0 100%);
             border: none;
             padding: 13px;
             border-radius: 42px;
@@ -452,35 +419,11 @@
             width: 100%;
             margin-top: 14px;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: transform 0.2s ease;
             font-size: 14px;
-            box-shadow:
-                0 4px 20px rgba(100, 220, 180, 0.45),
-                0 0 0 1px rgba(255, 255, 255, 0.1);
-            position: relative;
-            overflow: hidden;
-        }
-        .ready-btn-new::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            transition: left 0.5s ease;
-        }
-        .ready-btn-new:hover::before {
-            left: 100%;
-        }
-        .ready-btn-new:hover {
-            transform: translateY(-3px) scale(1.02);
-            box-shadow:
-                0 6px 28px rgba(100, 220, 180, 0.65),
-                0 0 0 1px rgba(255, 255, 255, 0.2);
         }
         .ready-btn-new:active {
-            transform: translateY(-1px) scale(0.99);
+            transform: scale(0.98);
         }
 
         .approved-badge {
@@ -494,13 +437,10 @@
             margin-top: 14px;
             font-size: 14px;
             cursor: pointer;
-            transition: all 0.25s ease;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 4px 18px rgba(100, 220, 180, 0.35);
+            transition: transform 0.2s ease;
         }
-        .approved-badge:hover {
-            transform: scale(1.03);
-            box-shadow: 0 6px 24px rgba(100, 220, 180, 0.55);
+        .approved-badge:active {
+            transform: scale(0.98);
         }
 
         .cancel-ready-btn {
@@ -514,12 +454,10 @@
             margin-top: 10px;
             cursor: pointer;
             font-size: 13px;
-            transition: all 0.2s ease;
-            box-shadow: 0 3px 12px rgba(238, 90, 90, 0.35);
+            transition: transform 0.2s ease;
         }
-        .cancel-ready-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 18px rgba(238, 90, 90, 0.55);
+        .cancel-ready-btn:active {
+            transform: scale(0.98);
         }
 
         .ready-count-badge {
@@ -548,45 +486,28 @@
             border-radius: 14px;
             margin-bottom: 10px;
             border: 1px solid rgba(100, 220, 180, 0.1);
-            transition: all 0.2s ease;
-        }
-        .ready-user-item:hover {
-            background: rgba(40, 40, 65, 0.9);
-            border-color: rgba(100, 220, 180, 0.3);
         }
 
-        .approve-btn {
-            background: linear-gradient(135deg, #64dcb4, #4dd0c0);
+        .approve-btn, .reject-btn {
             border: none;
             padding: 7px 14px;
             border-radius: 22px;
-            color: #0a1a15;
             font-weight: 700;
             cursor: pointer;
             margin-left: 8px;
             font-size: 12px;
-            transition: all 0.2s ease;
-            box-shadow: 0 2px 8px rgba(100, 220, 180, 0.3);
+            transition: transform 0.2s ease;
         }
-        .approve-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 4px 14px rgba(100, 220, 180, 0.5);
+        .approve-btn {
+            background: linear-gradient(135deg, #64dcb4, #4dd0c0);
+            color: #0a1a15;
         }
         .reject-btn {
             background: linear-gradient(135deg, #ff6b6b, #ee5a5a);
-            border: none;
-            padding: 7px 14px;
-            border-radius: 22px;
             color: white;
-            font-weight: 700;
-            cursor: pointer;
-            font-size: 12px;
-            transition: all 0.2s ease;
-            box-shadow: 0 2px 8px rgba(238, 90, 90, 0.3);
         }
-        .reject-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 4px 14px rgba(238, 90, 90, 0.5);
+        .approve-btn:active, .reject-btn:active {
+            transform: scale(0.98);
         }
 
         .waiting-badge {
@@ -599,7 +520,7 @@
             border: 1px solid rgba(243, 156, 18, 0.35);
         }
 
-        /* Modal Styles */
+        /* Modal Styles - محسّنة للشاشات الكبيرة */
         .modal {
             display: none;
             position: fixed;
@@ -613,7 +534,7 @@
             align-items: center;
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            animation: fadeIn 0.25s ease;
+            animation: fadeIn 0.2s ease;
         }
         @keyframes fadeIn {
             from { opacity: 0; }
@@ -624,43 +545,90 @@
             width: 92%;
             max-width: 450px;
             border-radius: 30px;
-            padding: 26px 22px;
+            padding: 24px 20px;
             border: 1px solid rgba(100, 220, 180, 0.35);
             box-shadow:
                 0 20px 60px rgba(0, 0, 0, 0.6),
                 0 0 0 1px rgba(180, 120, 255, 0.2),
                 0 0 40px rgba(100, 220, 180, 0.15);
-            animation: slideUp 0.3s ease;
+            animation: slideUp 0.25s ease;
+            max-height: 85vh;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(100, 220, 180, 0.4) transparent;
+        }
+        .modal-content::-webkit-scrollbar {
+            width: 4px;
+        }
+        .modal-content::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .modal-content::-webkit-scrollbar-thumb {
+            background: rgba(100, 220, 180, 0.4);
+            border-radius: 10px;
         }
         @keyframes slideUp {
             from {
                 opacity: 0;
-                transform: translateY(30px) scale(0.97);
+                transform: translateY(20px) scale(0.98);
             }
             to {
                 opacity: 1;
                 transform: translateY(0) scale(1);
             }
         }
+
+        /* 🖥️ تحسين المودال للشاشات الكبيرة */
+        @media (min-width: 768px) {
+            .modal-content {
+                max-width: 420px;
+                max-height: 70vh;
+                padding: 20px 18px;
+                margin: auto;
+            }
+            .completed-announcement {
+                max-width: 600px;
+                margin: 0 auto 20px auto;
+            }
+            .bottom-tab-bar {
+                max-width: 500px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .modal-content {
+                max-height: 65vh;
+                max-width: 400px;
+            }
+        }
+
         .chat-modal-content {
             height: 85vh;
             max-width: 500px;
             display: flex;
             flex-direction: column;
-            padding: 18px;
+            padding: 16px;
         }
+        @media (min-width: 768px) {
+            .chat-modal-content {
+                height: 75vh;
+                max-width: 480px;
+            }
+        }
+
         .messages-container {
             flex: 1;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
             gap: 14px;
-            padding: 14px 6px;
+            padding: 12px 4px;
             scrollbar-width: thin;
             scrollbar-color: rgba(100, 220, 180, 0.4) transparent;
+            -webkit-overflow-scrolling: touch;
         }
         .messages-container::-webkit-scrollbar {
-            width: 5px;
+            width: 4px;
         }
         .messages-container::-webkit-scrollbar-track {
             background: transparent;
@@ -677,11 +645,6 @@
             word-wrap: break-word;
             position: relative;
             line-height: 1.4;
-            animation: messageIn 0.2s ease;
-        }
-        @keyframes messageIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
         }
         .my-message {
             align-self: flex-end;
@@ -721,12 +684,6 @@
             margin-bottom: 14px;
             color: #0a1a15;
             border: 3px solid rgba(255, 255, 255, 0.25);
-            box-shadow: 0 8px 25px rgba(100, 220, 180, 0.35);
-            animation: avatarGlow 3s ease-in-out infinite;
-        }
-        @keyframes avatarGlow {
-            0%, 100% { box-shadow: 0 8px 25px rgba(100, 220, 180, 0.35); }
-            50% { box-shadow: 0 8px 35px rgba(180, 120, 255, 0.55); }
         }
         .stats-row {
             display: flex;
@@ -740,19 +697,17 @@
         .stat {
             text-align: center;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: transform 0.2s ease;
             padding: 10px;
             border-radius: 18px;
         }
-        .stat:hover {
-            background: rgba(100, 220, 180, 0.12);
-            transform: translateY(-2px);
+        .stat:active {
+            transform: scale(0.98);
         }
         .stat-number {
             font-size: 22px;
             font-weight: 700;
             color: #64dcb4;
-            text-shadow: 0 0 10px rgba(100, 220, 180, 0.4);
         }
 
         .btn-primary {
@@ -765,13 +720,11 @@
             width: 100%;
             margin-top: 14px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: transform 0.2s ease;
             font-size: 15px;
-            box-shadow: 0 5px 22px rgba(100, 220, 180, 0.4);
         }
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 30px rgba(100, 220, 180, 0.6);
+        .btn-primary:active {
+            transform: scale(0.98);
         }
         .btn-outline {
             background: transparent;
@@ -781,11 +734,11 @@
             border-radius: 44px;
             font-weight: 700;
             cursor: pointer;
-            transition: all 0.25s ease;
+            transition: all 0.2s ease;
         }
-        .btn-outline:hover {
+        .btn-outline:active {
+            transform: scale(0.98);
             background: rgba(100, 220, 180, 0.12);
-            transform: translateY(-2px);
         }
         .btn-danger {
             background: linear-gradient(135deg, #ff6b6b, #ee5a5a);
@@ -796,12 +749,10 @@
             color: white;
             cursor: pointer;
             margin-top: 10px;
-            transition: all 0.25s ease;
-            box-shadow: 0 4px 16px rgba(238, 90, 90, 0.35);
+            transition: transform 0.2s ease;
         }
-        .btn-danger:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 22px rgba(238, 90, 90, 0.55);
+        .btn-danger:active {
+            transform: scale(0.98);
         }
 
         input, textarea, select {
@@ -813,12 +764,13 @@
             width: 100%;
             margin-bottom: 14px;
             font-size: 14px;
-            transition: all 0.2s ease;
+            transition: border-color 0.2s ease, background 0.2s ease;
+            -webkit-appearance: none;
+            appearance: none;
         }
         input:focus, textarea:focus, select:focus {
             outline: none;
             border-color: #64dcb4;
-            box-shadow: 0 0 0 3px rgba(100, 220, 180, 0.2);
             background: rgba(35, 35, 58, 0.95);
         }
         input::placeholder, textarea::placeholder {
@@ -849,15 +801,14 @@
             border-radius: 44px;
             font-weight: 700;
             z-index: 1100;
-            animation: toastIn 0.3s ease, toastOut 0.3s ease 2.2s forwards;
-            box-shadow:
-                0 6px 25px rgba(100, 220, 180, 0.5),
-                0 0 0 1px rgba(255, 255, 255, 0.2);
+            animation: toastIn 0.25s ease, toastOut 0.25s ease 2s forwards;
+            box-shadow: 0 6px 25px rgba(100, 220, 180, 0.5);
+            pointer-events: none;
         }
         @keyframes toastIn {
             from {
                 opacity: 0;
-                transform: translateX(-50%) translateY(20px) scale(0.95);
+                transform: translateX(-50%) translateY(15px) scale(0.98);
             }
             to {
                 opacity: 1;
@@ -866,25 +817,7 @@
         }
         @keyframes toastOut {
             from { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
-            to { opacity: 0; transform: translateX(-50%) translateY(-15px) scale(0.95); visibility: hidden; }
-        }
-
-        .message-preview {
-            background: rgba(20, 40, 35, 0.8);
-            border-radius: 18px;
-            padding: 14px;
-            margin-top: 14px;
-            border-right: 3px solid #64dcb4;
-            border-left: 2px solid rgba(180, 120, 255, 0.3);
-        }
-        .message-preview p {
-            color: #ddd;
-            font-size: 13px;
-            line-height: 1.5;
-        }
-        .message-preview p[style*="color:#2ecc71"] {
-            color: #64dcb4 !important;
-            font-weight: 600;
+            to { opacity: 0; transform: translateX(-50%) translateY(-10px) scale(0.98); visibility: hidden; }
         }
 
         .header-actions {
@@ -901,10 +834,10 @@
             font-size: 12px;
             border-radius: 28px;
             font-weight: 600;
-            transition: all 0.2s ease;
+            transition: transform 0.2s ease;
         }
-        .small-btn:hover {
-            transform: translateY(-2px);
+        .small-btn:active {
+            transform: scale(0.98);
         }
 
         .select-item {
@@ -914,12 +847,11 @@
             cursor: pointer;
             padding: 10px;
             border-radius: 16px;
-            transition: all 0.2s ease;
+            transition: background 0.2s ease;
             margin-bottom: 8px;
         }
-        .select-item:hover {
+        .select-item:active {
             background: rgba(30, 30, 50, 0.7);
-            transform: translateX(3px);
         }
 
         .select-checkbox {
@@ -931,8 +863,7 @@
             border-radius: 6px;
         }
 
-        .delete-selected-btn {
-            background: linear-gradient(135deg, #ff6b6b, #ee5a5a);
+        .delete-selected-btn, .select-all-btn {
             border: none;
             padding: 9px 18px;
             border-radius: 28px;
@@ -940,28 +871,16 @@
             font-weight: 700;
             cursor: pointer;
             margin-right: 10px;
-            transition: all 0.2s ease;
-            box-shadow: 0 3px 12px rgba(238, 90, 90, 0.3);
+            transition: transform 0.2s ease;
         }
-        .delete-selected-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 18px rgba(238, 90, 90, 0.5);
+        .delete-selected-btn {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a5a);
         }
-
         .select-all-btn {
             background: linear-gradient(135deg, #5dade2, #3498db);
-            border: none;
-            padding: 9px 18px;
-            border-radius: 28px;
-            color: white;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: 0 3px 12px rgba(52, 152, 219, 0.3);
         }
-        .select-all-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 18px rgba(52, 152, 219, 0.5);
+        .delete-selected-btn:active, .select-all-btn:active {
+            transform: scale(0.98);
         }
 
         .action-buttons {
@@ -971,13 +890,11 @@
             flex-wrap: wrap;
         }
 
-        /* تحسينات إضافية للثيم */
         ::selection {
             background: rgba(100, 220, 180, 0.35);
             color: white;
         }
 
-        /* تأثيرات تحميل ناعمة */
         .loading {
             display: inline-block;
             width: 20px;
@@ -1008,11 +925,12 @@
             }
             .modal-content {
                 width: 95%;
-                padding: 22px 18px;
+                padding: 20px 16px;
                 border-radius: 26px;
+                max-height: 88vh;
             }
             .completed-announcement {
-                padding: 16px;
+                padding: 14px;
                 margin: 0 0 16px 0;
             }
             .completed-details {
@@ -1078,16 +996,9 @@
     let countdownInterval = null;
     let completedAnnouncementsListener = null;
 
-    /** 🔥 دالة جديدة: تحويل مستوى التنس إلى رقم للمقارنة */
     function getLevelValue(level) {
         if (!level) return 0;
-        const levelMap = {
-            'مبتدئ': 1,
-            'أقل من متوسط': 2,
-            'متوسط': 3,
-            'أعلى من متوسط': 4,
-            'محترف': 5
-        };
+        const levelMap = { 'مبتدئ': 1, 'أقل من متوسط': 2, 'متوسط': 3, 'أعلى من متوسط': 4, 'محترف': 5 };
         return levelMap[level] || 0;
     }
 
@@ -1099,30 +1010,22 @@
     function showToast(msg) {
         const existing = document.querySelector('.toast-message');
         if (existing) existing.remove();
-   
         const toast = document.createElement('div');
         toast.className = 'toast-message';
         toast.textContent = msg;
         document.body.appendChild(toast);
-        setTimeout(() => toast.remove(), 2500);
+        setTimeout(() => toast.remove(), 2200);
     }
 
-    function showTabBar() {
-        document.getElementById("tabBar").style.display = "flex";
-    }
-
-    function hideTabBar() {
-        document.getElementById("tabBar").style.display = "none";
-    }
+    function showTabBar() { document.getElementById("tabBar").style.display = "flex"; }
+    function hideTabBar() { document.getElementById("tabBar").style.display = "none"; }
 
     function updateNotificationsBadge() {
         const badge = document.getElementById('notifBadge');
         if (unreadNotificationsCount > 0) {
             badge.textContent = unreadNotificationsCount > 99 ? '99+' : unreadNotificationsCount;
             badge.style.display = 'flex';
-        } else {
-            badge.style.display = 'none';
-        }
+        } else { badge.style.display = 'none'; }
     }
 
     function updateChatsBadge() {
@@ -1130,9 +1033,7 @@
         if (unreadMessagesCount > 0) {
             badge.textContent = unreadMessagesCount > 99 ? '99+' : unreadMessagesCount;
             badge.style.display = 'flex';
-        } else {
-            badge.style.display = 'none';
-        }
+        } else { badge.style.display = 'none'; }
     }
 
     function loadUnreadNotificationsCount() {
@@ -1187,73 +1088,55 @@
         document.querySelectorAll('.post-card').forEach(card => {
             const countdownSection = card.querySelector('.countdown-section');
             if (!countdownSection) return;
-          
             const eventTs = parseInt(countdownSection.dataset.eventTimestamp);
             if (!eventTs) return;
             const diff = eventTs - now;
-            if (diff < 7200000) {
-                card.style.display = 'none';
-                return;
-            } else {
-                card.style.display = '';
-            }
+            if (diff < 7200000) { card.style.display = 'none'; return; }
+            else { card.style.display = ''; }
             const hours = Math.floor(diff / (1000 * 60 * 60));
             const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
             const timeSpan = countdownSection.querySelector('.time-remaining');
-            if (timeSpan) {
-                timeSpan.textContent = `${hours} ساعة و ${minutes} دقيقة`;
-            }
+            if (timeSpan) timeSpan.textContent = `${hours} ساعة و ${minutes} دقيقة`;
         });
     }
 
-    /** 🔥 دالة تأكيد تسجيل الخروج - مربع جميل وهادئ (بدل alert) */
     function showLogoutConfirmModal() {
         const modal = document.createElement("div");
         modal.className = "modal";
         modal.style.display = "flex";
-        modal.innerHTML = `
-            <div class="modal-content" style="max-width:380px; text-align:center; padding:32px 24px;">
-                <div style="font-size:52px; margin-bottom:20px; animation: float 2s ease-in-out infinite;">🚪</div>
-                <h3 style="color:#64dcb4; margin-bottom:14px; font-size:22px;">هل حقًا تريد تسجيل الخروج؟</h3>
-                <p style="color:#aaa; margin-bottom:32px; font-size:15px; line-height:1.5;">سيتم مسح بيانات تسجيل الدخول<br>وسيتعين عليك تسجيل الدخول مرة أخرى</p>
-                <div style="display:flex; gap:16px;">
-                    <button id="cancelLogoutBtn" class="btn-outline" style="flex:1; padding:16px;">لا، إلغاء</button>
-                    <button id="confirmLogoutBtn" class="btn-danger" style="flex:1; padding:16px;">نعم، تسجيل خروج</button>
-                </div>
-            </div>`;
+        modal.innerHTML = `<div class="modal-content" style="max-width:380px; text-align:center; padding:30px 22px;">
+            <div style="font-size:48px; margin-bottom:18px;">🚪</div>
+            <h3 style="color:#64dcb4; margin-bottom:12px; font-size:20px;">تسجيل الخروج؟</h3>
+            <p style="color:#aaa; margin-bottom:28px; font-size:14px;">سيتم مسح بيانات الدخول</p>
+            <div style="display:flex; gap:14px;">
+                <button id="cancelLogoutBtn" class="btn-outline" style="flex:1; padding:14px;">إلغاء</button>
+                <button id="confirmLogoutBtn" class="btn-danger" style="flex:1; padding:14px;">خروج</button>
+            </div></div>`;
         document.body.appendChild(modal);
         document.getElementById("cancelLogoutBtn").addEventListener("click", () => modal.remove());
-        document.getElementById("confirmLogoutBtn").addEventListener("click", () => {
-            modal.remove();
-            logout();
-        });
+        document.getElementById("confirmLogoutBtn").addEventListener("click", () => { modal.remove(); logout(); });
     }
 
-    /** 🔥 دالة تعديل البيانات - كارد جميل يسمح بتعديل الاسم والعمر والرقم والمستوى */
     function showEditProfileModal() {
         const modal = document.createElement("div");
         modal.className = "modal";
         modal.style.display = "flex";
-        modal.innerHTML = `
-            <div class="modal-content">
-                <h3 style="margin-bottom:24px; color:#64dcb4; text-align:center; display:flex; align-items:center; justify-content:center; gap:8px;">
-                    <span>✏️</span> تعديل بياناتك الشخصية
-                </h3>
-                <input type="text" id="editName" value="${escapeHtml(currentUser.name)}" placeholder="الاسم الكامل" style="text-align:center;">
-                <input type="number" id="editAge" value="${currentUser.age}" placeholder="العمر" style="text-align:center;">
-                <input type="tel" id="editPhone" value="${currentUser.phone}" placeholder="رقم الموبايل" style="text-align:center;">
-                <select id="editTennisLevel" style="text-align:center;">
-                    <option value="مبتدئ" ${currentUser.tennisLevel === 'مبتدئ' ? 'selected' : ''}>مبتدئ</option>
-                    <option value="أقل من متوسط" ${currentUser.tennisLevel === 'أقل من متوسط' ? 'selected' : ''}>أقل من متوسط</option>
-                    <option value="متوسط" ${currentUser.tennisLevel === 'متوسط' ? 'selected' : ''}>متوسط</option>
-                    <option value="أعلى من متوسط" ${currentUser.tennisLevel === 'أعلى من متوسط' ? 'selected' : ''}>أعلى من متوسط</option>
-                    <option value="محترف" ${currentUser.tennisLevel === 'محترف' ? 'selected' : ''}>محترف</option>
-                </select>
-                <div style="display:flex; gap:14px; margin-top:24px;">
-                    <button id="cancelEditBtn" class="btn-outline" style="flex:1;">إلغاء</button>
-                    <button id="saveEditBtn" class="btn-primary" style="flex:1;">💾 حفظ التعديلات</button>
-                </div>
-            </div>`;
+        modal.innerHTML = `<div class="modal-content">
+            <h3 style="margin-bottom:22px; color:#64dcb4; text-align:center;">✏️ تعديل البيانات</h3>
+            <input type="text" id="editName" value="${escapeHtml(currentUser.name)}" placeholder="الاسم" style="text-align:center;">
+            <input type="number" id="editAge" value="${currentUser.age}" placeholder="العمر" style="text-align:center;">
+            <input type="tel" id="editPhone" value="${currentUser.phone}" placeholder="الموبايل" style="text-align:center;">
+            <select id="editTennisLevel" style="text-align:center;">
+                <option value="مبتدئ" ${currentUser.tennisLevel==='مبتدئ'?'selected':''}>مبتدئ</option>
+                <option value="أقل من متوسط" ${currentUser.tennisLevel==='أقل من متوسط'?'selected':''}>أقل من متوسط</option>
+                <option value="متوسط" ${currentUser.tennisLevel==='متوسط'?'selected':''}>متوسط</option>
+                <option value="أعلى من متوسط" ${currentUser.tennisLevel==='أعلى من متوسط'?'selected':''}>أعلى من متوسط</option>
+                <option value="محترف" ${currentUser.tennisLevel==='محترف'?'selected':''}>محترف</option>
+            </select>
+            <div style="display:flex; gap:12px; margin-top:20px;">
+                <button id="cancelEditBtn" class="btn-outline" style="flex:1;">إلغاء</button>
+                <button id="saveEditBtn" class="btn-primary" style="flex:1;">💾 حفظ</button>
+            </div></div>`;
         document.body.appendChild(modal);
         document.getElementById("cancelEditBtn").addEventListener("click", () => modal.remove());
         document.getElementById("saveEditBtn").addEventListener("click", async () => {
@@ -1261,78 +1144,45 @@
             const newAge = document.getElementById("editAge").value.trim();
             const newPhone = document.getElementById("editPhone").value.trim();
             const newLevel = document.getElementById("editTennisLevel").value;
-            if (!newName || !newAge || !newPhone || !newLevel) {
-                alert("❌ الرجاء ملء جميع الحقول");
-                return;
-            }
-            if (isNaN(newAge) || newAge < 1) {
-                alert("❌ عمر غير صحيح");
-                return;
-            }
-            // تحديث Firebase
-            await update(ref(db, `users/${currentUserId}`), {
-                name: newName,
-                age: newAge,
-                phone: newPhone,
-                tennisLevel: newLevel
-            });
-            // تحديث المتغيرات المحلية والـ localStorage
-            currentUser.name = newName;
-            currentUser.age = newAge;
-            currentUser.phone = newPhone;
-            currentUser.tennisLevel = newLevel;
+            if (!newName || !newAge || !newPhone || !newLevel) { alert("❌ املأ جميع الحقول"); return; }
+            if (isNaN(newAge) || newAge < 1) { alert("❌ عمر غير صحيح"); return; }
+            await update(ref(db, `users/${currentUserId}`), { name: newName, age: newAge, phone: newPhone, tennisLevel: newLevel });
+            currentUser.name = newName; currentUser.age = newAge; currentUser.phone = newPhone; currentUser.tennisLevel = newLevel;
             localStorage.setItem('tennisApp_user', JSON.stringify(currentUser));
-            showToast("✅ تم حفظ التعديلات بنجاح!");
-            modal.remove();
-            renderProfileTab(); // تحديث الصفحة الشخصية فورًا
+            showToast("✅ تم الحفظ"); modal.remove(); renderProfileTab();
         });
     }
 
     function showRegisterCard() {
         hideTabBar();
-        document.getElementById("appContainer").innerHTML = `
-            <div style="display:flex; justify-content:center; align-items:center; min-height:80vh; padding:20px;">
-                <div style="background:linear-gradient(145deg, rgba(26,26,46,0.95), rgba(18,18,34,0.98)); border-radius:34px; padding:36px 28px; width:100%; max-width:420px; border:1.5px solid rgba(100,220,180,0.4); box-shadow:0 20px 50px rgba(0,0,0,0.5), 0 0 30px rgba(100,220,180,0.15);">
-                    <div style="text-align:center; margin-bottom:24px;">
-                        <div style="font-size:48px; margin-bottom:12px;">🎾</div>
-                        <h2 style="color:#64dcb4; font-size:24px;">مرحباً بك في منصة التنس</h2>
-                        <p style="color:#aaa; margin-top:8px; font-size:14px;">سجل بياناتك للعب والتنسيق مع اللاعبين</p>
-                    </div>
-                    <div><input type="text" id="userName" placeholder="الاسم الكامل" style="text-align:center;"></div>
-                    <div><input type="number" id="userAge" placeholder="العمر" style="text-align:center;"></div>
-                    <div><input type="tel" id="userPhone" placeholder="رقم الموبايل" style="text-align:center;"></div>
-                    <div>
-                        <select id="userTennisLevel" style="text-align:center;">
-                            <option value="">مستواك في التنس</option>
-                            <option value="مبتدئ">مبتدئ</option>
-                            <option value="أقل من متوسط">أقل من متوسط</option>
-                            <option value="متوسط">متوسط</option>
-                            <option value="أعلى من متوسط">أعلى من متوسط</option>
-                            <option value="محترف">محترف</option>
-                        </select>
-                    </div>
-                    <button id="registerBtn" class="btn-primary">✨ بدء الرحلة ✨</button>
-                    <p style="text-align:center; color:#777; font-size:12px; margin-top:16px;">بالضغط على البدء، أنت توافق على شروط الاستخدام</p>
+        document.getElementById("appContainer").innerHTML = `<div style="display:flex; justify-content:center; align-items:center; min-height:80vh; padding:20px;">
+            <div style="background:linear-gradient(145deg, rgba(26,26,46,0.95), rgba(18,18,34,0.98)); border-radius:32px; padding:32px 26px; width:100%; max-width:400px; border:1.5px solid rgba(100,220,180,0.4);">
+                <div style="text-align:center; margin-bottom:22px;">
+                    <div style="font-size:44px; margin-bottom:10px;">🎾</div>
+                    <h2 style="color:#64dcb4; font-size:22px;">منصة التنس</h2>
+                    <p style="color:#aaa; margin-top:6px; font-size:13px;">سجل للعب مع اللاعبين</p>
                 </div>
-            </div>
-        `;
+                <input type="text" id="userName" placeholder="الاسم" style="text-align:center;">
+                <input type="number" id="userAge" placeholder="العمر" style="text-align:center;">
+                <input type="tel" id="userPhone" placeholder="الموبايل" style="text-align:center;">
+                <select id="userTennisLevel" style="text-align:center;">
+                    <option value="">مستواك</option>
+                    <option value="مبتدئ">مبتدئ</option><option value="أقل من متوسط">أقل من متوسط</option>
+                    <option value="متوسط">متوسط</option><option value="أعلى من متوسط">أعلى من متوسط</option><option value="محترف">محترف</option>
+                </select>
+                <button id="registerBtn" class="btn-primary">✨ ابدأ</button>
+                <p style="text-align:center; color:#666; font-size:11px; margin-top:14px;">بالضغط توافق على الشروط</p>
+            </div></div>`;
         document.getElementById("registerBtn").addEventListener("click", async () => {
             const name = document.getElementById("userName").value.trim();
             const age = document.getElementById("userAge").value.trim();
             const phone = document.getElementById("userPhone").value.trim();
             const tennisLevel = document.getElementById("userTennisLevel").value;
-            if (!name || !age || !phone || !tennisLevel) return alert("❌ الرجاء ملء جميع الحقول (بما فيها مستواك في التنس)");
+            if (!name || !age || !phone || !tennisLevel) return alert("❌ املأ جميع الحقول");
             if (isNaN(age) || age < 1) return alert("❌ عمر غير صحيح");
             const newUserRef = push(ref(db, "users"));
             currentUserId = newUserRef.key;
-            currentUser = {
-                id: currentUserId,
-                name,
-                age,
-                phone,
-                tennisLevel,
-                registeredAt: new Date().toISOString()
-            };
+            currentUser = { id: currentUserId, name, age, phone, tennisLevel, registeredAt: new Date().toISOString() };
             await set(newUserRef, currentUser);
             localStorage.setItem('tennisApp_userId', currentUserId);
             localStorage.setItem('tennisApp_user', JSON.stringify(currentUser));
@@ -1354,195 +1204,101 @@
         else if (activeTab === "chats") { renderChatsTab(); setTimeout(() => loadUnreadMessagesCount(), 500); }
         else if (activeTab === "notifications") { renderNotificationsTab(); markAllNotificationsAsRead(); }
         else if (activeTab === "profile") renderProfileTab();
-   
         document.querySelectorAll('.tab-item').forEach(btn => {
-            if (btn.dataset.tab === activeTab) btn.classList.add('active');
-            else btn.classList.remove('active');
+            btn.classList.toggle('active', btn.dataset.tab === activeTab);
         });
     }
 
     function renderHomeTab() {
         const container = document.getElementById("appContainer");
-        container.innerHTML = `
-            <div id="completedAnnouncementsContainer"></div>
-            <div style="margin-bottom: 18px; display: flex; justify-content: space-between; align-items: center; flex-wrap:wrap; gap:10px;">
-                <h2 style="color:#64dcb4; display:flex; align-items:center; gap:8px; font-size:22px;">
-                    <span style="font-size:24px;">🎾</span> نوادي التنس
-                </h2>
-                <button id="globalAddPostBtn" style="background:linear-gradient(135deg, #64dcb4, #4dd0c0); border:none; padding:10px 22px; border-radius:32px; font-weight:700; color:#0a1a15; display:flex; align-items:center; gap:6px; box-shadow:0 4px 16px rgba(100,220,180,0.35);">
-                    <span style="font-size:18px;">+</span> منشور جديد
+        container.innerHTML = `<div id="completedAnnouncementsContainer"></div>
+            <div style="margin-bottom:16px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+                <h2 style="color:#64dcb4; display:flex; align-items:center; gap:6px; font-size:20px;"><span>🎾</span> نوادي التنس</h2>
+                <button id="globalAddPostBtn" style="background:linear-gradient(135deg, #64dcb4, #4dd0c0); border:none; padding:9px 20px; border-radius:30px; font-weight:700; color:#0a1a15; display:flex; align-items:center; gap:4px; font-size:13px;">
+                    <span style="font-size:16px;">+</span> منشور
                 </button>
-            </div>
-            <div id="postsList"></div>
-        `;
+            </div><div id="postsList"></div>`;
         document.getElementById("globalAddPostBtn").addEventListener("click", openAddPostModal);
         loadAllPostsForHome();
         loadCompletedAnnouncements();
-        if (!countdownInterval) {
-            countdownInterval = setInterval(updateAllCountdowns, 60000);
-        }
+        if (!countdownInterval) countdownInterval = setInterval(updateAllCountdowns, 60000);
         setTimeout(updateAllCountdowns, 300);
     }
 
-    // ✨ دالة جديدة: تحميل وعرض الإعلانات المكتملة ✨
     function loadCompletedAnnouncements() {
         if (!currentUserId) return;
         if (completedAnnouncementsListener) completedAnnouncementsListener();
-        
         completedAnnouncementsListener = onValue(ref(db, "completedPosts"), (snapshot) => {
             const completed = snapshot.val() || {};
             const container = document.getElementById("completedAnnouncementsContainer");
-            
-            // فلترة الإعلانات التي تخص المستخدم الحالي
             const userCompleted = Object.entries(completed)
-                .filter(([id, data]) => {
-                    // تظهر لصاحب المنشور أو للاعبين الذين تمت الموافقة عليهم
-                    if (data.publisherId === currentUserId) return true;
-                    if (data.approvedPlayers && data.approvedPlayers.includes(currentUserId)) return true;
-                    return false;
-                })
-                .filter(([id, data]) => {
-                    // إخفاء الإعلانات القديمة (أكثر من 24 ساعة)
-                    const completedAt = data.completedAt || data.timestamp;
-                    return Date.now() - completedAt < 24 * 60 * 60 * 1000;
-                })
+                .filter(([id, data]) => data.publisherId === currentUserId || (data.approvedPlayers && data.approvedPlayers.includes(currentUserId)))
+                .filter(([id, data]) => { const completedAt = data.completedAt || data.timestamp; return Date.now() - completedAt < 24 * 60 * 60 * 1000; })
                 .reverse();
-            
-            if (userCompleted.length === 0) {
-                container.innerHTML = '';
-                return;
-            }
-            
+            if (userCompleted.length === 0) { container.innerHTML = ''; return; }
             let html = '';
             userCompleted.forEach(([id, post]) => {
                 const eventDate = new Date(post.eventTimestamp);
-                const formattedEvent = `${eventDate.toLocaleDateString('ar-EG', {weekday:'short', day:'numeric', month:'long', year:'numeric'})} - ${eventDate.toLocaleTimeString('ar-EG', {hour:'numeric', minute:'2-digit'})}`;
-                
-                // تجهيز صور اللاعبين
+                const formattedEvent = `${eventDate.toLocaleDateString('ar-EG', {weekday:'short', day:'numeric', month:'long'})} - ${eventDate.toLocaleTimeString('ar-EG', {hour:'numeric', minute:'2-digit'})}`;
                 const approvedNames = post.approvedNames || [];
-                const avatarsHtml = approvedNames.slice(0, 4).map((name, i) => {
-                    const initial = name.charAt(0);
-                    return `<div class="player-avatar" title="${escapeHtml(name)}">${initial}</div>`;
-                }).join('');
-                const extraCount = approvedNames.length - 4;
-                const extraHtml = extraCount > 0 ? `<div class="player-avatar plus">+${extraCount}</div>` : '';
-                
-                html += `
-                    <div class="completed-announcement" data-post-id="${id}">
-                        <div class="completed-header">
-                            <div class="completed-title">فريق مكتمل! 🎾</div>
-                            <div class="completed-badge">✅ جاهز للعب</div>
-                        </div>
-                        <div class="completed-details">
-                            <div class="detail-item"><strong>🏟️ النادي:</strong> ${escapeHtml(post.clubName)}</div>
-                            <div class="detail-item"><strong>📍 الموقع:</strong> ${escapeHtml(post.location || 'غير محدد')}</div>
-                            <div class="detail-item"><strong>🕐 الموعد:</strong> ${formattedEvent}</div>
-                            <div class="detail-item"><strong>👥 الفريق:</strong> ${approvedNames.length}/${post.neededPlayers} لاعب</div>
-                            <div class="detail-item"><strong>🎯 المستوى:</strong> ${escapeHtml(post.preferredLevel || 'غير محدد')}</div>
-                        </div>
-                        <div class="players-avatars">
-                            ${avatarsHtml}${extraHtml}
-                        </div>
-                        <div class="completed-actions">
-                            <button class="chat-team-btn" data-chat-id="${post.teamChatId}">
-                                💬 دردشة الفريق
-                            </button>
-                            <button class="view-details-btn" data-post-id="${id}">
-                                📋 عرض التفاصيل
-                            </button>
-                        </div>
+                const avatarsHtml = approvedNames.slice(0, 4).map(name => `<div class="player-avatar" title="${escapeHtml(name)}">${name.charAt(0)}</div>`).join('');
+                const extraHtml = approvedNames.length > 4 ? `<div class="player-avatar plus">+${approvedNames.length-4}</div>` : '';
+                html += `<div class="completed-announcement" data-post-id="${id}">
+                    <div class="completed-header"><div class="completed-title">فريق مكتمل 🎾</div><div class="completed-badge">✅ جاهز</div></div>
+                    <div class="completed-details">
+                        <div class="detail-item"><strong>🏟️</strong> ${escapeHtml(post.clubName)}</div>
+                        <div class="detail-item"><strong>📍</strong> ${escapeHtml(post.location||'غير محدد')}</div>
+                        <div class="detail-item"><strong>🕐</strong> ${formattedEvent}</div>
+                        <div class="detail-item"><strong>👥</strong> ${approvedNames.length}/${post.neededPlayers}</div>
+                        <div class="detail-item"><strong>🎯</strong> ${escapeHtml(post.preferredLevel||'غير محدد')}</div>
                     </div>
-                `;
+                    <div class="players-avatars">${avatarsHtml}${extraHtml}</div>
+                    <div class="completed-actions">
+                        <button class="chat-team-btn" data-chat-id="${post.teamChatId}">💬 الفريق</button>
+                        <button class="view-details-btn" data-post-id="${id}">📋 التفاصيل</button>
+                    </div></div>`;
             });
             container.innerHTML = html;
-            
-            // ربط أزرار الدردشة
             document.querySelectorAll('.chat-team-btn').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     const chatId = e.currentTarget.dataset.chatId;
-                    if (chatId) {
-                        window.switchToTabAndOpenChat('chats', chatId);
-                    } else {
-                        showToast("⚠️ لم يتم إنشاء دردشة الفريق بعد");
-                    }
+                    if (chatId) window.switchToTabAndOpenChat('chats', chatId);
+                    else showToast("⚠️ لا توجد دردشة");
                 });
             });
-            
-            // ربط أزرار عرض التفاصيل
             document.querySelectorAll('.view-details-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const postId = e.currentTarget.dataset.postId;
-                    showCompletedPostDetails(postId);
-                });
+                btn.addEventListener('click', (e) => showCompletedPostDetails(e.currentTarget.dataset.postId));
             });
         });
     }
 
-    // ✨ دالة جديدة: عرض تفاصيل المنشور المكتمل في مودال ✨
     function showCompletedPostDetails(postId) {
         get(ref(db, `completedPosts/${postId}`)).then((snapshot) => {
-            if (!snapshot.exists()) {
-                showToast("⚠️ لم يتم العثور على التفاصيل");
-                return;
-            }
+            if (!snapshot.exists()) { showToast("⚠️ غير موجود"); return; }
             const post = snapshot.val();
             const eventDate = new Date(post.eventTimestamp);
             const formattedEvent = `${eventDate.toLocaleDateString('ar-EG', {weekday:'long', day:'numeric', month:'long', year:'numeric'})} - ${eventDate.toLocaleTimeString('ar-EG', {hour:'numeric', minute:'2-digit'})}`;
-            
             const modal = document.createElement("div");
             modal.className = "modal";
             modal.style.display = "flex";
-            modal.innerHTML = `
-                <div class="modal-content">
-                    <div style="display:flex; justify-content:space-between; margin-bottom:20px; align-items:center;">
-                        <h3 style="color:#64dcb4; display:flex; align-items:center; gap:8px; font-size:20px;">
-                            <span>📋</span> تفاصيل المباراة المكتملة
-                        </h3>
-                        <button onclick="this.closest('.modal').remove()" style="background:none; border:none; font-size:28px; color:#ff6b6b; cursor:pointer; transition:transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">✕</button>
-                    </div>
-                    <div style="background:rgba(30,50,45,0.6); border-radius:20px; padding:20px; border:1px solid rgba(100,220,180,0.3);">
-                        <div style="display:grid; gap:14px; margin-bottom:20px;">
-                            <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid rgba(100,220,180,0.2);">
-                                <span style="color:#aaa;">🏟️ النادي</span>
-                                <span style="color:#64dcb4; font-weight:600;">${escapeHtml(post.clubName)}</span>
-                            </div>
-                            <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid rgba(100,220,180,0.2);">
-                                <span style="color:#aaa;">📍 الموقع</span>
-                                <span style="color:#64dcb4; font-weight:600;">${escapeHtml(post.location || 'غير محدد')}</span>
-                            </div>
-                            <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid rgba(100,220,180,0.2);">
-                                <span style="color:#aaa;">🕐 الموعد</span>
-                                <span style="color:#64dcb4; font-weight:600;">${formattedEvent}</span>
-                            </div>
-                            <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid rgba(100,220,180,0.2);">
-                                <span style="color:#aaa;">👥 عدد اللاعبين</span>
-                                <span style="color:#64dcb4; font-weight:600;">${post.approvedNames?.length || 0}/${post.neededPlayers}</span>
-                            </div>
-                            <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid rgba(100,220,180,0.2);">
-                                <span style="color:#aaa;">🎯 المستوى المطلوب</span>
-                                <span style="color:#64dcb4; font-weight:600;">${escapeHtml(post.preferredLevel || 'غير محدد')}</span>
-                            </div>
-                            <div style="display:flex; justify-content:space-between; padding:10px 0;">
-                                <span style="color:#aaa;">👤 الناشر</span>
-                                <span style="color:#64dcb4; font-weight:600;">${escapeHtml(post.publisherName)}</span>
-                            </div>
-                        </div>
-                        ${post.approvedNames && post.approvedNames.length > 0 ? `
-                            <div style="margin-top:16px; padding-top:16px; border-top:1px solid rgba(100,220,180,0.2);">
-                                <div style="color:#aaa; margin-bottom:10px; font-size:14px;">👥 أعضاء الفريق:</div>
-                                <div style="display:flex; flex-wrap:wrap; gap:8px;">
-                                    ${post.approvedNames.map(name => `<span style="background:rgba(100,220,180,0.15); color:#64dcb4; padding:6px 14px; border-radius:20px; font-size:13px; font-weight:500;">${escapeHtml(name)}</span>`).join('')}
-                                </div>
-                            </div>
-                        ` : ''}
-                    </div>
-                    ${post.teamChatId ? `
-                        <button class="btn-primary" style="margin-top:20px;" onclick="window.switchToTabAndOpenChat('chats', '${post.teamChatId}'); this.closest('.modal').remove();">
-                            💬 الذهاب لدردشة الفريق
-                        </button>
-                    ` : ''}
+            modal.innerHTML = `<div class="modal-content">
+                <div style="display:flex; justify-content:space-between; margin-bottom:16px; align-items:center;">
+                    <h3 style="color:#64dcb4; font-size:18px;">📋 التفاصيل</h3>
+                    <button onclick="this.closest('.modal').remove()" style="background:none; border:none; font-size:26px; color:#ff6b6b; cursor:pointer;">✕</button>
                 </div>
-            `;
+                <div style="background:rgba(30,50,45,0.6); border-radius:18px; padding:16px; border:1px solid rgba(100,220,180,0.3);">
+                    <div style="display:grid; gap:12px;">
+                        <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid rgba(100,220,180,0.2);"><span style="color:#aaa;">🏟️ النادي</span><span style="color:#64dcb4; font-weight:600;">${escapeHtml(post.clubName)}</span></div>
+                        <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid rgba(100,220,180,0.2);"><span style="color:#aaa;">📍 الموقع</span><span style="color:#64dcb4; font-weight:600;">${escapeHtml(post.location||'غير محدد')}</span></div>
+                        <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid rgba(100,220,180,0.2);"><span style="color:#aaa;">🕐 الموعد</span><span style="color:#64dcb4; font-weight:600;">${formattedEvent}</span></div>
+                        <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid rgba(100,220,180,0.2);"><span style="color:#aaa;">👥 اللاعبين</span><span style="color:#64dcb4; font-weight:600;">${post.approvedNames?.length||0}/${post.neededPlayers}</span></div>
+                        <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid rgba(100,220,180,0.2);"><span style="color:#aaa;">🎯 المستوى</span><span style="color:#64dcb4; font-weight:600;">${escapeHtml(post.preferredLevel||'غير محدد')}</span></div>
+                        <div style="display:flex; justify-content:space-between; padding:8px 0;"><span style="color:#aaa;">👤 الناشر</span><span style="color:#64dcb4; font-weight:600;">${escapeHtml(post.publisherName)}</span></div>
+                    </div>
+                    ${post.approvedNames?.length ? `<div style="margin-top:14px; padding-top:14px; border-top:1px solid rgba(100,220,180,0.2);"><div style="color:#aaa; margin-bottom:8px; font-size:13px;">👥 الأعضاء:</div><div style="display:flex; flex-wrap:wrap; gap:6px;">${post.approvedNames.map(n=>`<span style="background:rgba(100,220,180,0.15); color:#64dcb4; padding:5px 12px; border-radius:18px; font-size:12px;">${escapeHtml(n)}</span>`).join('')}</div></div>`:''}
+                </div>
+                ${post.teamChatId ? `<button class="btn-primary" style="margin-top:16px; padding:12px;" onclick="window.switchToTabAndOpenChat('chats', '${post.teamChatId}'); this.closest('.modal').remove();">💬 دردشة الفريق</button>`:''}
+            </div>`;
             document.body.appendChild(modal);
         });
     }
@@ -1550,39 +1306,23 @@
     function loadAllPostsForHome() {
         onValue(ref(db, "allPosts"), (snapshot) => {
             const posts = snapshot.val() || {};
-            let postsArray = Object.entries(posts)
-                .map(([id, data]) => ({ id, ...data }))
-                .filter(post => !post.completed && post.eventTimestamp && post.eventTimestamp > Date.now())
-                .reverse();
-        
+            let postsArray = Object.entries(posts).map(([id, data]) => ({ id, ...data }))
+                .filter(post => !post.completed && post.eventTimestamp && post.eventTimestamp > Date.now()).reverse();
             let html = '';
-            if (postsArray.length === 0) {
-                html = `<div class="empty-state">🎾 لا توجد مباريات حالياً<br><span>✏️ أضف موعداً جديداً للعب!</span></div>`;
-            } else {
-                postsArray.forEach(post => {
-                    const eventDate = new Date(post.eventTimestamp);
-                    const formattedEvent = `${eventDate.toLocaleDateString('ar-EG', {weekday:'short', day:'numeric', month:'long', year:'numeric'})} - ${eventDate.toLocaleTimeString('ar-EG', {hour:'numeric', minute:'2-digit'})}`;
-                  
-                    html += `<div class="post-card" id="post-${post.id}">
-                        <div class="post-header">
-                            <span class="club-name">🎾 ${escapeHtml(post.clubName)}</span>
-                            <span class="post-time">${formattedEvent}</span>
-                        </div>
-                        <div class="post-detail">🕐 ${escapeHtml(post.time)}</div>
-                        <div class="post-detail">📍 ${escapeHtml(post.location || 'غير محدد')}</div>
-                        <div class="post-detail">👥 يحتاج ${post.neededPlayers || 'غير محدد'} لاعب • المستوى: ${escapeHtml(post.preferredLevel || 'غير محدد')}</div>
-                        <div class="post-detail">👤 الناشر: ${escapeHtml(post.publisherName)}</div>
-                      
-                        <div class="countdown-section" data-event-timestamp="${post.eventTimestamp}">
-                            ⏳ فاضل <span class="time-remaining"></span> • 👥 باقي ${Math.max(0, (post.neededPlayers || 9999) - 0)} مكان
-                        </div>
-                      
-                        <div class="ready-section"></div>
-                    </div>`;
-                });
-            }
+            if (postsArray.length === 0) html = `<div class="empty-state">🎾 لا توجد مباريات<br><span>✏️ أضف موعداً!</span></div>`;
+            else postsArray.forEach(post => {
+                const eventDate = new Date(post.eventTimestamp);
+                const formattedEvent = `${eventDate.toLocaleDateString('ar-EG', {weekday:'short', day:'numeric', month:'long'})} - ${eventDate.toLocaleTimeString('ar-EG', {hour:'numeric', minute:'2-digit'})}`;
+                html += `<div class="post-card" id="post-${post.id}">
+                    <div class="post-header"><span class="club-name">🎾 ${escapeHtml(post.clubName)}</span><span class="post-time">${formattedEvent}</span></div>
+                    <div class="post-detail">🕐 ${escapeHtml(post.time)}</div>
+                    <div class="post-detail">📍 ${escapeHtml(post.location||'غير محدد')}</div>
+                    <div class="post-detail">👥 يحتاج ${post.neededPlayers||'؟'} لاعب • ${escapeHtml(post.preferredLevel||'غير محدد')}</div>
+                    <div class="post-detail">👤 ${escapeHtml(post.publisherName)}</div>
+                    <div class="countdown-section" data-event-timestamp="${post.eventTimestamp}">⏳ <span class="time-remaining"></span> • 👥 <span class="remaining-spots">${Math.max(0, (post.neededPlayers||9999))}</span> مكان</div>
+                    <div class="ready-section"></div></div>`;
+            });
             document.getElementById("postsList").innerHTML = html;
-        
             postsArray.forEach(post => {
                 const isOwner = post.publisherId === currentUserId;
                 const readyRef = ref(db, `postReady/${post.id}`);
@@ -1596,279 +1336,137 @@
                     const postElement = document.getElementById(`post-${post.id}`);
                     if (!postElement) return;
                     const readyDiv = postElement.querySelector('.ready-section');
-                    if (!readyDiv) return;
                     const countdownSection = postElement.querySelector('.countdown-section');
                     if (countdownSection) {
-                        countdownSection.innerHTML = `
-                            ⏳ فاضل <span class="time-remaining"></span> • 👥 باقي ${remaining} مكان
-                        `;
+                        countdownSection.querySelector('.time-remaining').textContent = countdownSection.dataset.eventTimestamp ? 
+                            `${Math.floor((parseInt(countdownSection.dataset.eventTimestamp)-Date.now())/(1000*60*60))}س ${Math.floor(((parseInt(countdownSection.dataset.eventTimestamp)-Date.now())%(1000*60*60))/(1000*60))}د` : '';
+                        countdownSection.querySelector('.remaining-spots').textContent = remaining;
                     }
+                    if (!readyDiv) return;
                     if (isOwner) {
                         let usersHtml = '';
                         Object.entries(readyUsers).forEach(([userId, userData]) => {
-                            if (userData.status === 'waiting') {
-                                usersHtml += `
-                                    <div class="ready-user-item">
-                                        <span>🎾 ${escapeHtml(userData.name)}</span>
-                                        <div>
-                                            <button class="approve-btn" data-userid="${userId}" data-username="${escapeHtml(userData.name)}" data-postid="${post.id}" data-postclub="${escapeHtml(post.clubName)}" data-posttime="${escapeHtml(post.time)}">✅ أوافق</button>
-                                            <button class="reject-btn" data-userid="${userId}" data-postid="${post.id}">❌ رفض</button>
-                                        </div>
-                                    </div>
-                                `;
-                            }
+                            if (userData.status === 'waiting') usersHtml += `<div class="ready-user-item"><span>🎾 ${escapeHtml(userData.name)}</span><div>
+                                <button class="approve-btn" data-userid="${userId}" data-username="${escapeHtml(userData.name)}" data-postid="${post.id}" data-postclub="${escapeHtml(post.clubName)}" data-posttime="${escapeHtml(post.time)}">✅</button>
+                                <button class="reject-btn" data-userid="${userId}" data-postid="${post.id}">❌</button></div></div>`;
                         });
-                        const countHtml = `<div class="ready-count-badge">👥 ${approvedCount} موافق / ${needed === 9999 ? '∞' : needed} • ${Object.keys(readyUsers).length} طلب</div>`;
-                        readyDiv.innerHTML = `${countHtml}${usersHtml ? `<div class="ready-users-list">${usersHtml}</div>` : '<div class="ready-users-list" style="color:#777; text-align:center; padding:12px;">لا يوجد طلبات انتظار</div>'}`;
-                    
-                        readyDiv.querySelectorAll('.approve-btn').forEach(btn => {
-                            btn.addEventListener('click', () => approveUser(btn.dataset.userid, btn.dataset.username, btn.dataset.postid, btn.dataset.postclub, btn.dataset.posttime));
-                        });
-                        readyDiv.querySelectorAll('.reject-btn').forEach(btn => {
-                            btn.addEventListener('click', () => rejectUser(btn.dataset.userid, btn.dataset.postid));
-                        });
+                        readyDiv.innerHTML = `<div class="ready-count-badge">👥 ${approvedCount}/${needed===9999?'∞':needed} • ${Object.keys(readyUsers).length} طلب</div>${usersHtml ? `<div class="ready-users-list">${usersHtml}</div>` : '<div class="ready-users-list" style="color:#777; text-align:center; padding:10px;">لا يوجد طلبات</div>'}`;
+                        readyDiv.querySelectorAll('.approve-btn').forEach(btn => btn.addEventListener('click', () => approveUser(btn.dataset.userid, btn.dataset.username, btn.dataset.postid, btn.dataset.postclub, btn.dataset.posttime)));
+                        readyDiv.querySelectorAll('.reject-btn').forEach(btn => btn.addEventListener('click', () => rejectUser(btn.dataset.userid, btn.dataset.postid)));
                     } else {
-                        let readyContent = `<div class="ready-count-badge">👥 تمت الموافقة: ${approvedCount}/${needed === 9999 ? '∞' : needed} • باقي ${remaining} مكان</div>`;
-                    
+                        let readyContent = `<div class="ready-count-badge">👥 ${approvedCount}/${needed===9999?'∞':needed} • باقي ${remaining}</div>`;
                         if (isUserApproved) {
                             const chatId = [currentUserId, post.publisherId].sort().join('_');
-                            readyContent += `
-                                <div style="margin-top:8px; padding:12px; background:linear-gradient(135deg,#64dcb4,#4dd0c0); color:#0a1a15; border-radius:22px; text-align:center; font-weight:700;">✅ تمت الموافقة عليك!</div>
-                                <button class="approved-badge" onclick="window.switchToTabAndOpenChat('chats', '${chatId}')">💬 ابدأ الدردشة</button>
-                                <button class="cancel-ready-btn" data-postid="${post.id}" style="margin-top:8px;">❌ سحب طلبي</button>
-                            `;
+                            readyContent += `<div style="margin-top:6px; padding:10px; background:linear-gradient(135deg,#64dcb4,#4dd0c0); color:#0a1a15; border-radius:20px; text-align:center; font-weight:700; font-size:13px;">✅ تمت الموافقة</div>
+                                <button class="approved-badge" onclick="window.switchToTabAndOpenChat('chats', '${chatId}')" style="padding:10px; font-size:13px;">💬 دردشة</button>
+                                <button class="cancel-ready-btn" data-postid="${post.id}" style="margin-top:6px; padding:8px; font-size:12px;">❌ سحب</button>`;
                         } else if (isUserReady) {
-                            readyContent += `
-                                <button class="cancel-ready-btn" data-postid="${post.id}">❌ سحب طلبي</button>
-                                <div class="waiting-badge" style="text-align:center; margin-top:10px;">⏳ في انتظار موافقة الناشر</div>
-                            `;
+                            readyContent += `<button class="cancel-ready-btn" data-postid="${post.id}" style="margin-top:6px; padding:8px; font-size:12px;">❌ سحب</button><div class="waiting-badge" style="text-align:center; margin-top:8px; padding:6px 10px; font-size:10px;">⏳ في الانتظار</div>`;
                         } else {
-                            if (remaining > 0) {
-                                readyContent += `<button class="ready-btn-new"
-                                    data-post-id="${post.id}"
-                                    data-post-club="${escapeHtml(post.clubName)}"
-                                    data-post-time="${escapeHtml(post.time)}"
-                                    data-post-publisher="${escapeHtml(post.publisherName)}"
-                                    data-post-publisherid="${post.publisherId}"
-                                    data-post-preferredlevel="${escapeHtml(post.preferredLevel || '')}">
-                                    🎾 أنا جاهز للعب 🎾
-                                </button>`;
-                            } else {
-                                readyContent += `<div class="waiting-badge" style="text-align:center; padding:14px; font-size:14px;">🎉 اكتمل التيم! لا يوجد أماكن متبقية</div>`;
-                            }
+                            if (remaining > 0) readyContent += `<button class="ready-btn-new" data-post-id="${post.id}" data-post-club="${escapeHtml(post.clubName)}" data-post-time="${escapeHtml(post.time)}" data-post-publisher="${escapeHtml(post.publisherName)}" data-post-publisherid="${post.publisherId}" data-post-preferredlevel="${escapeHtml(post.preferredLevel||'')}" style="padding:11px; font-size:13px;">🎾 جاهز للعب</button>`;
+                            else readyContent += `<div class="waiting-badge" style="text-align:center; padding:12px; font-size:13px;">🎉 اكتمل التيم</div>`;
                         }
-                    
                         readyDiv.innerHTML = readyContent;
-                    
                         const readyBtn = readyDiv.querySelector('.ready-btn-new');
-                        if (readyBtn) {
-                            readyBtn.addEventListener('click', (e) => {
-                                const preferredLevel = e.currentTarget.dataset.postPreferredlevel || '';
-                                handleReadyClick(e, post.id, post.clubName, post.time, post.publisherName, post.publisherId, preferredLevel);
-                            });
-                        }
+                        if (readyBtn) readyBtn.addEventListener('click', (e) => handleReadyClick(e, post.id, post.clubName, post.time, post.publisherName, post.publisherId, e.currentTarget.dataset.postPreferredlevel||''));
                         const cancelBtn = readyDiv.querySelector('.cancel-ready-btn');
-                        if (cancelBtn) {
-                            cancelBtn.addEventListener('click', () => cancelReady(post.id));
-                        }
+                        if (cancelBtn) cancelBtn.addEventListener('click', () => cancelReady(post.id));
                     }
-                    setTimeout(updateAllCountdowns, 100);
                 });
             });
         });
     }
 
     async function handleReadyClick(e, postId, clubName, eventTime, publisherName, publisherId, preferredLevel = '') {
-        if (publisherId === currentUserId) {
-            showToast("لا يمكنك التجهيز على منشورك");
-            return;
-        }
+        if (publisherId === currentUserId) { showToast("لا يمكنك التجهيز على منشورك"); return; }
         const userLevelVal = getLevelValue(currentUser.tennisLevel);
         const requiredLevelVal = getLevelValue(preferredLevel);
-        if (requiredLevelVal > 0 && userLevelVal < requiredLevelVal) {
-            showToast(`ناسف لذلك مستواك أقل من المطلوب (${preferredLevel})`);
-            return;
-        }
+        if (requiredLevelVal > 0 && userLevelVal < requiredLevelVal) { showToast(`مستواك أقل من المطلوب (${preferredLevel})`); return; }
         await set(ref(db, `postReady/${postId}/${currentUserId}`), { name: currentUser.name, userId: currentUserId, status: 'waiting', timestamp: Date.now() });
-        await push(ref(db, `notifications/${publisherId}`), { type: 'new_ready', fromName: currentUser.name, fromId: currentUserId, clubName: clubName, postId: postId, message: `🔔 ${currentUser.name} جاهز للعب معك في ${clubName}`, timestamp: Date.now(), read: false });
-        showToast(`✅ تم إرسال طلبك إلى ${publisherName}`);
+        await push(ref(db, `notifications/${publisherId}`), { type: 'new_ready', fromName: currentUser.name, fromId: currentUserId, clubName, postId, message: `🔔 ${currentUser.name} جاهز للعب في ${clubName}`, timestamp: Date.now(), read: false });
+        showToast(`✅ تم الإرسال إلى ${publisherName}`);
     }
 
     async function cancelReady(postId) {
         await remove(ref(db, `postReady/${postId}/${currentUserId}`));
-    
         try {
             const postSnap = await get(ref(db, `allPosts/${postId}`));
             if (postSnap.exists()) {
                 const post = postSnap.val();
-                const publisherId = post.publisherId;
-                await push(ref(db, `notifications/${publisherId}`), {
-                    type: 'withdraw',
-                    fromName: currentUser.name,
-                    message: `😔 ${currentUser.name} سحب طلبه من منشور ${post.clubName}`,
-                    timestamp: Date.now(),
-                    read: false
-                });
+                await push(ref(db, `notifications/${post.publisherId}`), { type: 'withdraw', fromName: currentUser.name, message: `😔 ${currentUser.name} سحب طلبه من ${post.clubName}`, timestamp: Date.now(), read: false });
                 if (post.completed) {
                     const readySnap = await get(ref(db, `postReady/${postId}`));
                     const rUsers = readySnap.val() || {};
                     const approvedC = Object.values(rUsers).filter(u => u.status === 'approved').length;
-                    const needed = post.neededPlayers || 9999;
-                    if (approvedC < needed) {
-                        await update(ref(db, `allPosts/${postId}`), { completed: false });
-                        showToast("✅ تم إعادة المنشور لأن التيم لم يكتمل بعد");
-                    }
+                    if (approvedC < (post.neededPlayers||9999)) await update(ref(db, `allPosts/${postId}`), { completed: false });
                 }
             }
         } catch(e) {}
-    
-        showToast("❌ تم سحب طلبك");
+        showToast("❌ تم السحب");
     }
 
     async function approveUser(userId, userName, postId, clubName, eventTime) {
         const modal = document.createElement("div");
         modal.className = "modal";
         modal.style.display = "flex";
-        modal.innerHTML = `<div class="modal-content"><h3 style="color:#64dcb4; margin-bottom:18px; text-align:center;">✉️ إرسال رسالة للشريك</h3><div class="message-preview"><p style="color:#64dcb4; margin-bottom:10px; font-weight:600;">📝 الرسالة جاهزة للإرسال:</p><p style="background:rgba(15,25,22,0.8); padding:14px; border-radius:14px; line-height:1.5;">🎉 أهلاً ${escapeHtml(userName)}!<br>✅ الموعد تمام بالنسبة لي<br>🤝 نتقابل في ${escapeHtml(clubName)} إن شاء الله</p></div><div style="display:flex; gap:14px; margin-top:20px;"><button id="cancelSendBtn" class="btn-outline" style="flex:1;">إلغاء</button><button id="confirmSendBtn" class="btn-primary" style="flex:1;">📤 إرسال الرسالة</button></div></div>`;
+        modal.innerHTML = `<div class="modal-content"><h3 style="color:#64dcb4; margin-bottom:16px; text-align:center;">✉️ إرسال رسالة</h3>
+            <div style="background:rgba(15,25,22,0.8); padding:12px; border-radius:12px; margin-bottom:18px; font-size:13px; line-height:1.4;">🎉 أهلاً ${escapeHtml(userName)}!<br>✅ الموعد تمام 🤝 ${escapeHtml(clubName)}</div>
+            <div style="display:flex; gap:12px;"><button id="cancelSendBtn" class="btn-outline" style="flex:1; padding:12px;">إلغاء</button><button id="confirmSendBtn" class="btn-primary" style="flex:1; padding:12px;">📤 إرسال</button></div></div>`;
         document.body.appendChild(modal);
-    
         document.getElementById("cancelSendBtn").addEventListener("click", () => modal.remove());
         document.getElementById("confirmSendBtn").addEventListener("click", async () => {
             modal.remove();
-        
             await update(ref(db), { [`postReady/${postId}/${userId}/status`]: 'approved' });
-        
             const chatId = [currentUserId, userId].sort().join('_');
-            await set(ref(db, `chats/${chatId}`), { participants: [currentUserId, userId], participantNames: { [currentUserId]: currentUser.name, [userId]: userName }, createdAt: Date.now(), clubName: clubName, postId: postId, eventTime: eventTime });
-            await set(ref(db, `userChats/${currentUserId}/${chatId}`), { chatId, otherId: userId, otherName: userName, clubName: clubName, lastUpdated: Date.now(), lastRead: Date.now() });
-            await set(ref(db, `userChats/${userId}/${chatId}`), { chatId, otherId: currentUserId, otherName: currentUser.name, clubName: clubName, lastUpdated: Date.now(), lastRead: 0 });
+            await set(ref(db, `chats/${chatId}`), { participants: [currentUserId, userId], participantNames: { [currentUserId]: currentUser.name, [userId]: userName }, createdAt: Date.now(), clubName, postId, eventTime });
+            await set(ref(db, `userChats/${currentUserId}/${chatId}`), { chatId, otherId: userId, otherName: userName, clubName, lastUpdated: Date.now(), lastRead: Date.now() });
+            await set(ref(db, `userChats/${userId}/${chatId}`), { chatId, otherId: currentUserId, otherName: currentUser.name, clubName, lastUpdated: Date.now(), lastRead: 0 });
             const msgRef = push(ref(db, `chats/${chatId}/messages`));
-            await set(msgRef, { senderId: currentUserId, senderName: currentUser.name, text: `🎉 أهلاً ${userName}!\n✅ الموعد تمام بالنسبة لي\n🤝 نتقابل في ${clubName} إن شاء الله`, timestamp: Date.now() });
-            await push(ref(db, `notifications/${userId}`), { type: 'approved', fromName: currentUser.name, chatId: chatId, message: `🎉 ${currentUser.name} وافق على طلبك! اذهب للدردشة الآن`, timestamp: Date.now(), read: false });
-        
-            // ✨ تحديث: عند اكتمال الفريق، إنشاء إعلان مكتمل ✨
+            await set(msgRef, { senderId: currentUserId, senderName: currentUser.name, text: `🎉 أهلاً ${userName}!\n✅ الموعد تمام 🤝 ${clubName}`, timestamp: Date.now() });
+            await push(ref(db, `notifications/${userId}`), { type: 'approved', fromName: currentUser.name, chatId, message: `🎉 ${currentUser.name} وافق! اذهب للدردشة`, timestamp: Date.now(), read: false });
             const readySnap = await get(ref(db, `postReady/${postId}`));
             const rUsers = readySnap.val() || {};
             const approvedUsers = Object.values(rUsers).filter(u => u.status === 'approved');
-            const approvedCount = approvedUsers.length;
             const postSnap = await get(ref(db, `allPosts/${postId}`));
             if (postSnap.exists()) {
                 const post = postSnap.val();
                 const needed = post.neededPlayers || 9999;
-                if (approvedCount >= needed) {
-                    // إنشاء دردشة جماعية للفريق
+                if (approvedUsers.length >= needed) {
                     const teamChatId = `team_${postId}`;
                     const approvedNames = approvedUsers.map(u => u.name);
                     const allParticipants = [post.publisherId, ...approvedUsers.map(u => u.userId)];
-                    
-                    // حفظ المنشور المكتمل في قسم الإعلانات
-                    await set(ref(db, `completedPosts/${postId}`), {
-                        ...post,
-                        completedAt: Date.now(),
-                        approvedPlayers: approvedUsers.map(u => u.userId),
-                        approvedNames: approvedNames,
-                        teamChatId: teamChatId
-                    });
-                    
-                    // إنشاء دردشة الفريق
-                    await set(ref(db, `chats/${teamChatId}`), {
-                        participants: allParticipants,
-                        participantNames: {
-                            [post.publisherId]: post.publisherName,
-                            ...Object.fromEntries(approvedUsers.map(u => [u.userId, u.name]))
-                        },
-                        createdAt: Date.now(),
-                        clubName: post.clubName,
-                        postId: postId,
-                        eventTime: post.time,
-                        isTeamChat: true
-                    });
-                    
-                    // إضافة الدردشة لكل مشارك
-                    for (const participantId of allParticipants) {
-                        await set(ref(db, `userChats/${participantId}/${teamChatId}`), {
-                            chatId: teamChatId,
-                            otherName: "فريق التنس",
-                            clubName: post.clubName,
-                            lastUpdated: Date.now(),
-                            lastRead: Date.now(),
-                            isTeamChat: true
-                        });
-                    }
-                    
-                    // إرسال رسالة ترحيبية في دردشة الفريق
-                    const welcomeMsg = `🎉 أهلاً بالفريق! 🎾\nالموعد: ${post.time}\nالمكان: ${post.location || post.clubName}\nلنلعب مباراة رائعة! 💪`;
+                    await set(ref(db, `completedPosts/${postId}`), { ...post, completedAt: Date.now(), approvedPlayers: approvedUsers.map(u => u.userId), approvedNames, teamChatId });
+                    await set(ref(db, `chats/${teamChatId}`), { participants: allParticipants, participantNames: { [post.publisherId]: post.publisherName, ...Object.fromEntries(approvedUsers.map(u => [u.userId, u.name])) }, createdAt: Date.now(), clubName, postId, eventTime: post.time, isTeamChat: true });
+                    for (const participantId of allParticipants) await set(ref(db, `userChats/${participantId}/${teamChatId}`), { chatId: teamChatId, otherName: "فريق التنس", clubName, lastUpdated: Date.now(), lastRead: Date.now(), isTeamChat: true });
                     const welcomeRef = push(ref(db, `chats/${teamChatId}/messages`));
-                    await set(welcomeRef, {
-                        senderId: 'system',
-                        senderName: 'النظام',
-                        text: welcomeMsg,
-                        timestamp: Date.now(),
-                        isSystem: true
-                    });
-                    
-                    // إشعار لجميع أعضاء الفريق
-                    for (const participantId of allParticipants) {
-                        await push(ref(db, `notifications/${participantId}`), {
-                            type: 'team_complete',
-                            message: `🎉 اكتمل فريق ${post.clubName}! الموعد: ${post.time}`,
-                            chatId: teamChatId,
-                            timestamp: Date.now(),
-                            read: false
-                        });
-                    }
-                    
-                    // تحديث المنشور الأصلي
-                    await update(ref(db, `allPosts/${postId}`), { 
-                        completed: true, 
-                        completedAt: Date.now(),
-                        teamChatId: teamChatId
-                    });
-                    
-                    showToast("🎉 تم اكتمال التيم! ظهر الإعلان في أعلى الصفحة");
+                    await set(welcomeRef, { senderId: 'system', senderName: 'النظام', text: `🎉 أهلاً بالفريق! 🎾\nالموعد: ${post.time}\nالمكان: ${post.location||post.clubName}\nلنلعب مباراة رائعة! 💪`, timestamp: Date.now(), isSystem: true });
+                    for (const participantId of allParticipants) await push(ref(db, `notifications/${participantId}`), { type: 'team_complete', message: `🎉 اكتمل فريق ${post.clubName}! الموعد: ${post.time}`, chatId: teamChatId, timestamp: Date.now(), read: false });
+                    await update(ref(db, `allPosts/${postId}`), { completed: true, completedAt: Date.now(), teamChatId });
+                    showToast("🎉 اكتمل التيم! ظهر الإعلان");
                 }
             }
-        
-            showToast(`✅ تمت الموافقة على ${userName} وتم إرسال الرسالة`);
-            setTimeout(() => window.openChat(chatId), 500);
+            showToast(`✅ تمت الموافقة على ${userName}`);
+            setTimeout(() => window.openChat(chatId), 400);
         });
     }
 
     async function rejectUser(userId, postId) {
         await remove(ref(db, `postReady/${postId}/${userId}`));
         const postSnap = await get(ref(db, `allPosts/${postId}`));
-        if (postSnap.exists()) {
-            const post = postSnap.val();
-            await push(ref(db, `notifications/${userId}`), { type: 'rejected', fromName: currentUser.name, message: `😔 ${currentUser.name} اعتذر عن طلبك في ${post.clubName}`, timestamp: Date.now(), read: false });
-        }
-        showToast("❌ تم رفض الطلب");
+        if (postSnap.exists()) await push(ref(db, `notifications/${userId}`), { type: 'rejected', fromName: currentUser.name, message: `😔 ${currentUser.name} اعتذر عن طلبك في ${postSnap.val().clubName}`, timestamp: Date.now(), read: false });
+        showToast("❌ تم الرفض");
     }
 
     function renderChatsTab() {
         const container = document.getElementById("appContainer");
-        container.innerHTML = `
-            <div class="header-actions">
-                <h3 style="color:#64dcb4; display:flex; align-items:center; gap:8px; font-size:20px;">
-                    <span>💬</span> محادثاتي
-                </h3>
-                <div class="action-buttons">
-                    <button id="selectAllChatsBtn" class="select-all-btn small-btn">☑️ تحديد الكل</button>
-                    <button id="deleteSelectedChatsBtn" class="delete-selected-btn small-btn" style="display:none;">🗑️ حذف المحدد</button>
-                    <button id="cancelSelectChatsBtn" class="btn-outline small-btn" style="display:none;">إلغاء</button>
-                </div>
-            </div>
-            <div id="chatsList"></div>
-        `;
-
-        let selectedChats = new Set();
-        let isSelectionMode = false;
-
+        container.innerHTML = `<div class="header-actions"><h3 style="color:#64dcb4; display:flex; align-items:center; gap:6px; font-size:18px;"><span>💬</span> محادثاتي</h3>
+            <div class="action-buttons"><button id="selectAllChatsBtn" class="select-all-btn small-btn">☑️ الكل</button><button id="deleteSelectedChatsBtn" class="delete-selected-btn small-btn" style="display:none;">🗑️ حذف</button><button id="cancelSelectChatsBtn" class="btn-outline small-btn" style="display:none;">إلغاء</button></div></div><div id="chatsList"></div>`;
+        let selectedChats = new Set(), isSelectionMode = false;
         if (!currentUserId) return;
-
         onValue(ref(db, `userChats/${currentUserId}`), async (snapshot) => {
             const entries = snapshot.val() || {};
             let html = '';
-            if (Object.keys(entries).length === 0) html = `<div class="empty-state">🎾 لا توجد دردشات بعد<br><span>✏️ جهز على منشور لتبدأ محادثة</span></div>`;
+            if (Object.keys(entries).length === 0) html = `<div class="empty-state">🎾 لا توجد دردشات<br><span>✏️ جهز على منشور</span></div>`;
             else {
                 const entriesWithUnread = await Promise.all(Object.values(entries).map(async (entry) => {
                     const lastReadSnap = await get(ref(db, `userChats/${currentUserId}/${entry.chatId}/lastRead`));
@@ -1879,251 +1477,84 @@
                     Object.values(messages).forEach(msg => { if (msg.senderId !== currentUserId && msg.timestamp > lastRead) hasUnread = true; });
                     return { ...entry, hasUnread };
                 }));
-                html = entriesWithUnread.map(entry => `
-                    <div class="select-item" data-chatid="${entry.chatId}" onclick="if(!${isSelectionMode}) window.openChatAndUpdateRead('${entry.chatId}')">
-                        <input type="checkbox" class="select-checkbox chat-checkbox" data-chatid="${entry.chatId}" style="${isSelectionMode ? 'display:inline-block' : 'display:none'}">
-                        <div class="post-card" style="cursor:pointer; flex:1; ${entry.hasUnread ? 'border-right: 3px solid #64dcb4;' : ''} margin-bottom:0;">
-                            <div class="club-name">🎾 ${escapeHtml(entry.clubName)}</div>
-                            <div class="post-detail">مع: ${escapeHtml(entry.otherName)}</div>
-                            <div class="post-time">آخر تحديث: ${new Date(entry.lastUpdated).toLocaleString('ar-EG')}</div>
-                            ${entry.hasUnread ? '<div style="color:#64dcb4; font-size:11px; margin-top:6px; font-weight:600;">📩 رسائل جديدة</div>' : ''}
-                        </div>
-                    </div>
-                `).join('');
+                html = entriesWithUnread.map(entry => `<div class="select-item" data-chatid="${entry.chatId}" onclick="if(!${isSelectionMode}) window.openChatAndUpdateRead('${entry.chatId}')">
+                    <input type="checkbox" class="select-checkbox chat-checkbox" data-chatid="${entry.chatId}" style="${isSelectionMode?'display:inline-block':'display:none'}">
+                    <div class="post-card" style="cursor:pointer; flex:1; ${entry.hasUnread?'border-right:3px solid #64dcb4;':''} margin-bottom:0;">
+                        <div class="club-name">🎾 ${escapeHtml(entry.clubName)}</div><div class="post-detail">مع: ${escapeHtml(entry.otherName)}</div>
+                        <div class="post-time">${new Date(entry.lastUpdated).toLocaleString('ar-EG')}</div>
+                        ${entry.hasUnread?'<div style="color:#64dcb4; font-size:11px; margin-top:4px; font-weight:600;">📩 جديد</div>':''}
+                    </div></div>`).join('');
             }
             document.getElementById("chatsList").innerHTML = html;
-     
-            document.querySelectorAll('.chat-checkbox').forEach(cb => {
-                cb.addEventListener('change', (e) => {
-                    e.stopPropagation();
-                    const chatId = cb.dataset.chatid;
-                    if (cb.checked) selectedChats.add(chatId);
-                    else selectedChats.delete(chatId);
-                    updateDeleteButton();
-                });
-            });
+            document.querySelectorAll('.chat-checkbox').forEach(cb => cb.addEventListener('change', (e) => { e.stopPropagation(); const chatId = cb.dataset.chatid; cb.checked ? selectedChats.add(chatId) : selectedChats.delete(chatId); updateDeleteButton(); }));
         });
-
-        function updateDeleteButton() {
-            const deleteBtn = document.getElementById('deleteSelectedChatsBtn');
-            if (deleteBtn) deleteBtn.style.display = selectedChats.size > 0 ? 'inline-block' : 'none';
-        }
-
-        document.getElementById('selectAllChatsBtn').addEventListener('click', () => {
-            isSelectionMode = true;
-            document.querySelectorAll('.chat-checkbox').forEach(cb => {
-                cb.style.display = 'inline-block';
-                cb.checked = true;
-                selectedChats.add(cb.dataset.chatid);
-            });
-            document.getElementById('deleteSelectedChatsBtn').style.display = 'inline-block';
-            document.getElementById('cancelSelectChatsBtn').style.display = 'inline-block';
-            document.getElementById('selectAllChatsBtn').style.display = 'none';
-            updateDeleteButton();
-        });
-
-        document.getElementById('cancelSelectChatsBtn')?.addEventListener('click', () => {
-            isSelectionMode = false;
-            selectedChats.clear();
-            document.querySelectorAll('.chat-checkbox').forEach(cb => {
-                cb.style.display = 'none';
-                cb.checked = false;
-            });
-            document.getElementById('deleteSelectedChatsBtn').style.display = 'none';
-            document.getElementById('cancelSelectChatsBtn').style.display = 'none';
-            document.getElementById('selectAllChatsBtn').style.display = 'inline-block';
-        });
-
-        document.getElementById('deleteSelectedChatsBtn')?.addEventListener('click', async () => {
-            if (selectedChats.size === 0) return;
-            if (!confirm(`⚠️ هل أنت متأكد من حذف ${selectedChats.size} دردشة؟ هذا الإجراء لا يمكن التراجع عنه!`)) return;
-            for (const chatId of selectedChats) {
-                await remove(ref(db, `chats/${chatId}`));
-                await remove(ref(db, `userChats/${currentUserId}/${chatId}`));
-            }
-            showToast(`✅ تم حذف ${selectedChats.size} دردشة بنجاح`);
-            selectedChats.clear();
-            document.getElementById('cancelSelectChatsBtn')?.click();
-            loadUnreadMessagesCount();
-        });
+        function updateDeleteButton() { const btn = document.getElementById('deleteSelectedChatsBtn'); if(btn) btn.style.display = selectedChats.size>0?'inline-block':'none'; }
+        document.getElementById('selectAllChatsBtn').addEventListener('click', () => { isSelectionMode=true; document.querySelectorAll('.chat-checkbox').forEach(cb=>{cb.style.display='inline-block';cb.checked=true;selectedChats.add(cb.dataset.chatid);}); document.getElementById('deleteSelectedChatsBtn').style.display='inline-block'; document.getElementById('cancelSelectChatsBtn').style.display='inline-block'; document.getElementById('selectAllChatsBtn').style.display='none'; updateDeleteButton(); });
+        document.getElementById('cancelSelectChatsBtn')?.addEventListener('click', () => { isSelectionMode=false; selectedChats.clear(); document.querySelectorAll('.chat-checkbox').forEach(cb=>{cb.style.display='none';cb.checked=false;}); document.getElementById('deleteSelectedChatsBtn').style.display='none'; document.getElementById('cancelSelectChatsBtn').style.display='none'; document.getElementById('selectAllChatsBtn').style.display='inline-block'; });
+        document.getElementById('deleteSelectedChatsBtn')?.addEventListener('click', async () => { if(selectedChats.size===0)return; if(!confirm(`⚠️ حذف ${selectedChats.size} دردشة؟`))return; for(const chatId of selectedChats){await remove(ref(db,`chats/${chatId}`)); await remove(ref(db,`userChats/${currentUserId}/${chatId}`));} showToast(`✅ تم الحذف`); selectedChats.clear(); document.getElementById('cancelSelectChatsBtn')?.click(); loadUnreadMessagesCount(); });
     }
 
     function renderNotificationsTab() {
         const container = document.getElementById("appContainer");
-        container.innerHTML = `
-            <div class="header-actions">
-                <h3 style="color:#64dcb4; display:flex; align-items:center; gap:8px; font-size:20px;">
-                    <span>🔔</span> الإشعارات
-                </h3>
-                <div class="action-buttons">
-                    <button id="selectAllNotifsBtn" class="select-all-btn small-btn">☑️ تحديد الكل</button>
-                    <button id="deleteSelectedNotifsBtn" class="delete-selected-btn small-btn" style="display:none;">🗑️ حذف المحدد</button>
-                    <button id="cancelSelectNotifsBtn" class="btn-outline small-btn" style="display:none;">إلغاء</button>
-                </div>
-            </div>
-            <div id="notifList"></div>
-        `;
-
-        let selectedNotifs = new Set();
-        let isSelectionMode = false;
-
+        container.innerHTML = `<div class="header-actions"><h3 style="color:#64dcb4; display:flex; align-items:center; gap:6px; font-size:18px;"><span>🔔</span> الإشعارات</h3>
+            <div class="action-buttons"><button id="selectAllNotifsBtn" class="select-all-btn small-btn">☑️ الكل</button><button id="deleteSelectedNotifsBtn" class="delete-selected-btn small-btn" style="display:none;">🗑️ حذف</button><button id="cancelSelectNotifsBtn" class="btn-outline small-btn" style="display:none;">إلغاء</button></div></div><div id="notifList"></div>`;
+        let selectedNotifs = new Set(), isSelectionMode = false;
         if (!currentUserId) return;
-
         onValue(ref(db, `notifications/${currentUserId}`), (snapshot) => {
             const notifs = snapshot.val() || {};
             let html = '';
-            if (Object.keys(notifs).length === 0) html = `<div class="empty-state">🔔 لا توجد إشعارات جديدة</div>`;
-            else {
-                html = Object.entries(notifs).reverse().map(([id, n]) => `
-                    <div class="select-item" data-notifid="${id}">
-                        <input type="checkbox" class="select-checkbox notif-checkbox" data-notifid="${id}" style="${isSelectionMode ? 'display:inline-block' : 'display:none'}">
-                        <div class="post-card" style="flex:1; ${!n.read ? 'border-right: 3px solid #64dcb4;' : ''} margin-bottom:0;">
-                            <p style="line-height:1.4;">${escapeHtml(n.message)}</p>
-                            <div class="post-time">${new Date(n.timestamp).toLocaleString('ar-EG')}</div>
-                            ${n.chatId ? `<button class="ready-btn-new" onclick="event.stopPropagation(); window.openChatAndUpdateRead('${n.chatId}')" style="margin-top:12px; padding:10px;">💬 رد عليه</button>` : ''}
-                        </div>
-                    </div>
-                `).join('');
-            }
+            if (Object.keys(notifs).length === 0) html = `<div class="empty-state">🔔 لا توجد إشعارات</div>`;
+            else html = Object.entries(notifs).reverse().map(([id, n]) => `<div class="select-item" data-notifid="${id}">
+                <input type="checkbox" class="select-checkbox notif-checkbox" data-notifid="${id}" style="${isSelectionMode?'display:inline-block':'display:none'}">
+                <div class="post-card" style="flex:1; ${!n.read?'border-right:3px solid #64dcb4;':''} margin-bottom:0;">
+                    <p style="line-height:1.4; font-size:14px;">${escapeHtml(n.message)}</p><div class="post-time">${new Date(n.timestamp).toLocaleString('ar-EG')}</div>
+                    ${n.chatId?`<button class="ready-btn-new" onclick="event.stopPropagation(); window.openChatAndUpdateRead('${n.chatId}')" style="margin-top:10px; padding:9px; font-size:12px;">💬 رد</button>`:''}
+                </div></div>`).join('');
             document.getElementById("notifList").innerHTML = html;
-     
-            document.querySelectorAll('.notif-checkbox').forEach(cb => {
-                cb.addEventListener('change', (e) => {
-                    e.stopPropagation();
-                    const notifId = cb.dataset.notifid;
-                    if (cb.checked) selectedNotifs.add(notifId);
-                    else selectedNotifs.delete(notifId);
-                    updateDeleteButton();
-                });
-            });
+            document.querySelectorAll('.notif-checkbox').forEach(cb => cb.addEventListener('change', (e) => { e.stopPropagation(); const notifId = cb.dataset.notifid; cb.checked ? selectedNotifs.add(notifId) : selectedNotifs.delete(notifId); updateDeleteButton(); }));
         });
-
-        function updateDeleteButton() {
-            const deleteBtn = document.getElementById('deleteSelectedNotifsBtn');
-            if (deleteBtn) deleteBtn.style.display = selectedNotifs.size > 0 ? 'inline-block' : 'none';
-        }
-
-        document.getElementById('selectAllNotifsBtn').addEventListener('click', () => {
-            isSelectionMode = true;
-            document.querySelectorAll('.notif-checkbox').forEach(cb => {
-                cb.style.display = 'inline-block';
-                cb.checked = true;
-                selectedNotifs.add(cb.dataset.notifid);
-            });
-            document.getElementById('deleteSelectedNotifsBtn').style.display = 'inline-block';
-            document.getElementById('cancelSelectNotifsBtn').style.display = 'inline-block';
-            document.getElementById('selectAllNotifsBtn').style.display = 'none';
-            updateDeleteButton();
-        });
-
-        document.getElementById('cancelSelectNotifsBtn')?.addEventListener('click', () => {
-            isSelectionMode = false;
-            selectedNotifs.clear();
-            document.querySelectorAll('.notif-checkbox').forEach(cb => {
-                cb.style.display = 'none';
-                cb.checked = false;
-            });
-            document.getElementById('deleteSelectedNotifsBtn').style.display = 'none';
-            document.getElementById('cancelSelectNotifsBtn').style.display = 'none';
-            document.getElementById('selectAllNotifsBtn').style.display = 'inline-block';
-        });
-
-        document.getElementById('deleteSelectedNotifsBtn')?.addEventListener('click', async () => {
-            if (selectedNotifs.size === 0) return;
-            if (!confirm(`⚠️ هل أنت متأكد من حذف ${selectedNotifs.size} إشعار؟ هذا الإجراء لا يمكن التراجع عنه!`)) return;
-            for (const notifId of selectedNotifs) {
-                await remove(ref(db, `notifications/${currentUserId}/${notifId}`));
-            }
-            showToast(`✅ تم حذف ${selectedNotifs.size} إشعار بنجاح`);
-            selectedNotifs.clear();
-            document.getElementById('cancelSelectNotifsBtn')?.click();
-            loadUnreadNotificationsCount();
-        });
+        function updateDeleteButton() { const btn = document.getElementById('deleteSelectedNotifsBtn'); if(btn) btn.style.display = selectedNotifs.size>0?'inline-block':'none'; }
+        document.getElementById('selectAllNotifsBtn').addEventListener('click', () => { isSelectionMode=true; document.querySelectorAll('.notif-checkbox').forEach(cb=>{cb.style.display='inline-block';cb.checked=true;selectedNotifs.add(cb.dataset.notifid);}); document.getElementById('deleteSelectedNotifsBtn').style.display='inline-block'; document.getElementById('cancelSelectNotifsBtn').style.display='inline-block'; document.getElementById('selectAllNotifsBtn').style.display='none'; updateDeleteButton(); });
+        document.getElementById('cancelSelectNotifsBtn')?.addEventListener('click', () => { isSelectionMode=false; selectedNotifs.clear(); document.querySelectorAll('.notif-checkbox').forEach(cb=>{cb.style.display='none';cb.checked=false;}); document.getElementById('deleteSelectedNotifsBtn').style.display='none'; document.getElementById('cancelSelectNotifsBtn').style.display='none'; document.getElementById('selectAllNotifsBtn').style.display='inline-block'; });
+        document.getElementById('deleteSelectedNotifsBtn')?.addEventListener('click', async () => { if(selectedNotifs.size===0)return; if(!confirm(`⚠️ حذف ${selectedNotifs.size} إشعار؟`))return; for(const notifId of selectedNotifs) await remove(ref(db, `notifications/${currentUserId}/${notifId}`)); showToast(`✅ تم الحذف`); selectedNotifs.clear(); document.getElementById('cancelSelectNotifsBtn')?.click(); loadUnreadNotificationsCount(); });
     }
 
-    window.openChatAndUpdateRead = async function(chatId) {
-        await updateLastRead(chatId);
-        window.openChat(chatId);
-    };
-
-    window.switchToTabAndOpenChat = function(tab, chatId) {
-        activeTab = tab;
-        renderCurrentTab();
-        setTimeout(() => {
-            window.openChatAndUpdateRead(chatId);
-        }, 250);
-    };
+    window.openChatAndUpdateRead = async function(chatId) { await updateLastRead(chatId); window.openChat(chatId); };
+    window.switchToTabAndOpenChat = function(tab, chatId) { activeTab = tab; renderCurrentTab(); setTimeout(() => window.openChatAndUpdateRead(chatId), 200); };
 
     async function renderProfileTab() {
         const container = document.getElementById("appContainer");
         const postsSnap = await get(ref(db, "allPosts"));
         let myPostsCount = 0, myPosts = [];
-        if (postsSnap.exists()) {
-            const all = postsSnap.val();
-            myPosts = Object.entries(all).filter(([, p]) => p.publisherId === currentUserId);
-            myPostsCount = myPosts.length;
-        }
+        if (postsSnap.exists()) { const all = postsSnap.val(); myPosts = Object.entries(all).filter(([, p]) => p.publisherId === currentUserId); myPostsCount = myPosts.length; }
         const chatsSnap = await get(ref(db, `userChats/${currentUserId}`));
         const chatsCount = chatsSnap.exists() ? Object.keys(chatsSnap.val()).length : 0;
-        container.innerHTML = `
-            <div class="profile-header">
-                <div class="avatar">${currentUser.name.charAt(0)}</div>
-                <h3 style="color:#64dcb4; margin-top:8px;">${escapeHtml(currentUser.name)}</h3>
-                <p style="color:#aaa; margin-top:6px;">📞 ${currentUser.phone} | 🎂 ${currentUser.age} سنة | 🎾 ${currentUser.tennisLevel || 'غير محدد'}</p>
-            </div>
+        container.innerHTML = `<div class="profile-header">
+            <div class="avatar">${currentUser.name.charAt(0)}</div><h3 style="color:#64dcb4; margin-top:6px;">${escapeHtml(currentUser.name)}</h3>
+            <p style="color:#aaa; margin-top:4px; font-size:13px;">📞 ${currentUser.phone} | 🎂 ${currentUser.age} | 🎾 ${currentUser.tennisLevel||'غير محدد'}</p></div>
             <div class="stats-row">
-                <div class="stat" id="myPostsStat">
-                    <div class="stat-number">${myPostsCount}</div>
-                    <span style="color:#aaa; font-size:13px;">📝 منشوراتي</span>
-                </div>
-                <div class="stat">
-                    <div class="stat-number">${chatsCount}</div>
-                    <span style="color:#aaa; font-size:13px;">💬 دردشات</span>
-                </div>
-            </div>
-            <div style="display:flex; gap:14px; margin-top:24px;">
-                <button id="editProfileBtn" class="btn-primary" style="flex:1; padding:16px 20px;">✏️ تعديل البيانات</button>
-                <button id="logoutFromProfile" class="btn-danger" style="flex:1; padding:16px 20px;">🚪 تسجيل خروج</button>
-            </div>`;
-        
-        // ربط الأزرار الجديدة
+                <div class="stat" id="myPostsStat"><div class="stat-number">${myPostsCount}</div><span style="color:#aaa; font-size:12px;">📝 منشوراتي</span></div>
+                <div class="stat"><div class="stat-number">${chatsCount}</div><span style="color:#aaa; font-size:12px;">💬 دردشات</span></div></div>
+            <div style="display:flex; gap:12px; margin-top:20px;">
+                <button id="editProfileBtn" class="btn-primary" style="flex:1; padding:14px 18px;">✏️ تعديل</button>
+                <button id="logoutFromProfile" class="btn-danger" style="flex:1; padding:14px 18px;">🚪 خروج</button></div>`;
         document.getElementById("editProfileBtn").addEventListener("click", showEditProfileModal);
         document.getElementById("logoutFromProfile").addEventListener("click", showLogoutConfirmModal);
-        
-        // زر منشوراتي (كما كان)
-        document.getElementById("myPostsStat").addEventListener("click", () => { showMyPostsModal(myPosts); });
+        document.getElementById("myPostsStat").addEventListener("click", () => showMyPostsModal(myPosts));
     }
 
     async function showMyPostsModal(myPosts) {
         const modal = document.createElement("div");
         modal.className = "modal";
         modal.style.display = "flex";
-        let postsHtml = myPosts.length === 0 ? '<div class="empty-state">🎾 ليس لديك منشورات حالياً</div>' : myPosts.map(([id, post]) => `
-            <div style="background:rgba(30,30,50,0.7); border-radius:18px; padding:14px; margin-bottom:14px; border:1px solid rgba(100,220,180,0.15);">
-                <div class="club-name">🎾 ${escapeHtml(post.clubName)}</div>
-                <div class="post-detail">🕐 ${escapeHtml(post.time)}</div>
-                <div class="post-detail">📍 ${escapeHtml(post.location || 'غير محدد')}</div>
-                <div class="post-detail">👥 ${post.neededPlayers || 'غير محدد'} لاعب • ${escapeHtml(post.preferredLevel || 'غير محدد')}</div>
-                <div class="post-detail">📅 ${new Date(post.eventTimestamp || post.timestamp).toLocaleString('ar-EG')}</div>
-                <button class="delete-post-btn" data-post-id="${id}" style="background:linear-gradient(135deg, #ff6b6b, #ee5a5a); border:none; padding:9px 18px; border-radius:22px; color:white; margin-top:10px; font-weight:600;">🗑️ حذف المنشور</button>
-            </div>`).join('');
-        modal.innerHTML = `<div class="modal-content" style="max-height:70vh; overflow-y:auto;"><div style="display:flex; justify-content:space-between; margin-bottom:18px; align-items:center;"><h3 style="color:#64dcb4; display:flex; align-items:center; gap:8px;"><span>📝</span> منشوراتي</h3><button onclick="this.closest('.modal').remove()" style="background:none; border:none; font-size:26px; color:#ff6b6b; cursor:pointer; transition:transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">✕</button></div><div id="myPostsList">${postsHtml}</div></div>`;
+        let postsHtml = myPosts.length === 0 ? '<div class="empty-state">🎾 ليس لديك منشورات</div>' : myPosts.map(([id, post]) => `<div style="background:rgba(30,30,50,0.7); border-radius:16px; padding:12px; margin-bottom:12px; border:1px solid rgba(100,220,180,0.15);">
+            <div class="club-name">🎾 ${escapeHtml(post.clubName)}</div><div class="post-detail">🕐 ${escapeHtml(post.time)}</div>
+            <div class="post-detail">📍 ${escapeHtml(post.location||'غير محدد')}</div><div class="post-detail">👥 ${post.neededPlayers||'؟'} لاعب • ${escapeHtml(post.preferredLevel||'غير محدد')}</div>
+            <div class="post-detail">📅 ${new Date(post.eventTimestamp||post.timestamp).toLocaleString('ar-EG')}</div>
+            <button class="delete-post-btn" data-post-id="${id}" style="background:linear-gradient(135deg, #ff6b6b, #ee5a5a); border:none; padding:8px 16px; border-radius:20px; color:white; margin-top:8px; font-weight:600; font-size:12px;">🗑️ حذف</button></div>`).join('');
+        modal.innerHTML = `<div class="modal-content" style="max-height:65vh;"><div style="display:flex; justify-content:space-between; margin-bottom:16px; align-items:center;"><h3 style="color:#64dcb4; font-size:18px;">📝 منشوراتي</h3><button onclick="this.closest('.modal').remove()" style="background:none; border:none; font-size:24px; color:#ff6b6b; cursor:pointer;">✕</button></div><div id="myPostsList">${postsHtml}</div></div>`;
         document.body.appendChild(modal);
-        document.querySelectorAll('.delete-post-btn').forEach(btn => {
-            btn.addEventListener('click', async (e) => {
-                e.stopPropagation();
-                const postId = btn.dataset.postId;
-                if (confirm("هل أنت متأكد من حذف هذا المنشور؟")) {
-                    await remove(ref(db, `allPosts/${postId}`));
-                    await remove(ref(db, `postReady/${postId}`));
-                    await remove(ref(db, `completedPosts/${postId}`)); // حذف من الإعلانات المكتملة أيضاً
-                    showToast("✅ تم حذف المنشور بنجاح");
-                    modal.remove();
-                    if (activeTab === "profile") renderProfileTab();
-                    if (activeTab === "home") renderHomeTab();
-                }
-            });
-        });
+        document.querySelectorAll('.delete-post-btn').forEach(btn => btn.addEventListener('click', async (e) => { e.stopPropagation(); const postId = btn.dataset.postId; if(confirm("حذف هذا المنشور؟")) { await remove(ref(db, `allPosts/${postId}`)); await remove(ref(db, `postReady/${postId}`)); await remove(ref(db, `completedPosts/${postId}`)); showToast("✅ تم الحذف"); modal.remove(); if(activeTab==="profile") renderProfileTab(); if(activeTab==="home") renderHomeTab(); }}));
     }
 
     window.openChat = async function(chatId) {
@@ -2131,75 +1562,43 @@
         const modal = document.createElement("div");
         modal.className = "modal";
         modal.style.display = "flex";
-        modal.innerHTML = `<div class="modal-content chat-modal-content"><div style="display:flex; justify-content:space-between; margin-bottom:12px; align-items:center;"><h3 id="chatTitle" style="color:#64dcb4; display:flex; align-items:center; gap:8px; font-size:18px;">💬 دردشة</h3><button onclick="this.closest('.modal').remove()" style="background:none; border:none; font-size:30px; color:#ff6b6b; cursor:pointer; transition:transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">✕</button></div><div id="chatMessages" class="messages-container"></div><div style="display:flex; gap:10px; margin-top:12px;"><input id="msgInput" type="text" placeholder="اكتب رسالة..." style="flex:1; margin-bottom:0;"><button id="sendMsgBtn" style="background:linear-gradient(135deg, #64dcb4, #4dd0c0); border:none; padding:14px 26px; border-radius:32px; color:#0a1a15; font-weight:700; cursor:pointer; transition:all 0.2s; box-shadow:0 4px 16px rgba(100,220,180,0.35);" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">إرسال</button></div></div>`;
+        modal.innerHTML = `<div class="modal-content chat-modal-content"><div style="display:flex; justify-content:space-between; margin-bottom:10px; align-items:center;"><h3 id="chatTitle" style="color:#64dcb4; display:flex; align-items:center; gap:6px; font-size:17px;">💬 دردشة</h3><button onclick="this.closest('.modal').remove()" style="background:none; border:none; font-size:28px; color:#ff6b6b; cursor:pointer;">✕</button></div><div id="chatMessages" class="messages-container"></div><div style="display:flex; gap:8px; margin-top:10px;"><input id="msgInput" type="text" placeholder="اكتب..." style="flex:1; margin-bottom:0; padding:12px 16px;"><button id="sendMsgBtn" style="background:linear-gradient(135deg, #64dcb4, #4dd0c0); border:none; padding:12px 22px; border-radius:30px; color:#0a1a15; font-weight:700; cursor:pointer; font-size:13px;">إرسال</button></div></div>`;
         document.body.appendChild(modal);
         const chatSnap = await get(ref(db, `chats/${chatId}`));
-        if (chatSnap.exists()) {
-            const chat = chatSnap.val();
-            const other = Object.entries(chat.participantNames).find(([id]) => id !== currentUserId);
-            document.getElementById("chatTitle").textContent = `💬 مع ${escapeHtml(other ? other[1] : 'اللاعب')}`;
-        }
+        if (chatSnap.exists()) { const chat = chatSnap.val(); const other = Object.entries(chat.participantNames).find(([id]) => id !== currentUserId); document.getElementById("chatTitle").textContent = `💬 ${escapeHtml(other?other[1]:'اللاعب')}`; }
         const messagesRef = ref(db, `chats/${chatId}/messages`);
         onValue(messagesRef, (snapshot) => {
             const msgs = snapshot.val() || {};
             let html = '';
-            Object.entries(msgs).sort(([,a], [,b]) => a.timestamp - b.timestamp).forEach(([, msg]) => {
+            Object.entries(msgs).sort(([,a],[,b])=>a.timestamp-b.timestamp).forEach(([,msg]) => {
                 const isMine = msg.senderId === currentUserId;
-                const messageClass = isMine ? 'my-message' : 'other-message';
                 const systemClass = msg.isSystem ? 'style="background:linear-gradient(135deg, #b478ff, #64dcb4); color:#0a1a15; text-align:center; font-weight:600; border:none; max-width:95%; align-self:center;"' : '';
-                html += `<div class="message ${messageClass}" ${systemClass}><small style="opacity:0.8; font-size:11px; display:block; margin-bottom:3px;">${escapeHtml(msg.senderName)}</small>${escapeHtml(msg.text)}<div style="font-size:9px; margin-top:5px; opacity:0.5; text-align:right;">${new Date(msg.timestamp).toLocaleTimeString('ar-EG')}</div></div>`;
+                html += `<div class="message ${isMine?'my-message':'other-message'}" ${systemClass}><small style="opacity:0.8; font-size:10px; display:block; margin-bottom:2px;">${escapeHtml(msg.senderName)}</small>${escapeHtml(msg.text)}<div style="font-size:9px; margin-top:4px; opacity:0.5; text-align:right;">${new Date(msg.timestamp).toLocaleTimeString('ar-EG')}</div></div>`;
             });
             const container = document.getElementById("chatMessages");
-            if (container) {
-                container.innerHTML = html;
-                container.scrollTop = container.scrollHeight;
-            }
+            if (container) { container.innerHTML = html; container.scrollTop = container.scrollHeight; }
         });
-        document.getElementById("sendMsgBtn").addEventListener("click", async () => {
-            const text = document.getElementById("msgInput").value.trim();
-            if (!text) return;
-            const msgRef = push(ref(db, `chats/${chatId}/messages`));
-            await set(msgRef, { senderId: currentUserId, senderName: currentUser.name, text, timestamp: Date.now() });
-            await set(ref(db, `userChats/${currentUserId}/${chatId}/lastUpdated`), Date.now());
-            document.getElementById("msgInput").value = "";
-            document.getElementById("msgInput").focus();
-        });
-        document.getElementById("msgInput").addEventListener("keypress", (e) => { if (e.key === "Enter") document.getElementById("sendMsgBtn").click(); });
+        document.getElementById("sendMsgBtn").addEventListener("click", async () => { const text = document.getElementById("msgInput").value.trim(); if(!text) return; const msgRef = push(ref(db, `chats/${chatId}/messages`)); await set(msgRef, { senderId: currentUserId, senderName: currentUser.name, text, timestamp: Date.now() }); await set(ref(db, `userChats/${currentUserId}/${chatId}/lastUpdated`), Date.now()); document.getElementById("msgInput").value = ""; document.getElementById("msgInput").focus(); });
+        document.getElementById("msgInput").addEventListener("keypress", (e) => { if(e.key==="Enter") document.getElementById("sendMsgBtn").click(); });
         document.getElementById("msgInput").focus();
-        modal.addEventListener('click', (e) => { if (e.target === modal) modal.remove(); });
+        modal.addEventListener('click', (e) => { if(e.target===modal) modal.remove(); });
     };
 
     function openAddPostModal() {
         const modal = document.createElement("div");
         modal.className = "modal";
         modal.style.display = "flex";
-        modal.innerHTML = `
-            <div class="modal-content">
-                <h3 style="margin-bottom:20px; color:#64dcb4; text-align:center; display:flex; align-items:center; justify-content:center; gap:8px;"><span>🎾</span> منشور مباراة جديد</h3>
-                <input id="clubName" placeholder="اسم النادي أو الملعب (مثال: نادي الجزيرة)" style="text-align:center;">
-                <input id="location" placeholder="الموقع (مثال: الجزيرة - القاهرة)" style="text-align:center;">
-              
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
-                    <input id="eventDate" type="date" style="text-align:center;">
-                    <input id="eventTimeInput" type="time" style="text-align:center;">
-                </div>
-              
-                <input type="number" id="neededPlayers" placeholder="محتاج كام لاعب (مثال: 3)" min="1" style="text-align:center;">
-                <select id="preferredLevel" style="background: rgba(30,30,50,0.8); border:1.5px solid rgba(100,220,180,0.25); padding:14px 18px; border-radius:24px; color:white; width:100%; margin-bottom:14px;">
-                    <option value="">المستوى المطلوب للاعبين</option>
-                    <option value="مبتدئ">مبتدئ</option>
-                    <option value="أقل من متوسط">أقل من متوسط</option>
-                    <option value="متوسط">متوسط</option>
-                    <option value="أعلى من متوسط">أعلى من متوسط</option>
-                    <option value="محترف">محترف</option>
-                </select>
-                <div style="display:flex; gap:14px; margin-top:20px;">
-                    <button id="cancelModal" class="btn-outline" style="flex:1;">إلغاء</button>
-                    <button id="publishPost" class="btn-primary" style="flex:1;">✨ نشر المنشور ✨</button>
-                </div>
-            </div>`;
+        modal.innerHTML = `<div class="modal-content">
+            <h3 style="margin-bottom:18px; color:#64dcb4; text-align:center; font-size:18px;"><span>🎾</span> منشور جديد</h3>
+            <input id="clubName" placeholder="اسم النادي" style="text-align:center;">
+            <input id="location" placeholder="الموقع" style="text-align:center;">
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;"><input id="eventDate" type="date" style="text-align:center;"><input id="eventTimeInput" type="time" style="text-align:center;"></div>
+            <input type="number" id="neededPlayers" placeholder="عدد اللاعبين" min="1" style="text-align:center;">
+            <select id="preferredLevel" style="background:rgba(30,30,50,0.8); border:1.5px solid rgba(100,220,180,0.25); padding:14px 18px; border-radius:24px; color:white; width:100%; margin-bottom:14px;">
+                <option value="">المستوى المطلوب</option><option value="مبتدئ">مبتدئ</option><option value="أقل من متوسط">أقل من متوسط</option><option value="متوسط">متوسط</option><option value="أعلى من متوسط">أعلى من متوسط</option><option value="محترف">محترف</option>
+            </select>
+            <div style="display:flex; gap:12px; margin-top:18px;"><button id="cancelModal" class="btn-outline" style="flex:1;">إلغاء</button><button id="publishPost" class="btn-primary" style="flex:1;">✨ نشر</button></div></div>`;
         document.body.appendChild(modal);
-    
         document.getElementById("cancelModal").addEventListener("click", () => modal.remove());
         document.getElementById("publishPost").addEventListener("click", async () => {
             const clubName = document.getElementById("clubName").value.trim();
@@ -2208,85 +1607,33 @@
             const eventTimeInput = document.getElementById("eventTimeInput").value;
             const neededPlayers = parseInt(document.getElementById("neededPlayers").value);
             const preferredLevel = document.getElementById("preferredLevel").value;
-        
-            if (!clubName || !location || !eventDate || !eventTimeInput || !neededPlayers || neededPlayers < 1 || !preferredLevel) {
-                return alert("⚠️ يرجى ملء جميع الحقول (التاريخ + الساعة بالدقيقة + عدد اللاعبين + المستوى المطلوب)");
-            }
-        
+            if (!clubName || !location || !eventDate || !eventTimeInput || !neededPlayers || neededPlayers<1 || !preferredLevel) return alert("⚠️ املأ جميع الحقول");
             const eventDateTime = `${eventDate}T${eventTimeInput}:00`;
             const eventTimestamp = new Date(eventDateTime).getTime();
-        
-            if (isNaN(eventTimestamp) || eventTimestamp < Date.now() + 7200000) {
-                return alert("⚠️ يجب أن يكون الموعد بعد ساعتين على الأقل من الآن");
-            }
-        
-            const displayTime = new Date(eventTimestamp).toLocaleString('ar-EG', {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-                hour: 'numeric',
-                minute: '2-digit'
-            });
-        
-            await push(ref(db, "allPosts"), {
-                clubName,
-                location,
-                time: displayTime,
-                eventTimestamp,
-                neededPlayers,
-                preferredLevel,
-                publisherName: currentUser.name,
-                publisherPhone: currentUser.phone,
-                publisherId: currentUserId,
-                timestamp: Date.now(),
-                completed: false
-            });
-        
-            modal.remove();
-            showToast("✅ تم النشر بنجاح! 🎾 انتظر من يجهز عليك");
-            if (activeTab === "home") renderHomeTab();
+            if (isNaN(eventTimestamp) || eventTimestamp < Date.now()+7200000) return alert("⚠️ الموعد بعد ساعتين على الأقل");
+            const displayTime = new Date(eventTimestamp).toLocaleString('ar-EG', { weekday:'long', year:'numeric', month:'long', day:'numeric', hour:'numeric', minute:'2-digit' });
+            await push(ref(db, "allPosts"), { clubName, location, time: displayTime, eventTimestamp, neededPlayers, preferredLevel, publisherName: currentUser.name, publisherPhone: currentUser.phone, publisherId: currentUserId, timestamp: Date.now(), completed: false });
+            modal.remove(); showToast("✅ تم النشر! 🎾"); if(activeTab==="home") renderHomeTab();
         });
         document.getElementById("clubName").focus();
     }
 
     function logout() {
-        localStorage.clear();
-        currentUser = null;
-        currentUserId = null;
-        if (notificationListener) notificationListener();
-        if (chatsListener) chatsListener();
-        if (completedAnnouncementsListener) completedAnnouncementsListener();
-        if (countdownInterval) clearInterval(countdownInterval);
-        countdownInterval = null;
-        completedAnnouncementsListener = null;
+        localStorage.clear(); currentUser = null; currentUserId = null;
+        if(notificationListener) notificationListener(); if(chatsListener) chatsListener(); if(completedAnnouncementsListener) completedAnnouncementsListener();
+        if(countdownInterval) clearInterval(countdownInterval); countdownInterval = null; completedAnnouncementsListener = null;
         showRegisterCard();
     }
 
     function bindTabs() {
-        document.querySelectorAll('.tab-item').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                activeTab = btn.dataset.tab;
-                renderCurrentTab();
-            });
-        });
+        document.querySelectorAll('.tab-item').forEach(btn => btn.addEventListener('click', (e) => { activeTab = btn.dataset.tab; renderCurrentTab(); }));
     }
 
     async function initApp() {
         currentUserId = localStorage.getItem('tennisApp_userId');
-        if (currentUserId) {
-            const snap = await get(child(ref(db, "users"), currentUserId));
-            if (snap.exists()) {
-                currentUser = snap.val();
-                showMainApp();
-                bindTabs();
-                return;
-            }
-        }
-        showRegisterCard();
-        bindTabs();
+        if (currentUserId) { const snap = await get(child(ref(db, "users"), currentUserId)); if(snap.exists()) { currentUser = snap.val(); showMainApp(); bindTabs(); return; } }
+        showRegisterCard(); bindTabs();
     }
-
     initApp();
 </script>
 </body>
